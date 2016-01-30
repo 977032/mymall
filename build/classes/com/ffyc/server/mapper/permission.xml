@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.PermissionMapper">
+	<cache />
+	<select id="findAll" resultType="Permission">
+		SELECT
+			*
+		FROM
+			TB_PERMISSION
+	</select>
+	
+	<select id="findById" resultType="Permission">
+		SELECT
+			*
+		FROM
+			TB_PERMISSION
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByManagerAndCode" resultType="Permission">
+		SELECT
+			*
+		FROM
+			TB_PERMISSION
+		WHERE
+		    MANAGER = #{manager, jdbcType=VARCHAR}
+		AND	
+			CODE = #{code, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByMgroupAndCode" resultType="Permission">
+		SELECT
+			*
+		FROM
+			TB_PERMISSION
+		WHERE
+			MGROUP = #{mgroup, jdbcType=VARCHAR}
+		AND	
+			CODE = #{code, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findAllRoot" resultType="Permission">
+		SELECT
+			*
+		FROM
+			TB_PERMISSION
+		WHERE
+			MANAGER is null 
+		AND	MEMBER  is null
+		AND MGROUP  is null
+		AND `GROUP` is null
+		AND pid is null
+		ORDER BY CODE
+	</select>
+	
+	<select id="findAllChild" resultType="Permission">
+		SELECT
+			*
+		FROM
+			TB_PERMISSION
+		WHERE
+		   pid = #{pid}
+		AND MANAGER is null 
+		AND	MEMBER  is null
+		AND MGROUP  is null
+		AND `GROUP` is null
+		ORDER BY CODE
+	</select>
+	
+	
+   <select id="findByPermission" parameterType="Permission" resultType="Permission">  
+      select * from tb_permission where 1 = 1 
+      <if test="pid == 'null'">  
+          and pid is null 
+      </if>
+      <if test="pid != 'null' and pid != null">  
+          and pid = #{pid}  
+      </if>
+      <if test="member != null">  
+          and member = #{member}  
+      </if>  
+      <if test="manager != null">  
+          and manager = #{manager}  
+      </if>  
+      <if test="mgroup != null">  
+          and mgroup = #{mgroup}  
+      </if>
+      <if test="group != null">  
+          and group = #{group}  
+      </if>
+      order by code asc
+     
+    </select>  
+	
+	<insert id="save" parameterType="Permission" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_PERMISSION
+		(
+			ID,
+			PID,
+			NAME,
+			CODE,
+			`READ`,
+			`WRITE`,
+			`DELETE`,
+			`GROUP`,
+			MEMBER,
+			MGROUP,
+			MANAGER
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{pid,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{code,    jdbcType=VARCHAR},
+			#{read,    jdbcType=INTEGER},
+			#{write,    jdbcType=INTEGER},
+			#{delete,    jdbcType=INTEGER},
+			#{group,    jdbcType=VARCHAR},
+			#{member,    jdbcType=VARCHAR},
+			#{mgroup,    jdbcType=VARCHAR},
+			#{manager,    jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="Permission">
+		update
+			TB_PERMISSION
+		set
+		    PID = #{pid, jdbcType=VARCHAR},
+		    NAME = #{name, jdbcType=VARCHAR},
+		    CODE = #{code, jdbcType=VARCHAR},
+		    `READ` = #{read, jdbcType=INTEGER},
+		    `WRITE` = #{write, jdbcType=INTEGER},
+		    `DELETE` = #{delete, jdbcType=INTEGER},
+		    `GROUP` = #{group, jdbcType=VARCHAR},
+		    MEMBER = #{member, jdbcType=VARCHAR},
+		    MGROUP = #{mgroup, jdbcType=VARCHAR},
+		    MANAGER = #{manager, jdbcType=VARCHAR}
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_PERMISSION
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

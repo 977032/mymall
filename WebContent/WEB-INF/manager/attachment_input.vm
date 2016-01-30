@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<title>商品图片上传</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商品信息 - 商品图片上传</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="good_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      商品录入 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>&nbsp;</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="default-tab">
+          <form action="attachment_create.action" method="post" enctype="multipart/form-data" name="form1" id="form1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">商品：</td>
+                <td>$!{good.name}
+                  <input name="attachment.goodd.id" type="hidden" id="attachment.goodd.id" value="$!{good.id}" /></td>
+              </tr>
+              <tr>
+                <td align="right">图片文件：</td>
+                <td><input type="file" name="upload" id="upload" />
+                *</td>
+              </tr>
+              <tr>
+                <td align="right">图片说明：</td>
+                <td><textarea name="attachment.detail" id="attachment.detail" cols="45" rows="10"></textarea></td>
+              </tr>
+              <tr>
+                <td align="right">默认图：</td>
+                <td>是
+                  <input type="radio" name="attachment.status" id="radio" value="default">
+                  否
+                  <input name="attachment.status" type="radio" id="radio" value="normal" checked="checked"></td>
+              </tr>
+              <tr>
+                <td align="right">排序：</td>
+                <td><input name="attachment.sort" type="text" id="attachment.sort" value="10" size="10" maxlength="11" />
+                  *[数字]</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交" /></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

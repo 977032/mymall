@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<script type="text/javascript" src="scripts/ckeditor/ckeditor.js"></script>
+<title>文章编辑</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/documents.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 文章管理 - 文章编辑</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="documents.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回文章列表 </span></a></li>
+      <li><a class="shortcut-button" href="document_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      发布文章 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>编辑文章</h3>
+        <ul class="content-box-tabs">
+          <li><a class="default-tab" href="#tab1">基本信息</a></li>
+          <li><a href="#tab2">详细信息</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <form action="document_update.htm" method="post" enctype="multipart/form-data" name="form1" id="form1">
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">文章分类：</td>
+                <td><select name="document.doccatee.id" id="document.doccatee.id" reg="^(\w){32}$" tip="必须选择文章类别">
+            <option value="">请选择所属分类</option>
+			#foreach($item in $catelist)
+			<option value="$!{item.id}" #if( $document.doccatee.id==$item.id )selected="selected"#end>$!{item.nodestr}$!{item.name}</option>
+			#end
+          </select></td>
+              </tr>
+              <tr>
+                <td align="right">语言：</td>
+                <td>
+                  <select name="document.localee.id" id="document.localee.id">
+                    #foreach($item in $localelist)
+                    <option value="$!{item.id}" #if( $item.id==$document.localee.id )selected="selected"#end>$!{item.name}</option>
+                    #end
+                  </select></td>
+              </tr>
+              <tr>
+                <td align="right">文章标题：</td>
+                <td><input name="document.title" type="text" id="document.title" value="$!{document.title}" size="60" maxlength="255" reg="^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{2,255}$" tip="中文，英文或下划线，最少两个字符，最多255个字符"></td>
+              </tr>
+              <tr>
+                <td align="right">文章题图：</td>
+                <td><img src="..$!{document.vimagee.path}/$!{document.vimagee.name}" width="80" height="30"></td>
+              </tr>
+              <tr>
+                <td align="right">重新上传题图：</td>
+                <td><input type="file" name="upload" id="upload" reg="^$|.*gif|png|jpg|jpeg$" tip="允许JPG,GIF,PNG图片文件"></td>
+              </tr>
+              <tr>
+                <td align="right">文章简述：</td>
+                <td><textarea name="document.brief" id="document.brief" cols="60" rows="8">$!{document.brief}</textarea></td>
+              </tr>
+              <tr>
+                <td align="right">排序：</td>
+                <td><input name="document.csort" type="text" id="document.csort" value="$!{document.csort}" size="12" maxlength="11" reg="^\d{1,11}$" tip="输入排序，只允许数字。"></td>
+              </tr>
+              <tr>
+                <td align="right">标记：</td>
+                <td>
+                <select name="document.marker" id="document.marker">
+                  <option value="normal" #if( $document.marker=="normal" )selected="selected"#end>正常</option>
+                  <option value="recommand" #if( $document.marker=="recommand" )selected="selected"#end>推荐</option>
+                </select></td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交">
+                  <input name="document.id" type="hidden" id="document.id" value="$!{document.id}"></td>
+              </tr>
+            </table>
+        </div>
+        <div class="tab-content" id="tab2">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td><textarea name="document.content" id="document.content" cols="80" rows="20">$!{document.content}</textarea></td>
+            </tr>
+            <tr>
+              <td><input type="submit" name="button2" id="button2" value="提交"></td>
+            </tr>
+              <script type="text/javascript">
+				CKEDITOR.replace('document.content',{
+					filebrowserBrowseUrl : 'files.htm',
+					filebrowserUploadUrl : 'ckeditor/uploader?type=File',   
+					filebrowserImageUploadUrl : 'ckeditor/uploader?type=Image',   
+					filebrowserFlashUploadUrl : 'ckeditor/uploader?type=Flash'  
+        		});
+			  </script>
+          </table>
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

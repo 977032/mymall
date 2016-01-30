@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+
+<script type="text/javascript"> 
+<!-- 
+jQuery(document).ready(function() {
+jQuery("#checkall").click(
+    function(){
+		if(this.checked){
+            jQuery("input[name='checkbox']").each(function(){this.checked=true;});
+        }else{
+            jQuery("input[name='checkbox']").each(function(){this.checked=false;});
+        }
+    }
+);
+});
+//--> 
+</script>
+
+<script type="text/javascript">
+var isExtendsValidate = true;
+function extendsValidate(){
+	//checkbox 验证，必须选择一个checkbox
+	if(jQuery("[name='checkbox']:checked").length < 1){
+		alert("至少选择一条信息。");
+		return false;
+	}
+}
+</script>
+
+<title>网站频道</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 网站频道</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="channel_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建频道 </span></a></li>
+      <li><a class="shortcut-button" href="channel_content_global_input.htm"><span><img alt="icon" src="images/paper_content_pencil_48.png" /><br />
+      新建全局内容 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>商城频道管理</h3>
+        <ul class="content-box-tabs">
+          <li><a class="default-tab" href="#tab1">商城频道</a></li>
+          <li><a href="#tab2">全局频道内容</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="channel_del.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td><input type="checkbox" name="checkall" id="checkall" title="全选/反选"></td>
+                <td>频道ID</td>
+                <td>频道名称</td>
+                <td>网页模板</td>
+                <td>频道说明</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              #foreach( $item in $list )
+              <tr>
+                <td><input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}"></td>
+                <td><a href="channel_edit.htm?cid=$!{item.id}">$!{item.id}</a></td>
+                <td>$!{item.title}</td>
+                <td>$!{item.template.path}/$!{item.template.name}</td>
+                <td>$!{item.intro}</td>
+                <td><a href="channel_contents.htm?cid=$!{item.id}">频道内容</a></td>
+                <td><a href="channel_content_input.htm?cid=$!{item.id}">加内容</a></td>
+              </tr>
+              #end
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value=" 删 除 "></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+        </div>
+        <div class="tab-content" id="tab2">
+          <form id="form1" name="form1" method="post" action="channel_content_del.htm?cid=$!{channel.id}">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td><input type="checkbox" name="checkall" id="checkall" title="全选/反选"></td>
+              <td>编辑</td>
+              <td>类型</td>
+              <td>文章分类</td>
+              <td>文章信息</td>
+              <td>商品分类</td>
+              <td>商品信息</td>
+              <td>数量</td>
+              <td>偏移</td>
+              <td>标记</td>
+              <td>详细页显示</td>
+              <td>语言</td>
+            </tr>
+            #foreach( $item in $gachctlist )
+          <tr>
+            <td><input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}"></td>
+            <td><a href="channel_content_edit.htm?ccid=$!{item.id}">编辑</a></td>
+            <td>$!{item.typetext}</td>
+            <td>$!{item.doccatee.name}</td>
+            <td>$!{item.documentt.title}</td>
+            <td>#if( ( $item.type=='gmenu' || $item.type=='glist' || $item.type=='grclist' || $item.type=='gpagelist' ) && !$item.category )所有商品分类#else$!{item.categoryy.name}#end #if( $item.hasKeyword('hot') )[热销]#end#if( $item.hasKeyword('new') )[新品]#end#if( $item.hasKeyword('btq') )[精品]#end</td>
+            <td>$!{item.goodd.name}</td>
+            <td>$!{item.number}</td>
+            <td>$!{item.offset}</td>
+            <td>$!{item.marker}</td>
+            <td>#if( $item.detail=='yes' )是#else否#end</td>
+            <td>$!{item.localee.name}</td>
+          </tr>
+          #end
+          <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><input type="submit" name="button2" id="button2" value="删除"></td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网店后台管理系统</title>
+<link href="css/css.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/jquery.filloptions.js"></script>
+<script type="text/javascript">
+function getDistrict(_id){
+	jQuery("#district1").FillOptions("getdistrict.htm?id="+_id,{datatype:"json",textfield:"name",valuefiled:"id"});
+}
+</script>
+</head>
+<body>
+#parse("/WEB-INF/member/zh_CN_top.vm")
+<div id="blankline"></div>
+#include("/WEB-INF/member/zh_CN_nav.vm")
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="202" height="500" align="left" valign="top">
+    <div id="lefttitle">账号设置</div>
+	<div id="leftline"></div>
+	
+    <div style="padding-top:8px;"></div>
+	#include("/WEB-INF/member/zh_CN_menu.vm")
+	</td>
+    <td width="1" bgcolor="#dbdbdb">
+	</td>
+    <td align="left" valign="top" style="padding-left:15px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="42" align="left" valign="middle" bgcolor="#f4f4f4" class="title" style="padding-left:15px;">管理中心&nbsp;--&nbsp;<span class="title1">我的注册信息</span></td>
+      </tr>
+      <tr>
+        <td height="1" bgcolor="#e5e5e5">
+		</td>
+      </tr>
+    </table>
+    <div style="padding-top:10px;"></div>
+    <form action="profile_update.htm" method="post" enctype="multipart/form-data" name="form1" id="form1">
+      <table width="787" border="0" cellspacing="0" cellpadding="5">
+        <tr>
+          <td align="right">&nbsp;</td>
+          <td><img src="..$!{member.imagee.path}/$!{member.imagee.name}" alt="我的头像" width="100" height="100"></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">&nbsp;</td>
+          <td><input type="file" name="upload" id="upload"></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td width="100" align="right">登录账号：</td>
+          <td>$!{member.account}</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">电子邮箱：</td>
+          <td>$!{member.email}</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">姓名：</td>
+          <td>$!{member.name}</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">手机：</td>
+          <td>$!{member.mobile}</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">昵称：</td>
+          <td><input name="member.nickname" type="text" id="member.nickname" value="$!{member.nickname}"></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">身份证号码：</td>
+          <td>$!{member.idcard}</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">所在地区：</td>
+          <td>$!{member.districtt.district.name} $!{member.districtt.name}</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">&nbsp;</td>
+          <td><select name="select" id="select" onchange="getDistrict(this.value)">
+            <option value="">请选择省份/地区</option>
+            #foreach( $item in $districtroot )
+            <option value="$!{item.id}">$!{item.name}</option>
+            #end
+          </select>
+            <select name="member.districtt.id" id="district1">
+            </select></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">通信地址：</td>
+          <td><input name="member.address" type="text" id="member.address" value="$!{member.address}"></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">邮编：</td>
+          <td><input name="member.postcode" type="text" id="member.postcode" value="$!{member.postcode}"></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">电话：</td>
+          <td><input name="member.telephone" type="text" id="member.telephone" value="$!{member.telephone}"></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">qq：</td>
+          <td><input name="member.qq" type="text" id="member.qq" value="$!{member.qq}"></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">微信：</td>
+          <td><input name="member.wechat" type="text" id="member.wechat" value="$!{member.wechat}"></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">上次登录：</td>
+          <td>$!{member.lastlogin}</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">总登录次数：</td>
+          <td>$!{member.logincount}</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">注册时间：</td>
+          <td>$!{member.ctime}</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right">&nbsp;</td>
+          <td><input type="submit" name="button" id="button" value="确认更新"></td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+    </form>
+<div style="padding-top:10px;"></div>
+    <table width="787" border="0" cellpadding="0" cellspacing="0" bgcolor="#cdcdcd">
+      <tr>
+        <td width="1">
+		</td>
+      </tr>
+    </table>
+    #include("/WEB-INF/member/zh_CN_footer.vm")
+	</td>
+  </tr>
+</table>
+</body>
+</html>

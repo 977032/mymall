@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<title>参数设置</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商店配置 - 支付方式 - 参数设置</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="paymodes.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回列表 </span></a></li>
+      <li><a class="shortcut-button" href="#"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建设置 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>参数设置</h3>
+        <ul class="content-box-tabs">
+          <li><a class="default-tab" href="#tab1">参数列表</a></li>
+          <li><a href="#tab2">新建参数</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form2" name="form1" method="post" action="paysetting_del.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td>&nbsp;</td>
+                <td>第三方支付类型</td>
+                <td>属性名称</td>
+                <td>属性变量</td>
+                <td>属性值</td>
+              </tr>
+              #set($i=0)
+              #foreach($item in $list)
+              <tr>
+                <td><input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}"></td>
+                <td>$!{item.pmtype}</td>
+                <td>$!{item.name}</td>
+                <td>$!{item.property}</td>
+                <td>$!{item.value}</td>
+              </tr>
+              #set($i=$i+1)
+              #end
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="删除">
+                <input name="pm" type="hidden" id="pm" value="$!{paymode.id}"></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+        </div>
+        <div class="tab-content" id="tab2">
+        	<form id="form1" name="form1" method="post" action="paysetting_create.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">第三方支付类型：</td>
+                <td>
+                <select name="paysetting.pmtype" id="paysetting.pmtype">
+                  <option value="alipay" selected="selected">支付宝</option>
+                  <option value="paypal">贝宝</option>
+                  <option value="99bill">快钱</option>
+                </select>
+                </td>
+              </tr>
+              <tr>
+                <td width="100" align="right">属性名称：</td>
+                <td><input type="text" name="paysetting.name" id="paysetting.name"></td>
+              </tr>
+              <tr>
+                <td align="right">属性变量：</td>
+                <td><input type="text" name="paysetting.property" id="paysetting.property"></td>
+              </tr>
+              <tr>
+                <td align="right">属性值：</td>
+                <td><textarea name="paysetting.value" id="paysetting.value" cols="45" rows="5"></textarea></td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

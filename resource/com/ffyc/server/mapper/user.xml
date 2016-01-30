@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.UserMapper">
+
+	<cache />
+	
+	<update id="updateUserLocation">
+		INSERT INTO TB_USER_LOCATION (user_id,lng,lat,utime) 
+			VALUES (#{userId, jdbcType=VARCHAR},#{lng,jdbcType=DOUBLE},#{lat,jdbcType=DOUBLE},SYSDATE())
+		ON DUPLICATE KEY UPDATE 
+			lng=#{lng,jdbcType=DOUBLE},lat=#{lat,jdbcType=DOUBLE},utime = SYSDATE()
+	</update>	
+	
+	<select id="getUserTokenByToken" resultType="UserTokenVO">
+		select user_id userId,
+			token,
+			utime lastUpdateTime
+		from TB_USER_TOKEN
+		where token = #{token, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getUserTokenByUserId" resultType="UserTokenVO">
+		select user_id userId,
+			token,
+			utime lastUpdateTime
+		from TB_USER_TOKEN
+		where user_id = #{userId, jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="insertUserToken" parameterType="UserTokenVO">
+		insert into TB_USER_TOKEN(user_id,token,utime)
+		values(#{userId, jdbcType=VARCHAR},#{token, jdbcType=VARCHAR},sysdate())
+	</insert>
+	
+	<update id="updateUserToken">
+		update TB_USER_TOKEN set token = #{token, jdbcType=VARCHAR}
+		,utime = sysdate()
+		where user_id = #{userId, jdbcType=VARCHAR}
+	</update>
+	
+	<update id="deleteUserToken">
+		delete from TB_USER_TOKEN 
+		where user_id = #{userId, jdbcType=VARCHAR}
+	</update>
+</mapper>

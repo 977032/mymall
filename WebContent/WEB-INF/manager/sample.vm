@@ -1,0 +1,25 @@
+DetachedCriteria dc = DetachedCriteria.forClass(Document.class);
+				Doccate doccate = chcontent.getDoccate();
+				Disjunction dis = Restrictions.disjunction();*/
+				Document dc = new Document();
+				DocumentCategory doccate = chcontent.getDoccatee();
+				
+				dis.add(Property.forName("doccate").eq(doccate));
+				dc.createAlias("doccate", "c");
+				dis.add(Restrictions.like("c.nodepath", doccate.getId(),
+						MatchMode.ANYWHERE));
+				dc.add(dis);
+				//dc.add(Property.forName("locale").eq(getDefLocale()));
+				dc.addOrder(Order.desc("ctime"));
+
+
+ select * from tb_document as d where d.locale = #{locale} and
+        (
+	  d.doccate = #{doccate}
+	  or  d.doccate in (
+	  select dc.id from tb_document_category as dc  where dc.nodepath like  concat('%',#{doccate},'%') 
+	  
+	  )
+	)
+
+order by ctime desc

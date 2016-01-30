@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.OrderMapper">
+	<cache />
+	<sql id="sql_searchOrderByOrder">
+	  select * from tb_order where 1 = 1
+      <if test="order.member != null">  
+          and member = #{order.member}  
+      </if>
+      <if test="order.code != null">  
+          and code = #{order.code}  
+      </if>
+      <if test="order.area != null">  
+          and area = #{order.area}  
+      </if>
+      <if test="order.paymode != null">  
+          and paymode = #{order.paymode}  
+      </if>
+    </sql>
+    
+	<select id="findAll" resultType="Order">
+		SELECT
+			*
+		FROM
+			TB_ORDER
+		ORDER BY STATUS DESC, CTIME DESC
+	</select>
+	
+	<select id="findById" resultType="Order">
+		SELECT
+			*
+		FROM
+			TB_ORDER
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByOrder" resultType="Order">
+	   <include refid="sql_searchOrderByOrder"></include>
+	   order by #{order.orderby}
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+	</select>
+	
+	<select id="getCountByOrder" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchOrderByOrder"></include> 
+      ) rs
+    </select> 
+	
+	<insert id="save" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_ORDER
+		(
+			ID,
+			CODE,
+			SUBJECT,
+			BODY,
+			STATUS,
+			MEMBER,
+			AMOUNT,
+			AREA,
+			PAYMODE,
+			LOGICOST,
+			PAYCOST,
+			BAOJIA,
+			WEIGHT,
+			INVOICETITLE,
+			DUTY,
+			DISCOUNT,
+			ACTAMOUNT,
+			ADDRESS,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{code,    jdbcType=VARCHAR},
+			#{subject,    jdbcType=VARCHAR},
+			#{body,    jdbcType=VARCHAR},
+			#{status,    jdbcType=VARCHAR},
+			#{member,    jdbcType=VARCHAR},
+			#{amount,    jdbcType=DECIMAL},
+			#{area,    jdbcType=VARCHAR},
+			#{paymode,    jdbcType=DECIMAL},
+			#{logicost,    jdbcType=DECIMAL},
+			#{paycost,    jdbcType=DECIMAL},
+			#{baojia,    jdbcType=DECIMAL},
+			#{weight,    jdbcType=DECIMAL},
+			#{invoicetitle,    jdbcType=VARCHAR},
+			#{duty,    jdbcType=DECIMAL},
+			#{discount,    jdbcType=DECIMAL},
+			#{actamount,    jdbcType=DECIMAL},
+			#{address,    jdbcType=VARCHAR},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="Order">
+		update
+			TB_ORDER
+		set
+		    CODE = #{code, jdbcType=VARCHAR},
+		    SUBJECT = #{subject, jdbcType=VARCHAR},
+		    BODY = #{body, jdbcType=VARCHAR},
+		    STATUS = #{status, jdbcType=VARCHAR},
+		    MEMBER = #{member, jdbcType=VARCHAR},
+		    AMOUNT = #{amount, jdbcType=DECIMAL},
+		    AREA = #{area, jdbcType=INTEGER},
+		    PAYMODE = #{paymode, jdbcType=VARCHAR},
+		    LOGICOST = #{logicost, jdbcType=DECIMAL},
+		    PAYCOST = #{paycost, jdbcType=DECIMAL},
+		    BAOJIA = #{baojia, jdbcType=DECIMAL},
+		    WEIGHT = #{weight, jdbcType=DECIMAL},
+		    INVOICETITLE = #{invoicetitle, jdbcType=VARCHAR},
+		    DUTY = #{duty, jdbcType=DECIMAL},
+		    DISCOUNT = #{discount, jdbcType=DECIMAL},
+		    ACTAMOUNT = #{actamount, jdbcType=DECIMAL},
+		    ADDRESS = #{address, jdbcType=VARCHAR},
+		    UTIME = sysdate()
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_ORDER
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

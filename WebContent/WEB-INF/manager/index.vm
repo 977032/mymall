@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<title>后台管理</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <h2>beautyfamily</h2>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>后台管理</h3>
+        <ul class="content-box-tabs">
+          <li><a class="default-tab" href="#tab1">概览</a></li>
+          <li><a href="#tab2">帮助</a></li>
+          <li><a href="#tab3">最新消息</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td colspan="4" bgcolor="#E7E7E7">商品统计信息</td>
+            </tr>
+            <tr>
+              <td>商品总数：</td>
+              <td>$!{good_count}</td>
+              <td>新品推荐数：</td>
+              <td>$!{new_count}</td>
+            </tr>
+            <tr>
+              <td>热销商品数：</td>
+              <td>$!{hot_count}</td>
+              <td>精品推荐数：</td>
+              <td>$!{btq_count}</td>
+            </tr>
+            <tr>
+              <td>促销商品数：</td>
+              <td>$!{promote_count}</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+          <p>&nbsp;</p>
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td colspan="2" bgcolor="#E7E7E7">系统环境</td>
+            </tr>
+            <tr>
+              <td>操作系统的名称：</td>
+              <td>$!props.getProperty("os.name")</td>
+            </tr>
+            <tr>
+              <td>操作系统的构架：</td>
+              <td>$!props.getProperty("os.arch")</td>
+            </tr>
+            <tr>
+              <td>操作系统的版本：</td>
+              <td>$!props.getProperty("os.version")</td>
+            </tr>
+            <tr>
+              <td>用户的账户名称：</td>
+              <td>$!props.getProperty("user.name")</td>
+            </tr>
+            <tr>
+              <td>用户的主目录：</td>
+              <td>$!props.getProperty("user.home")</td>
+            </tr>
+            <tr>
+              <td>用户的当前工作目录：</td>
+              <td>$!props.getProperty("user.dir")</td>
+            </tr>
+            <tr>
+              <td>Java的运行环境版本：</td>
+              <td>$!props.getProperty("java.version")</td>
+            </tr>
+            <tr>
+              <td>Java的运行环境供应商：</td>
+              <td>$!props.getProperty("java.vendor")</td>
+            </tr>
+            <tr>
+              <td>Java供应商的URL：</td>
+              <td>$!props.getProperty("java.vendor.url")</td>
+            </tr>
+            <tr>
+              <td>Java的安装路径：</td>
+              <td>$!props.getProperty("java.home")</td>
+            </tr>
+            <tr>
+              <td>Java的虚拟机规范版本：</td>
+              <td>$!props.getProperty("java.vm.specification.version")</td>
+            </tr>
+            <tr>
+              <td>Java的虚拟机规范供应商：</td>
+              <td>$!props.getProperty("java.vm.specification.vendor")</td>
+            </tr>
+            <tr>
+              <td>Java的虚拟机规范名称：</td>
+              <td>$!props.getProperty("java.vm.specification.name")</td>
+            </tr>
+            <tr>
+              <td>Java的虚拟机实现版本：</td>
+              <td>$!props.getProperty("java.vm.version")</td>
+            </tr>
+            <tr>
+              <td>Java的虚拟机实现供应商：</td>
+              <td>$!props.getProperty("java.vm.vendor")</td>
+            </tr>
+            <tr>
+              <td>Java的虚拟机实现名称：</td>
+              <td>$!props.getProperty("java.vm.name")</td>
+            </tr>
+            <tr>
+              <td>Java运行时环境规范版本：</td>
+              <td>$!props.getProperty("java.specification.version")</td>
+            </tr>
+            <tr>
+              <td>Java运行时环境规范供应商：</td>
+              <td>$!props.getProperty("java.specification.vender")</td>
+            </tr>
+            <tr>
+              <td>Java运行时环境规范名称：</td>
+              <td>$!props.getProperty("java.specification.name")</td>
+            </tr>
+            <tr>
+              <td>Java的类格式版本号：</td>
+              <td>$!props.getProperty("java.class.version")</td>
+            </tr>
+            <tr>
+              <td>Java的类路径：</td>
+              <td>$!props.getProperty("java.class.path")</td>
+            </tr>
+            <tr>
+              <td>加载库时搜索的路径列表：</td>
+              <td>$!props.getProperty("java.library.path")</td>
+            </tr>
+            <tr>
+              <td>默认的临时文件路径：</td>
+              <td>$!props.getProperty("java.io.tmpdir")</td>
+            </tr>
+            <tr>
+              <td>一个或多个扩展目录的路径：</td>
+              <td>$!props.getProperty("java.ext.dirs")</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>$!props.getProperty("sun.cpu.isalist")</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>$!runtime.availableProcessors()</td>
+            </tr>
+          </table>
+        </div>
+        <div class="tab-content" id="tab2">
+          <h4>操作顺序</h4>
+          <p>1、品牌管理：录入品牌信息。<br>
+            2、商品规格：定义商品套餐、规格，等和价格有关的规格项。<br>
+            3、商品类型：定义各种商品类型的各种扩展属性[和价格无关的属性]，关联品牌，关联规格。<br>
+            4、商品类别：商品分类组织。<br>
+            5、商品管理：录入并管理商品信息，上传商品图片等。<br>
+          </p>
+        </div>
+        <div class="tab-content" id="tab3">
+          <h4>beautyfamily 1.0 发布</h4>
+          <p>这个版本是一个稳定的可部署生产环境的版本</p>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

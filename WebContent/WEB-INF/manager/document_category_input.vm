@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<title>创建文章类别</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/document_categorys.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 文章类别 - 创建类别</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="document_categorys.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回类别列表 </span></a></li>
+      <li><a class="shortcut-button" href="document_category_input.htm?s=$!{s}"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建主类别 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>&nbsp;</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form action="document_category_create.action" method="post" enctype="multipart/form-data" name="form1" id="form1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">上级目录：</td>
+                <td>$!{pdoccate.name}
+                  <input name="pc" type="hidden" id="pc" value="$!{pdoccate.id}" /></td>
+              </tr>
+              <tr>
+                <td align="right">语言：</td>
+                <td><select name="doccate.localee.id" id="doccate.localee.id">
+                    #foreach($item in $localelist)
+                    <option value="$!{item.id}" #if( $item.id=='zh_CN' )selected="selected"#end>$!{item.name}</option>
+                    #end
+                  </select></td>
+              </tr>
+              <tr>
+                <td align="right">类别名称：</td>
+                <td><input name="doccate.name" type="text" id="doccate.name" size="50" maxlength="255" /></td>
+              </tr>
+              <tr>
+                <td align="right">图片标识：</td>
+                <td><input type="file" name="upload" id="upload" reg="^$|.*gif|png|jpg|jpeg$" tip="允许JPG,GIF,PNG图片文件" /></td>
+              </tr>
+              <tr>
+                <td align="right">说明：</td>
+                <td><textarea name="doccate.detail" id="doccate.detail" cols="50" rows="8"></textarea></td>
+              </tr>
+              <tr>
+                <td align="right">排序：</td>
+                <td><input name="doccate.csort" type="text" id="doccate.csort" value="10" size="10" reg="^\d{1,11}$" tip="输入排序，只允许数字。" /></td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交" /></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

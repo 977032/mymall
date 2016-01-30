@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.LogisticMapper">
+	<cache />
+	<sql id="sql_searchLogisticByLogistic">
+	  select * from tb_logistic where 1 = 1 
+      <if test="logistic.name != null">  
+          and name = #{logistic.name}  
+      </if>
+	</sql>
+	
+	<select id="findAll" resultType="Logistic">
+		SELECT
+			*
+		FROM
+			TB_LOGISTIC
+	</select>
+	
+	<select id="findById" resultType="Logistic">
+		SELECT
+			*
+		FROM
+			TB_LOGISTIC
+		WHERE
+			ID = #{id, jdbcType=INTEGER}
+	</select>
+	
+	<select id="findByLogistic" resultType="Logistic">
+	   <include refid="sql_searchLogisticByLogistic"></include>
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+    </select>
+    
+    <select id="getCountByLogistic" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchLogisticByLogistic"></include> 
+      ) rs
+    </select> 
+	
+	<insert id="save" parameterType="Logistic" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_LOGISTIC
+		(
+			ID,
+			NAME,
+			IMAGE,
+			INTRO,
+			URL,
+			POURL,
+			CSORT
+		)
+		values
+		(
+			#{id,    jdbcType=INTEGER},
+			#{name,    jdbcType=VARCHAR},
+			#{image,    jdbcType=VARCHAR},
+			#{intro,    jdbcType=VARCHAR},
+			#{url,    jdbcType=VARCHAR},
+			#{pourl,    jdbcType=VARCHAR},
+			#{csort,    jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<update id="update" parameterType="Logistic">
+		update
+			TB_LOGISTIC
+		set
+		    NAME = #{name, jdbcType=VARCHAR},
+		    IMAGE = #{image, jdbcType=VARCHAR},
+		    INTRO = #{intro, jdbcType=VARCHAR},
+		    URL = #{url, jdbcType=VARCHAR},
+		    POURL = #{pourl, jdbcType=VARCHAR},
+		    CSORT = #{csort, jdbcType=INTEGER}
+	    where
+			`ID` = #{id, jdbcType=INTEGER}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_LOGISTIC
+		where
+			`id` = #{id, jdbcType=INTEGER}
+	</delete>
+	
+</mapper>

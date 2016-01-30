@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<!-- 国际化资源文件的baseName -->
+	<constant name="struts.action.extension" value="htm,action" />
+	<constant name="struts.custom.i18n.resources" value="language"></constant>
+	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
+	<package name="base-package" extends="struts-default,json-default" abstract="true">
+		<global-results>
+			
+			<result type="velocity" name="templateNotFound">/WEB-INF/global/templateNotFound.vm</result>
+			<result type="velocity" name="error">/WEB-INF/global/error.vm</result>
+			<result type="velocity" name="sqlException">/WEB-INF/global/sqlException.vm</result>
+		</global-results>
+		<global-exception-mappings>
+			
+			<exception-mapping exception="org.apache.velocity.exception.ResourceNotFoundException" result="templateNotFound"></exception-mapping>
+			<exception-mapping exception="org.springframework.dao.DataIntegrityViolationException" result="sqlException"></exception-mapping>
+		</global-exception-mappings>
+	</package>
+	<include file="publicer.xml"></include>
+	<include file="manager.xml"></include>
+	<include file="member.xml"></include>
+</struts>

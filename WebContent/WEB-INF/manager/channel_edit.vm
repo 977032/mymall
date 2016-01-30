@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<title>频道编辑</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/channels.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 网站频道 - 频道编辑</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="channels.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回频道列表 </span></a></li>
+      <li><a class="shortcut-button" href="channel_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建频道 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>编辑频道</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form action="channel_update.htm" method="post" enctype="multipart/form-data" name="form1" id="form1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">频道ID：</td>
+                <td>$!{channel.id}</td>
+              </tr>
+              <tr>
+                <td align="right">频道名称：</td>
+                <td><input name="channel.title" type="text" id="channel.title" value="$!{channel.title}" size="36" maxlength="255" reg="^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{2,255}$" tip="中文，英文或下划线，最少2个字符，最多255个字符"></td>
+              </tr>
+              <tr>
+                <td align="right">频道说明：</td>
+                <td><textarea name="channel.intro" id="channel.intro" cols="45" rows="10">$!{channel.intro}</textarea></td>
+              </tr>
+              <tr>
+                <td align="right">上传频道模板：</td>
+                <td><input type="file" name="upload" id="upload" reg="^$|.*vm$" tip="允许vm扩展名的网页文件"></td>
+              </tr>
+              <tr>
+                <td align="right">网页模板语言：</td>
+                <td><select name="localeid" id="localeid">
+                    #foreach($item in $localelist)
+                    <option value="$!{item.id}" #if( $item.id=='zh_CN' )selected="selected"#end>$!{item.name}</option>
+                    #end
+                </select></td>
+              </tr>
+              <tr>
+                <td align="right">已有的模板：</td>
+                <td>$!{channel.templatee.path}/$!{channel.templatee.name}</td>
+              </tr>
+              <tr>
+                <td align="right">模板目录中的文件：</td>
+                <td>
+                #foreach( $item as $vfiles )
+                $item<br />
+                #end
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交">
+                  <input name="channel.id" type="hidden" id="channel.id" value="$!{channel.id}">
+                  <input name="type" type="hidden" id="type" value="template"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>上传详细页模板</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <form action="channel_update.htm" method="post" enctype="multipart/form-data" name="form1" id="form2">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td align="right">上传频道模板：</td>
+              <td><input type="file" name="upload" id="upload"></td>
+            </tr>
+            <tr>
+                <td align="right">网页模板语言：</td>
+                <td><select name="localeid" id="localeid">
+                    #foreach($item in $localelist)
+                    <option value="$!{item.id}" #if( $item.id=='zh_CN' )selected="selected"#end>$!{item.name}</option>
+                    #end
+                </select></td>
+              </tr>
+            <tr>
+              <td align="right">已有的模板：</td>
+              <td>$!{channel.vtemplatee.path}/$!{channel.vtemplatee.name}</td>
+            </tr>
+            <tr>
+                <td align="right">模板目录中的文件：</td>
+                <td>
+                #foreach( $item as $viewfiles )
+                $item<br />
+                #end
+                </td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td><input type="submit" name="button" id="button" value="提交">
+                <input name="channel.id" type="hidden" id="channel.id" value="$!{channel.id}">
+                <input name="type" type="hidden" id="type" value="vtemplate"></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

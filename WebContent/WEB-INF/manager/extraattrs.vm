@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<script type="text/javascript" src="scripts/jquery.jeditable.mini.js" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+  $(".pvalue").editable("extraattr_update_ajax.htm", {
+	  id   : 'ea',
+      name : 'pvalue',
+	  data   : " {'yes':'是','no':'否'}",
+      type   : 'select',
+      indicator : "<img src='images/indicator.gif'>",
+      tooltip   : "双击开始编辑...",
+      event     : "dblclick",
+      style  : "inherit",
+	  submit : "OK"
+  });
+});
+</script>
+
+<script type="text/javascript"> 
+<!-- 
+jQuery(document).ready(function() {
+jQuery("#checkall").click(
+    function(){
+		if(this.checked){
+            jQuery("input[name='checkbox']").each(function(){this.checked=true;});
+        }else{
+            jQuery("input[name='checkbox']").each(function(){this.checked=false;});
+        }
+    }
+);
+});
+//--> 
+</script>
+
+<script type="text/javascript">
+var isExtendsValidate = true;
+function extendsValidate(){
+	//checkbox 验证，必须选择一个checkbox
+	if(jQuery("[name='checkbox']:checked").length < 1){
+		alert("至少选择一条信息。");
+		return false;
+	}
+}
+</script>
+
+<title>扩展属性</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商品类型 - 扩展属性</p>
+    <ul class="shortcut-buttons-set">
+      #if( $goodtype )<li><a class="shortcut-button" href="goodtypes.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回商品类型 </span></a></li>#end
+      <li><a class="shortcut-button" href="extraattrs.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        所有属性列表 </span></a></li>
+      <li><a class="shortcut-button" href="extraattr_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建扩展属性 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>商品扩展属性列表</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="extraattr_del.action">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td><input type="checkbox" name="checkall" id="checkall" title="全选/反选"></td>
+                <td>[别名]属性名称</td>
+                <td>应用的商品类型</td>
+                <td>前台列表页显示方式</td>
+                <td>是否显示</td>
+                <td>排序</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              #foreach( $item in $list )
+              <tr>
+                <td><input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}"></td>
+                <td>[$!{item.alias}]$!{item.name}</td>
+                <td>
+                  #foreach( $goodtype in $item.goodtypes )
+                  <a href="goodtype_edit.htm?gt=$!{goodtype.id}">$!{goodtype.name}[$!{goodtype.alias}]</a>/
+                  #end
+                </td>
+                <td>#if( $item.viewtype=="progressive" )渐进式筛选#end#if( $item.viewtype=="dropdown" )下拉式筛选#end</td>
+                <td class="pvalue" style="display: inline" id="$!{item.id}">$!{item.display}
+                </td>
+                <td>$!{item.csort}</td>
+                <td><a href="extraattr_edit.htm?ea=$!{item.id}">编辑</a></td>
+                <td><a href="extraattrvalues.htm?ea=$!{item.id}">属性值</a></td>
+              </tr>
+              #end
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="删除"></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

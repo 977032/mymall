@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.OrderItemMapper">
+	<cache />
+	
+	<sql id="sql_searchOrderItemByOrderItem">
+	  select * from tb_order_item where 1 = 1
+      <if test="orderitem.good != null">  
+          and good = #{orderitem.good}  
+      </if>
+      <if test="orderitem.order == 'null'">
+          and `order` is null  
+      </if>
+      <if test="orderitem.order != 'null' and orderitem.order != null">
+          and `order` = #{orderitem.order}  
+      </if>
+      <if test="orderitem.member != null">  
+          and member = #{orderitem.member}  
+      </if>
+    </sql>
+	
+	<select id="findAll" resultType="OrderItem">
+		SELECT
+			*
+		FROM
+			TB_ORDER_ITEM
+	</select>
+	
+	<select id="findById" resultType="OrderItem">
+		SELECT
+			*
+		FROM
+			TB_ORDER_ITEM
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByOrderItem" resultType="OrderItem">
+	   <include refid="sql_searchOrderItemByOrderItem"></include>
+	   order by ctime desc
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+	</select>
+	
+	<select id="getCountByOrderItem" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchOrderItemByOrderItem"></include> 
+      ) rs
+    </select>
+	
+	<insert id="save" parameterType="OrderItem" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_ORDER_ITEM
+		(
+			ID,
+			`ORDER`,
+			GOOD,
+			SPEC,
+			MEMBER,
+			UNITPRICE,
+			NUMBER,
+			SUBTOTAL,
+			ACTSUM,
+			DISCOUNT,
+			ISPAY,
+			STATUS,
+			PAYTIME,
+			EXPTIME,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{order,    jdbcType=VARCHAR},
+			#{good,    jdbcType=VARCHAR},
+			#{spec,    jdbcType=VARCHAR},
+			#{member,    jdbcType=VARCHAR},
+			#{unitprice,    jdbcType=DECIMAL},
+			#{number,    jdbcType=INTEGER},
+			#{subtotal,    jdbcType=DECIMAL},
+			#{actsum,    jdbcType=DECIMAL},
+			#{discount,    jdbcType=DECIMAL},
+			#{ispay,    jdbcType=VARCHAR},
+			#{status,    jdbcType=VARCHAR},
+			#{paytime,    jdbcType=DATE},
+			#{exptime,    jdbcType=DATE},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="OrderItem">
+		update
+			TB_ORDER_ITEM
+		set
+		    `ORDER` = #{order, jdbcType=VARCHAR},
+		    GOOD = #{good, jdbcType=VARCHAR},
+		    SPEC = #{spec, jdbcType=VARCHAR},
+		    MEMBER = #{member, jdbcType=VARCHAR},
+		    UNITPRICE = #{unitprice, jdbcType=DECIMAL},
+		    NUMBER = #{number, jdbcType=INTEGER},
+		    SUBTOTAL = #{subtotal, jdbcType=DECIMAL},
+		    ACTSUM = #{actsum, jdbcType=DECIMAL},
+		    DISCOUNT = #{discount, jdbcType=DECIMAL},
+		    ISPAY = #{ispay, jdbcType=VARCHAR},
+		    STATUS = #{status, jdbcType=VARCHAR},
+		    PAYTIME = #{paytime, jdbcType=DATE},
+		    EXPTIME = #{exptime, jdbcType=DATE},
+		    UTIME = sysdate()
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_ORDER_ITEM
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

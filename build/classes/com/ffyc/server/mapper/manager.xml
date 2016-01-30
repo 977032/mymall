@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.ManagerMapper">
+
+	<cache />
+	<sql id="sql_searchManagerByManager">
+	  select * from tb_manager where 1 = 1 
+      <if test="manager.account != null">  
+          and account = #{manager.account}  
+      </if>
+      <if test="manager.status != null">  
+          and status = #{manager.status}
+      </if>
+      <if test="manager.name != null">  
+          and name = #{manager.name}
+      </if>
+      <if test="manager.mobile != null">  
+          and mobile = #{manager.mobile}
+      </if>
+	</sql>
+	
+	<sql id="sql_searchManagerByName">
+		select
+			ID	        id,
+			NAME	    name,
+			GENDER      gender
+		from
+			TB_MANAGER
+		where
+			NAME like CONCAT('%',#{name, jdbcType=VARCHAR},'%')  
+		and
+			STATUS = 'normal'
+	</sql>
+	
+	<select id="findById" resultType="Manager">
+		select
+			*
+		from
+			TB_MANAGER
+		where
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findAll" resultType="Manager">
+		select
+			*
+		from
+			TB_MANAGER
+		where
+		    STATUS = 'normal'
+	</select>
+	
+	<select id="findByAccount" resultType="Manager">
+		select
+			*
+		from
+			TB_MANAGER
+		where
+			ACCOUNT = #{account, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByManager" resultType="Manager">
+	   <include refid="sql_searchManagerByManager"></include>
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+    </select>
+    
+    <select id="getCountByManager" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchManagerByManager"></include> 
+      ) rs
+    </select> 
+	
+	<insert id="save" parameterType="Manager" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_MANAGER
+		(
+			ID,
+			ACCOUNT,
+			NAME,
+			PASSWORD,
+			TELEPHONE,
+			MOBILE,
+			GENDER,
+			STATUS,
+			CTYPE,
+			EMAIL,
+			NICKNAME,
+			IDCARD,
+			LASTLOGIN,
+			LOGINCOUNT,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{account,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{password,    jdbcType=VARCHAR},
+			#{telephone,       jdbcType=VARCHAR},
+			#{mobile,       jdbcType=VARCHAR},
+			#{gender,      jdbcType=VARCHAR},
+			#{status,      jdbcType=VARCHAR},
+			#{ctype,      jdbcType=VARCHAR},
+			#{email,      jdbcType=VARCHAR},
+			#{nickname,      jdbcType=VARCHAR},
+			#{idcard,      jdbcType=VARCHAR},
+			#{lastlogin,      jdbcType=DATE},
+			#{logincount,      jdbcType=INTEGER},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="Manager">
+		update
+			TB_MANAGER
+		set
+		    ACCOUNT        = #{account,  jdbcType=VARCHAR},
+			NAME           = #{name,     jdbcType=VARCHAR},
+			TELEPHONE      = #{telephone,    jdbcType=VARCHAR},
+			MOBILE         = #{mobile,   jdbcType=VARCHAR},
+			GENDER         = #{gender,   jdbcType=VARCHAR},
+			STATUS         = #{status,   jdbcType=VARCHAR},
+			CTYPE          = #{ctype,    jdbcType=VARCHAR},
+			EMAIL          = #{email,    jdbcType=VARCHAR},
+			NICKNAME       = #{nickname,   jdbcType=VARCHAR},
+			IDCARD         = #{idcard,   jdbcType=VARCHAR},
+			LASTLOGIN      = #{lastlogin,   jdbcType=DATE},
+			LOGINCOUNT     = #{logincount,   jdbcType=INTEGER},
+			UTIME          = sysdate()
+	    where
+	    	ID = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<select id="searchManagerByName" resultType="UserBasicInfo">
+		<include refid="sql_searchManagerByName"></include>
+		limit #{start, jdbcType=NUMERIC}, #{count, jdbcType=NUMERIC}
+	</select>
+	
+	<select id="searchManagerByNameCount" resultType="int">
+		select count(1) from (
+			<include refid="sql_searchManagerByName"></include>
+		) rs
+	</select>
+	
+	<select id="isExists" resultType="int">
+		select
+			count(1)
+		from
+			TB_MANAGER
+		where
+			ACCOUNT = #{account, jdbcType=VARCHAR}
+		<if test="password!=null">
+		and
+			PASSWORD = #{password, jdbcType=VARCHAR}
+		</if>
+		and
+			STATUS = 'normal'
+	</select>
+
+	<update id="updatePassword">
+		update
+			TB_MANAGER
+		set
+			PASSWORD = #{password, jdbcType=VARCHAR}
+	    where
+	    	ID = #{id, jdbcType=NUMERIC}
+	</update>
+	
+</mapper>

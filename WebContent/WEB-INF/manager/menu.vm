@@ -1,0 +1,86 @@
+<script>
+$(function(){
+ if ($("#myURL").length >0){
+ 	var myURL = $("#myURL").attr("value");
+ }else{
+    var myURL = document.URL;
+ }
+ var myNav = $("#main-nav li ul li a"),i;
+ for(i=0;i<myNav.length;i++){
+    var links = myNav.eq(i).attr("href");
+    if(myURL.indexOf('/'+links) != -1) {
+       //.get(0).tagName
+       var pNav = myNav.eq(i).parent().parent().prev();
+       pNav.attr('class','nav-top-item current');
+       pNav.parent().find("ul").slideToggle("slow");
+       myNav.eq(i).attr('class','current');
+     }
+  }
+})
+</script>
+
+ <div id="sidebar">
+    <div id="sidebar-wrapper">
+      <h1 id="sidebar-title"><a href="#">beautyfamily网店系统管理</a></h1>
+      <a href="#"><img id="logo" alt="beautyfamily网店系统管理" src="images/logo.png"></a>
+      <div id="profile-links">欢迎, <a title="Edit your profile" href="#">$!{session.getAttribute("manager").account}</a>, 你有 <a title="0 条信息" href="#messages" rel="modal">0 条信息</a><br />
+        <br />
+        <a href="../" title="商城首页" target="_blank">商城首页</a> | <a title="退出" href="logout.htm">退出</a> </div>
+      <ul id="main-nav">
+        <li><a href="index.htm" class="nav-top-item no-submenu">后台管理 </a></li>
+        <li><a class="nav-top-item" href="#">商品 </a>
+          <ul>
+            <li><a href="goods.htm">商品信息</a></li>
+            <li><a href="good_input.htm">添加新商品</a></li>
+            <li><a href="comments.htm">用户评论</a></li>
+            <li><a href="categorys.htm">商品类别</a></li>
+            <li><a href="goodtypes.htm">商品类型</a></li>
+            <li><a href="specitems.htm">商品规格</a></li>
+            <li><a href="extraattrs.htm">商品扩展属性</a></li>
+            <li><a href="brands.htm">品牌管理</a></li>
+            <li><a href="good_import.htm">商品批量导入</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-top-item" href="#">订单 </a>
+          <ul>
+            <li><a href="orders.htm">订单列表</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-top-item" href="#">用户和组 </a>
+          <ul>
+            <li><a href="members.htm">会员账户</a></li>
+            <li><a href="groups.htm">会员等级</a></li>
+            <li><a href="payin_getout.htm">充值提现申请</a></li>
+            <li><a href="bank.htm">资金管理</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-top-item" href="#">权限管理 </a>
+          <ul>
+            <li><a href="managers.htm">管理员列表</a></li>
+            <li><a href="manager_groups.htm">角色管理</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-top-item" href="#">网站频道 </a>
+          <ul>
+            <li><a href="channels.htm">频道列表</a></li>
+            <li><a href="documents.htm">文章列表</a></li>
+            <li><a href="document_categorys.htm">文章类别</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-top-item" href="#">商店配置 </a>
+          <ul>
+            <li><a href="configs.htm">系统设置</a></li>
+            <li><a href="paymodes.htm">第三方支付</a></li>
+            <li><a href="districts.htm">地区管理</a></li>
+            <li><a href="logistics.htm">第三方物流</a></li>
+          </ul>
+        </li>
+        <li><a class="nav-top-item" href="#">数据库管理 </a>
+          <ul>
+            <li><a href="db_backup.htm">数据备份</a></li>
+            <!--<li><a href="db_restore.htm">数据恢复</a></li>-->
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>

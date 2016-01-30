@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.GoodTypeMapper">
+	<cache />
+	<select id="findAll" resultType="GoodType">
+		SELECT
+			*
+		FROM
+			TB_GOOD_TYPE
+	</select>
+	
+	<select id="findById" resultType="GoodType">
+		SELECT
+			*
+		FROM
+			TB_GOOD_TYPE
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getBrands" resultType="Brand">
+		select
+			t.* from tb_brand as t inner join tb_good_type_brand as tt
+		on
+		    tt.brand = t.id and 
+			tt.goodtype = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getSpecItems" resultType="SpecItem">
+		select
+			t.* from tb_specitem as t inner join tb_good_type_spec_item as tt
+		on
+		    tt.specitem = t.id and 
+			tt.goodtype = #{id, jdbcType=VARCHAR}
+		order by t.name asc
+	</select>
+	
+	<select id="getExtraAttrs" resultType="ExtraAttr">
+		select
+			t.* from tb_extra_attr as t inner join tb_good_type_extra_attr as tt
+		on
+		    tt.extraattr = t.id and 
+			tt.goodtype = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="save" parameterType="GoodType" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_GOOD_TYPE
+		(
+			ID,
+			NAME,
+			ALIAS
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{alias,    jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="insertSpecItems" parameterType="java.util.List">
+		insert into tb_good_type_spec_item (goodtype,specitem) values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{id},#{item.id})
+		</foreach>
+	</insert>
+	
+	<insert id="insertExtraAttrs" parameterType="java.util.List">
+		insert into tb_good_type_extra_attr (goodtype,extraattr) values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{id},#{item.id})
+		</foreach>
+	</insert>
+	
+	<insert id="insertBrands" parameterType="java.util.List">
+	    insert into tb_good_type_brand (goodtype,brand)  values
+		<foreach collection="list" item="item" index="index" >
+			(#{id},#{item.id})
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterType="GoodType">
+		update
+			TB_GOOD_TYPE
+		set
+		    NAME = #{name, jdbcType=VARCHAR},
+			ALIAS= #{alias, jdbcType=INTEGER}
+	    where
+			ID = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_GOOD_TYPE
+		where
+			id = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteSpecItems">
+		delete from
+		    tb_good_type_spec_item
+		where
+			goodtype = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteExtraAttrs">
+		delete from
+		    tb_good_type_extra_attr
+		where
+			goodtype = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteBrands">
+		delete from 
+			tb_good_type_brand
+		where
+			goodtype = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

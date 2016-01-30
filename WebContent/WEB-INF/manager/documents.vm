@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<script type="text/javascript">
+<!--
+function MM_goToURL() { //v3.0
+  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
+  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
+}
+//-->
+</script>
+
+<script type="text/javascript"> 
+<!-- 
+jQuery(document).ready(function() {
+jQuery("#checkall").click(
+    function(){
+		if(this.checked){
+            jQuery("input[name='checkbox']").each(function(){this.checked=true;});
+        }else{
+            jQuery("input[name='checkbox']").each(function(){this.checked=false;});
+        }
+    }
+);
+jQuery("#button").click(
+   function(){
+    if(jQuery("[name='checkbox']:checked").length < 1){
+		alert("至少选择一条信息。");
+		return false;
+	}
+   }
+);   
+});
+//--> 
+</script>
+
+<title>文章管理</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 文章管理</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="document_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      发布文章 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>搜索</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+        <form id="form2" name="form2" method="post" action="documents.htm?c=$!{doccate.id}">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td width="60">文章类别：</td>
+              <td width="50">
+              <select name="select" id="select" onChange="MM_goToURL('parent',this.value);return document.MM_returnValue">
+                <option value="?c=">所有文章</option>
+                #foreach( $item in $catelist )
+                <option value="?c=$!{item.id}" #if( $doccate.id==$item.id )selected="selected"#end>$!{item.nodestr}$!{item.name}</option>
+                #end
+              </select>
+              </td>
+              <td width="50">搜索：</td>
+              <td width="200"><input name="keyword" type="text" id="keyword" value="$!{keyword}"></td>
+              <td width="50"><input type="submit" name="button2" id="button2" value="搜索"></td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+        </form>
+        </div>
+      </div>
+    </div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>文章列表</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="document_del.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td><input type="checkbox" name="checkall" id="checkall" title="全选/反选"></td>
+                <td>标记</td>
+                <td>题图</td>
+                <td>标题</td>
+                <td>文章分类</td>
+                <td>发布时间</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              #foreach( $item in $ps.getItems() )
+              <tr>
+                <td><input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}"></td>
+                <td>#if( $item.marker=='recommand' )<span style="color:#C30">推荐</span>#else正常#end</td>
+                <td><img src="..$!{item.vimagee.path}/$!{item.vimagee.name}" width="50" height="20" border="0"></td>
+                <td><a href="document_view.htm?d=$!{item.id}">$!{item.title}</a></td>
+                <td>$!{item.doccatee.name}</td>
+                <td>$!{item.ctime}</td>
+                <td><a href="document_edit.htm?d=$!{item.id}">编辑</a></td>
+                <td><a href="channel_content_doc_input.htm?d=$!{item.id}">加入频道</a></td>
+                <td><a href="document_view.htm?d=$!{item.id}">附件</a></td>
+              </tr>
+              #end
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value=" 删 除 "></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+          <div class="pagination">
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=1&amp;od=$!{od}&amp;sc=$!{sc}" title="首页">首页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPreviousTenPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="前10页">前10页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPreviousPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="上一页">上一页</a>
+#foreach( $infoitem in $ps.getPages() )
+<a class="number" title="第$!{infoitem}页" href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{infoitem}&amp;od=$!{od}&amp;sc=$!{sc}">&nbsp;$!{infoitem}&nbsp;</a>
+#end
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getNextPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="下一页">下一页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getNextTenPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="后10页">后10页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPageCount()&amp;od=$!{od}&amp;sc=$!{sc}" title="最后页">最后页</a>
+<span>&nbsp;共&nbsp;
+                $ps.getTotalCount()
+                &nbsp;条信息，
+                $ps.pageCount
+                页</span>
+</div>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

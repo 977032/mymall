@@ -1,0 +1,7 @@
+<div id="Box-top-nav">
+	<a onfocus="this.blur()" target="_blank" href="member/">我的账户</a>
+	<a onfocus="this.blur()" href="#">每日特惠</a><a onfocus="this.blur()" href="#">断码专区</a>
+	<a onfocus="this.blur()" href="#">积分回馈</a><a onfocus="this.blur()" href="#">论坛</a>
+	<a onfocus="this.blur()" href="#">网站联盟</a><a onfocus="this.blur()" href="#">帮助中心</a>
+	<a onfocus="this.blur()" href="#"><img src="images/Home-box_01.jpg" width="70" height="16" alt="在线客服" /></a>
+</div>

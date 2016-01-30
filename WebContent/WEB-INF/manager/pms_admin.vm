@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<title>商品规格</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 会员和组 - 系统管理员 - 权限设置</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="pms_admin_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建权限 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>预置权限</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="pms_manager_update.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td>功能</td>
+                <td>标识符</td>
+                <td>&nbsp;</td>
+              </tr>
+              #set( $i=0 )
+          	  #foreach( $item in $list )
+              <tr>
+                <td><a href="pms_admin_edit.htm?pm=$!{item.id}">$!{item.name}</a>
+                  <input name="permission[$i].id" type="hidden" id="permission[$i].id" value="$!{item.id}">
+                  <input name="permission[$i].name" type="hidden" id="permission[$i].name" value="$!{item.name}"></td>
+                <td>$!{item.code}
+                <input name="permission[$i].code" type="hidden" id="permission[$i].code" value="$!{item.code}"></td>
+                <td>#foreach( $subitem in $item.permissions )$!{subitem.name}/$!{subitem.code}#end</td>
+              </tr>
+              #set( $i=$i+1 )
+              #end
+              <tr>
+                <td><input type="submit" name="button" id="button" value="提交">
+                <input name="mg" type="hidden" id="mg" value="$!{manager.id}"></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<title>商品编辑</title>
+<script type="text/javascript">
+<!--
+function MM_goToURL() { //v3.0
+  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
+  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
+}
+//-->
+</script>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/goods.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商品信息 - 商品编辑</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="goods.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回商品列表 </span></a></li>
+      <li><a class="shortcut-button" href="good_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建商品 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>编辑商品</h3>
+        <ul class="content-box-tabs">
+          <li><a class="default-tab" href="#tab1">通用信息</a></li>
+          <li><a href="#tab2">详细描述</a></li>
+          <li><a href="#tab3">其他信息</a></li>
+          <li><a href="#tab4">商品属性</a></li>
+          <li><a href="#tab5">SEO优化</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <form id="form1" name="form1" method="post" action="good_update.htm">
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">商品类别：</td>
+                <td>
+                  <select name="good.categoryy.id" id="good.categoryy.id" reg="^(\w){32}$" tip="必须选择商品类别" onChange="MM_goToURL('parent','good_edit.htm?gid=$!{good.id}&&cg='+this.options[this.options.selectedIndex].value);return document.MM_returnValue">
+                    <option value="">请选择所属分类</option>
+                    #foreach( $item in $catelist )
+                    <option value="$!{item.id}"
+                      #if($ccategory)#if($ccategory.id==$item.id)selected="selected"#end#else
+                      #if($item.id==$good.categoryy.id)selected="selected"#end#end
+                    >
+                    $!{item.nodestr}$!{item.name}
+                    </option>
+                    #end
+                  </select></td>
+              </tr>
+              <tr>
+                <td align="right">商品名称：</td>
+                <td><input name="good.name" type="text" id="good.name" value="$!{good.name}" size="50" maxlength="255" reg="^(?!_)(?!.*?_$)[\S\s]{2,255}$" tip="最少两个字符，最多255个字符" />
+                  
+                </td>
+              </tr>
+              <tr>
+                <td align="right">商品编号：</td>
+                <td><input name="good.sn" type="text" id="good.sn" value="$!{good.sn}" size="30" maxlength="255" reg="^(?!_)(?!.*?_$)[\S\s]{2,255}$" tip="最少两个字符，最多255个字符" /></td>
+              </tr>
+              <tr>
+                <td align="right">语言：</td>
+                <td>
+                <select name="good.localee.id" id="good.localee.id">
+                  #foreach( $item in $localelist )
+                  <option value="$!{item.id}" #if($item.id==$good.localee.id)selected="selected"#end>$!{item.name}</option>
+                  #end
+                </select>* 
+                </td>
+              </tr>
+              <tr>
+                <td align="right">品牌：</td>
+                <td>
+                <select name="good.brandd.id" id="good.brandd.id">
+                  #foreach( $item in $ccategory.goodtypee.brands )
+                  <option value="$!{item.id}" #if($item.id==$good.brandd.id)selected="selected"#end>$!{item.name}</option>
+                  #end
+                </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">单价：</td>
+                <td><input name="good.price" type="text" id="good.price" value="$!{good.price}" size="14" maxlength="14" reg="^\d{1,12}(\.\d{1,2})?$" tip="输入商品单价，只允许数字。" /></td>
+              </tr>
+              <tr>
+                <td align="right">市场价：</td>
+                <td><input name="good.mprice" type="text" id="good.mprice" value="$!{good.mprice}" size="14" maxlength="14" reg="^\d{1,12}(\.\d{1,2})?$" tip="输入商品市场价，只允许数字。" /></td>
+              </tr>
+              <tr>
+                <td align="right">赠送积分：</td>
+                <td><input name="good.points" type="text" id="good.points" value="$!{good.points}" size="14" maxlength="11" reg="^\d{1,11}$" tip="输入赠送积分，只允许数字。" /></td>
+              </tr>
+              <tr>
+                <td align="right">排序：</td>
+                <td><input name="good.csort" type="text" id="good.csort" value="$!{good.csort}" size="11" maxlength="11" reg="^\d{1,11}$" tip="输入商品排序，只允许数字。" /></td>
+              </tr>
+              <tr>
+                <td align="right">促销：</td>
+                <td>
+                  参加：
+                  <input type="radio" name="good.promote" id="radio" value="yes" #if($good.promote=="yes")checked="checked"#end />
+                  不参加：
+                  <input type="radio" name="good.promote" id="radio2" value="no" #if($good.promote=="no")checked="checked"#end />
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value=" 提交保存 " />
+                <input name="good.id" type="hidden" id="good.id" value="$!{good.id}" /></td>
+              </tr>
+            </table>
+        </div>
+        <div class="tab-content" id="tab2">
+              <table width="100%" border="0" cellspacing="0" cellpadding="5">
+                <tr>
+                  <td align="right">详细介绍：</td>
+                  <td><textarea name="good.detail" id="good.detail" cols="60" rows="15">$!{good.detail}</textarea></td>
+                </tr>
+                <tr>
+                  <td align="right">&nbsp;</td>
+                  <td><input type="submit" name="button" id="button" value=" 提交保存 " /></td>
+                </tr>
+                <script type="text/javascript">
+				CKEDITOR.replace('good.detail',{
+					filebrowserBrowseUrl : 'files.htm',
+					filebrowserUploadUrl : 'ckeditor/uploader?type=File',   
+					filebrowserImageUploadUrl : 'ckeditor/uploader?type=Image',   
+					filebrowserFlashUploadUrl : 'ckeditor/uploader?type=Flash'  
+        		});
+			  </script>
+              </table>
+        </div>
+        <div class="tab-content" id="tab3">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td width="130" align="right">重量：</td>
+              <td><input name="good.weight" type="text" id="good.weight" value="$!{good.weight}" size="14" maxlength="11" reg="^$|^\d{1,12}(\.\d{1,2})?$" tip="输商品重量，只允许数字。" />
+                <select name="good.wgunit" id="good.wgunit">
+                  <option value="1" selected="selected">克</option>
+                  <option value="1000">千克</option>
+                </select></td>
+            </tr>
+            <tr>
+              <td align="right">库存数量：</td>
+              <td><input name="good.inventory" type="text" id="good.inventory" value="$!{good.inventory}" size="14" maxlength="11" reg="^\d{1,11}$" tip="输入库存数量，只允许数字。" /></td>
+            </tr>
+            <tr>
+              <td align="right">是否上架：</td>
+              <td>
+              上架：<input type="radio" name="good.status" id="radio" value="normal" #if($good.status=="normal")checked="checked"#end />
+              推荐：<input type="radio" name="good.status" id="radio1" value="recommend" #if($good.status=="recommend")checked="checked"#end />
+              下架：<input type="radio" name="good.status" id="radio2" value="notshelve" #if($good.status=="notshelve")checked="checked"#end />
+              </td>
+            </tr>
+            <tr>
+              <td align="right">标记：</td>
+              <td>
+              	精品：<input name="good.keys" type="checkbox" id="good.keys" value="btq" #if( $good.hasKeyword('btq') )checked="checked"#end>
+                新品：<input name="good.keys" type="checkbox" id="good.keys" value="new" #if( $good.hasKeyword('new') )checked="checked"#end>
+                热销：<input name="good.keys" type="checkbox" id="good.keys" value="hot" #if( $good.hasKeyword('hot') )checked="checked"#end>
+              </td>
+            </tr>
+            <tr>
+              <td align="right">商品简单描述：</td>
+              <td><textarea name="good.intro" id="good.intro" cols="45" rows="5">$!{good.intro}</textarea></td>
+            </tr>
+            <tr>
+              <td align="right">&nbsp;</td>
+              <td><input type="submit" name="button" id="button" value=" 提交保存 " /></td>
+            </tr>
+          </table>
+        </div>
+        <div class="tab-content" id="tab4">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td width="130" align="right">商品类型：</td>
+              <td>
+              <select name="good.goodtypee.id" id="good.goodtypee.id">
+                #foreach( $item in $goodtypelist )
+                <option value="$!{item.id}" #if($item.id==$ccategory.goodtypee.id)selected="selected"#end>$!{item.name}</option>
+                #end
+              </select>
+              </td>
+            </tr>
+            <tr>
+              <td align="right">&nbsp;</td>
+              <td>
+              	  <table width="100%" border="0" cellspacing="0" cellpadding="5">
+                    #set( $i=0 )
+                    #foreach( $item in $goodtype.extraattrs )
+                    <tr>
+                      <td>$!{item.name}</td>
+                      <td>
+                          <select name="extraattrvalues[$i].id" id="extraattrvalues[$i].id">
+                            <option value="">不设置</option>
+                            #foreach( $subitem in $item.extraattrvalues )
+                            <option value="$!{subitem.id}" #foreach( $extraattrvalue in $good.extraattrvalues ) #if( $extraattrvalue.id==$subitem.id ) selected="selected" #end #end>$!{subitem.value}</option>
+                            #end
+                          </select>
+                      </td>
+                    </tr>
+                    #set( $i=$i+1 )
+                    #end
+                  </table>
+              </td>
+            </tr>
+            <tr>
+              <td align="right">&nbsp;</td>
+              <td><input type="submit" name="button" id="button" value=" 提交保存 " /></td>
+            </tr>
+          </table>
+        </div>
+        <div class="tab-content" id="tab5">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td width="130" align="right">META Keyword</td>
+              <td><textarea name="good.mkeyword" id="good.mkeyword" cols="60" rows="5">$!{good.mkeyword}</textarea></td>
+            </tr>
+            <tr>
+              <td align="right">META Description</td>
+              <td><textarea name="good.mdescription" id="good.mdescription" cols="60" rows="10">$!{good.mdescription}</textarea></td>
+            </tr>
+            <tr>
+              <td align="right">&nbsp;</td>
+              <td><input type="submit" name="button" id="button" value=" 提交保存 " /></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

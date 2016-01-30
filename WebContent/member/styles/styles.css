@@ -1,0 +1,247 @@
+body{padding:0; margin:0 auto; font:12px/24px Verdana, Arial, Geneva, "宋体"; color:#6a6a6a;}
+.clear{clear:both;height:0;line-height:0px;font-size:0;}
+ul,form,dl,dt,dd{padding:0; margin:0;}
+li{list-style:none;}
+img{border:none;vertical-align: middle;}
+h1{padding:17px 0 13px 23px; margin:0; float:left;}
+h2{padding:0; margin:0; font:bold 12px/24px Verdana, Arial, Geneva, "宋体";}
+a:link{color:#6a6a6a;text-decoration: none;}
+a:visited {color:#6a6a6a;text-decoration: none;}
+a:hover {color:#F30;text-decoration: none;}
+a:active {color:#F30;text-decoration: none;}
+/*头部*/
+
+#top{padding:0; margin:0 auto; width:1000px; background:#000;}
+.top_a{float:right; color:#e7e7e7; padding:25px 0 0 0;}
+.top_a a{padding:0 10px;color:#e7e7e7; text-decoration:none;}
+/*导航*/
+#nav{padding:9 0 0 0px; margin:0 auto; background:url(../images/H_06.jpg) repeat-x left top; width:998px; border-left:1px solid #e3e3e3; border-right:1px solid #e3e3e3;}
+#nav ul{padding:0 0 0 50px;}
+#nav li{float:left; padding:8px 10px 0 10px;_padding:8px 10px 0 10px;*padding:4px 10px 0 10px;}
+a.nav{display:block; float:left;font-weight:bold;color:#000;font-size:14px; text-decoration:none; cursor:pointer;text-align:center;width:99px;padding:7px 0 6px 0;_padding:7px 0 6px 0;*padding:9px 0 6px 0;}
+a.nav:hover{display:block; float:left;font-weight:bold; color:#019dde;font-size:14px;text-decoration:none;}
+#curTab{display:block; float:left;font-weight:bold; color:#019dde;font-size:14px; background: url(../images/H_09.jpg) no-repeat left bottom;}
+/*内容*/
+#main{padding:20px 0 0 0; margin:0 auto; width:1000px;}
+#left{float:left; width:164px;}
+#right{float:right;width:824px;}
+#myMain{background:#fafafa;width:809px; border:#f0f0f0 solid 1px; padding:20px 0}
+label{padding:0 10px 0 0; margin:0;}
+.form1{padding:0 30px;}
+.button{background:#ecf2f7; border:1px solid #7f9db9; width:50px; list-style:20px; height:22px}
+.myTex{background: #F6F6F6; background:1px scroll #ccc;list-style:20px;height:22px}
+select{height:22px;list-style:20px;}
+.H_c ul{padding:20px 0 0 30px; margin:0;}
+.H_c li{ width:233px; float:left; padding:0 26px 0 0;}
+.H_a{border-bottom:1px solid #d1d1d1;}
+.H_b{background:#eff2f6; border:1px solid #e7e7e7; width:705px;margin:30px 0 0 30px; padding:31px 31px 43px 23px;}
+
+.myTable{background:#e7e7e7;}
+.myTable td{padding:2px 0 2px 5px;}
+
+
+DIV.scott {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; MARGIN: 3px; PADDING-TOP: 3px; TEXT-ALIGN: center
+}
+DIV.scott A {
+	BORDER-RIGHT: #ddd 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #ddd 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; BORDER-LEFT: #ddd 1px solid; COLOR: #88af3f; MARGIN-RIGHT: 2px; PADDING-TOP: 2px; BORDER-BOTTOM: #ddd 1px solid; TEXT-DECORATION: none
+}
+DIV.scott A:hover {
+	BORDER-RIGHT: #85bd1e 1px solid; BORDER-TOP: #85bd1e 1px solid; BORDER-LEFT: #85bd1e 1px solid; COLOR: #638425; BORDER-BOTTOM: #85bd1e 1px solid; BACKGROUND-COLOR: #f1ffd6
+}
+DIV.scott A:active {
+	BORDER-RIGHT: #85bd1e 1px solid; BORDER-TOP: #85bd1e 1px solid; BORDER-LEFT: #85bd1e 1px solid; COLOR: #638425; BORDER-BOTTOM: #85bd1e 1px solid; BACKGROUND-COLOR: #f1ffd6
+}
+DIV.scott SPAN.current {
+	BORDER-RIGHT: #b2e05d 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #b2e05d 1px solid; PADDING-LEFT: 5px; FONT-WEIGHT: bold; PADDING-BOTTOM: 2px; BORDER-LEFT: #b2e05d 1px solid; COLOR: #fff; MARGIN-RIGHT: 2px; PADDING-TOP: 2px; BORDER-BOTTOM: #b2e05d 1px solid; BACKGROUND-COLOR: #b2e05d
+}
+DIV.scott SPAN.disabled {
+	BORDER-RIGHT: #f3f3f3 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #f3f3f3 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; BORDER-LEFT: #f3f3f3 1px solid; COLOR: #ccc; MARGIN-RIGHT: 2px; PADDING-TOP: 2px; BORDER-BOTTOM: #f3f3f3 1px solid
+}
+
+
+
+/*CSS quotes style pagination*/
+
+DIV.quotes {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; MARGIN: 3px; PADDING-TOP: 3px; text-align:right; padding-right:25px;
+}
+DIV.quotes A {
+	BORDER-RIGHT: #ddd 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #ddd 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; BORDER-LEFT: #ddd 1px solid; COLOR: #aaa; MARGIN-RIGHT: 2px; PADDING-TOP: 2px; BORDER-BOTTOM: #ddd 1px solid; TEXT-DECORATION: none
+}
+DIV.quotes A:hover {
+	BORDER-RIGHT: #a0a0a0 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #a0a0a0 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; BORDER-LEFT: #a0a0a0 1px solid; MARGIN-RIGHT: 2px; PADDING-TOP: 2px; BORDER-BOTTOM: #a0a0a0 1px solid
+}
+DIV.quotes A:active {
+	BORDER-RIGHT: #a0a0a0 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #a0a0a0 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; BORDER-LEFT: #a0a0a0 1px solid; MARGIN-RIGHT: 2px; PADDING-TOP: 2px; BORDER-BOTTOM: #a0a0a0 1px solid
+}
+DIV.quotes SPAN.current {
+	BORDER-RIGHT: #e0e0e0 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #e0e0e0 1px solid; PADDING-LEFT: 5px; FONT-WEIGHT: bold; PADDING-BOTTOM: 2px; BORDER-LEFT: #e0e0e0 1px solid; COLOR: #aaa; MARGIN-RIGHT: 2px; PADDING-TOP: 2px; BORDER-BOTTOM: #e0e0e0 1px solid; BACKGROUND-COLOR: #f0f0f0
+}
+DIV.quotes SPAN.disabled {
+	BORDER-RIGHT: #f3f3f3 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #f3f3f3 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 2px; BORDER-LEFT: #f3f3f3 1px solid; COLOR: #ccc; MARGIN-RIGHT: 2px; PADDING-TOP: 2px; BORDER-BOTTOM: #f3f3f3 1px solid
+}
+
+
+#Tab1{width:761px; padding:0 0 0 25px;}
+/*刚进来的时候，其他的隐藏*/
+.firstIn{display:none;}
+
+/*对应TAB内容框样式*/
+.tabContent{border-bottom:1px solid #ccc; border-right:1px solid #ccc;border-left:1px solid #ccc;background:#fff; padding:10px;height:610px;height:auto!important;*_height:610px;min-height:610px;}
+
+.tabMenu{list-style:none; padding:0px; margin:0; line-height:21px;}
+.tabMenu li{display:inline;}
+.tabMenu a{float:left;display:block;color:#000;text-decoration:none;padding-left:9px; font-weight:bold; margin-right:2px;}
+.tabMenu a span{float:left;display:block; padding:6px 18px 5px 11px; text-align:center;}
+
+/*关键步骤，兼容IE5和苹果浏览器的，且使之在DW中正确显示*/
+.tabMenu a span {float:none;}
+/* End IE5-Mac hack */
+
+/*放上去的样式*/
+.tabMenu a:hover,.tabMenu .currentHover a{background:url(../images/C_03.jpg) no-repeat left top;}
+.tabMenu a:hover span,.tabMenu .currentHover a span{background:url(../images/C_04.jpg) no-repeat right top;}
+
+.mynav{ background:url(../images/C_07.jpg) repeat-x left bottom;}
+
+.configuration td{padding:3px 0;}
+.myIcon{margin:0 10px 0 0;}
+
+
+.left_a span{background:url(../images/H_22.jpg) no-repeat left center; padding:0 0 0 15px;}
+h3{padding:0; margin:0; font:bold 14px/30px Verdana, Arial, Geneva, "宋体"; color:#000;}
+
+
+
+
+
+#myMENU {
+line-height: 24px;
+list-style-type: none;
+text-align:left;/*定义整个ul菜单的行高和背景色*/
+}
+/*==================一级目录===================*/
+#myMENU a {
+ font-family: Arial;
+    font-size:11px;
+    color:white;
+    height:20px;
+    padding-left:20px;
+    font-weight:bold;
+    text-decoration:none;
+ padding-left:20px;/*Width(一定要)，否则下面的Li会变形*/
+}
+#myMENU li {
+    font-family: Arial;
+    font-size:11px;
+    color:white;
+    height:20px;
+    padding-left:20px;
+    font-weight:bold;
+}
+#myMENU li a:hover {  
+    font-family: Arial;
+    font-size:11px;
+    color:white;
+    height:20px;
+    padding-left:20px;
+    font-weight:bold;
+}
+#myMENU a:link {
+    font-family: Arial;
+    font-size:11px;
+    color:#ff9c12;
+    height:20px;
+    padding-left:20px;
+    font-weight:bold;
+}
+#myMENU a:visited {
+ font-family: Arial;
+    font-size:11px;
+    color:w#ff9c12;
+    height:20px;
+    padding-left:20px;
+    font-weight:bold;
+}
+#myMENU a:hover {
+    font-family: Arial;
+    font-size:11px;
+    color:#ff9c12;
+    height:20px;
+    padding-left:20px;
+    font-weight:bold;
+}
+/*==================二级目录===================*/
+#myMENU li ul {
+list-style:none;
+text-align:left;
+}
+#myMENU li ul li {
+
+}
+#myMENU li ul a {
+ font-family:Arial;
+ font-weight:Normal;
+ font-size:11px;
+ color:white;
+    height:20px;
+    FONT-STYLE: normal;
+    FONT-VARIANT: normal
+}
+/*下面是二级目录的链接样式*/
+
+#myMENU li ul a:link {
+ font-family:Arial;
+ font-weight:Normal;
+ font-size:11px;
+ color:#c2c2c2;
+    height:20px;
+    FONT-STYLE: normal;
+    FONT-VARIANT: normal
+}
+#myMENU li ul a:visited {
+    font-family:Arial;
+ font-weight:Normal;
+ font-size:11px;
+ color:#c2c2c2;
+    height:20px;
+    FONT-STYLE: normal;
+    FONT-VARIANT: normal
+
+}
+#myMENU li ul a:hover {
+    font-family:Arial;
+ font-weight:Normal;
+ font-size:11px;
+ color:#ff9900;
+    height:20px;
+    FONT-STYLE: normal;
+    FONT-VARIANT: normal
+}
+/*==================三级目录===================*/
+ul.third {
+padding-left:0px;
+width:181px;
+background:#000000!important;
+color:#FF0000;
+text-decoration:none;
+}
+/*==============================*/
+
+#myMENU li:hover ul {
+left: auto;
+}
+#myMENU li.sfhover ul {
+left: auto;
+}
+#content {
+clear: left;
+}
+#myMENU ul.collapsed {
+display: none;
+}
+-->
+#PARENT {
+width:181px;
+}

@@ -1,0 +1,25 @@
+<div id="Box-menu-left">
+    <div class="Box-sort white">
+	   <span>热门分类：</span>
+		<a href="#">手机</a>
+	  <span class="orange">特别关注：</span>
+		<a href="#">小米手机</a>|<a href="#">会员积分换购</a>
+    </div>
+    <div class="Box-search">
+      <form action="browse.htm" method="post" id="search">
+        <label>
+          <input name="keyword" type="text" id="keyword" value="$!{keyword}">
+        </label>
+        <label>
+          <select name="c" id="c">
+            <option value="">所有分类</option>
+            #foreach( $item in $caterootlist )
+            <option value="$!{item.id}" #if($category.id==$item.id)selected="selected"#end>$!{item.name}</option>
+            #end
+          </select>
+        </label>
+        <input name="button" type="submit" id="button" value="搜索" class="button" />
+        <label>热门关键词:#foreach( $skey in $searchKeyList )<a href="browse.htm?c=&&keyword=$!{skey}">$!{skey}</a>#end</label>
+      </form>
+    </div>
+  </div>

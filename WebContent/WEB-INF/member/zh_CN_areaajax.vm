@@ -1,0 +1,5 @@
+<ul>
+  #foreach( $area in $areas )
+  <li>$!{area.logisticc.name}[$!{area.name}]$order.weight #if( $order )$area.getLogicost($order.weight)#end</li>
+  #end
+</ul>

@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<title>编辑系统管理员账号</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/managers.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 会员和组 - 系统管理员 - 账户编辑</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="managers.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      返回账号列表 </span></a></li>
+      <li><a class="shortcut-button" href="manager_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建管理账号 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>编辑系统管理员账号</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="manager_update.action">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">账号：</td>
+                <td><input name="manager.account" type="text" id="manager.account" value="$!{manager.account}" size="32" maxlength="64" reg="^(?!_)(?!.*?_$)[a-zA-Z0-9_]{2,64}$" tip="英文或下划线，最少两个字符，最多64个字符"></td>
+              </tr>
+              <tr>
+                <td align="right">密码：</td>
+                <td><input name="manager.cpassword" type="password" id="manager.cpassword" size="32" maxlength="128" reg="^.{2,128}$" tip="最少2个字符，最多128个字符"></td>
+              </tr>
+              <tr>
+                <td align="right">Email：</td>
+                <td><input name="manager.email" type="text" id="manager.email" value="$!{manager.email}" size="32" maxlength="128" reg="^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+" tip="Email地址，如：dev@beautyfamily.com"></td>
+              </tr>
+              <tr>
+                <td align="right">姓名：</td>
+                <td><input name="manager.name" type="text" id="manager.name" value="$!{manager.name}" size="36" maxlength="255" reg="^$|^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{2,255}$" tip="中文，英文或下划线，最少两个字符，最多255个字符"></td>
+              </tr>
+              <tr>
+                <td align="right">昵称：</td>
+                <td><input name="manager.nickname" type="text" id="manager.nickname" value="$!{manager.nickname}" size="36" maxlength="255" reg="^$|^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{2,255}$" tip="中文，英文或下划线，最少两个字符，最多255个字符"></td>
+              </tr>
+              <tr>
+                <td align="right">身份证：</td>
+                <td><input name="manager.idcard" type="text" id="manager.idcard" value="$!{manager.idcard}" size="20" maxlength="18" reg="^$|(^\d{15}$)|(^\d{17}([0-9]|X)$)" tip="15或18位身份证号码"></td>
+              </tr>
+              <tr>
+                <td align="right">状态：</td>
+                <td><select name="manager.status" id="manager.status">
+                  <option value="normal" #if($manager.status == "normal")selected="selected"#end>正常</option>
+                </select></td>
+              </tr>
+              <tr>
+                <td align="right">类型：</td>
+                <td><select name="manager.ctype" id="manager.ctype">
+                  <option value="normal" #if($manager.ctype == "normal")selected="selected"#end>普通</option>
+                  <option value="superadmin" #if($manager.ctype == "superadmin")selected="selected"#end>超级管理员</option>
+                </select></td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交">
+                  <input name="manager.id" type="hidden" id="manager.id" value="$!{manager.id}"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.ConfigMapper">
+	<cache />
+	<select id="findAll" resultType="Config">
+		SELECT
+			*
+		FROM
+			TB_CONFIG
+	</select>
+	
+	<select id="findById" resultType="Config">
+		SELECT
+			*
+		FROM
+			TB_CONFIG
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByProperty" resultType="Config">
+		SELECT
+			*
+		FROM
+			TB_CONFIG
+		WHERE
+			property = #{property, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findAllRoot" resultType="Config">
+		SELECT
+			*
+		FROM
+			TB_CONFIG
+		WHERE
+		    PID is null
+		ORDER BY PROPERTY
+	</select>
+	
+	<select id="findAllChild" resultType="Config">
+		SELECT
+			*
+		FROM
+			TB_CONFIG
+		WHERE
+		   PID = #{pid}
+		ORDER BY PID,PROPERTY
+	</select>
+	
+	<select id="findByConfig" parameterType="Config" resultType="Config">  
+      select * from tb_config where 1 = 1 
+      <if test="pid == 'null'">  
+          and pid is null 
+      </if>
+      <if test="pid != 'null' and pid != null">  
+          and pid = #{pid}  
+      </if>
+      order by property asc
+    </select>  
+	
+	<insert id="save" parameterType="Config" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_CONFIG
+		(
+			ID,
+			PID,
+			NAME,
+			PROPERTY,
+			VALUE,
+			VTYPE,
+			DEFAULTVALUE,
+			OPTIONAL,
+			CONTENT,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{pid,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{property,       jdbcType=VARCHAR},
+			#{value,       jdbcType=VARCHAR},
+			#{vtype,       jdbcType=VARCHAR},
+			#{defaultvalue,       jdbcType=VARCHAR},
+			#{optional,       jdbcType=VARCHAR},
+			#{content,       jdbcType=VARCHAR},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="Config">
+		update
+			TB_CONFIG
+		set
+		    PID = #{pid, jdbcType=VARCHAR},
+			NAME= #{name, jdbcType=VARCHAR},
+			PROPERTY= #{property, jdbcType=VARCHAR},
+			VALUE = #{value, jdbcType=VARCHAR},
+		    VTYPE = #{vtype, jdbcType=VARCHAR},
+			DEFAULTVALUE = #{defaultvalue, jdbcType=VARCHAR},
+			OPTIONAL = #{optional, jdbcType=VARCHAR},
+			CONTENT = #{content, jdbcType=VARCHAR},
+			UTIME = sysdate()
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_CONFIG
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

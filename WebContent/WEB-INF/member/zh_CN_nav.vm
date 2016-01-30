@@ -1,0 +1,19 @@
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="38" align="center" valign="middle" background="images/menubg.jpg"><table width="1003" border="0" align="left" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="492" height="38" align="right" valign="middle">&nbsp;</td>
+        <td width="511" align="right" valign="top">
+		 <div id="nav">
+		      <ul>
+			     <li><a href="index.htm">我的管理中心</a></li>
+                 <li><a href="list_bought_items.htm">交易管理</a></li>
+				 <li><a href="my_bank.htm">账户管理</a></li>
+				 <li><a href="profile.htm">账号设置</a></li>
+			  </ul>
+		 </div>
+		</td>
+      </tr>
+    </table></td>
+  </tr>
+</table>

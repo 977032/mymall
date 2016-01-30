@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/ckeditor/ckeditor.js"></script>
+<title>文章编辑</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/documents.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 文章管理 - 文章编辑</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="documents.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回文章列表 </span></a></li>
+      <li><a class="shortcut-button" href="document_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      发布文章 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>编辑文章</h3>
+        <ul class="content-box-tabs">
+          <li><a class="default-tab" href="#tab1">基本信息</a></li>
+          <li><a href="#tab2">详细信息</a></li>
+          <li><a href="#tab3">附件列表</a></li>
+          <li><a href="#tab4">上传附件</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td width="160" align="right">文章分类：</td>
+                <td>$!{document.doccatee.name}</td>
+              </tr>
+              <tr>
+                <td align="right">语言：</td>
+                <td>$!{document.localee.name}</td>
+              </tr>
+              <tr>
+                <td align="right">文章标题：</td>
+                <td>$!{document.title}</td>
+              </tr>
+              <tr>
+                <td align="right">文章题图：</td>
+                <td><img src="..$!{document.vimagee.path}/$!{document.vimagee.name}" width="80" height="30"></td>
+              </tr>
+              <tr>
+                <td align="right">文章简述：</td>
+                <td>$!{document.brief}</td>
+              </tr>
+              <tr>
+                <td align="right">排序：</td>
+                <td>$!{document.csort}</td>
+              </tr>
+              <tr>
+                <td align="right">标记：</td>
+                <td>
+                $!{document.marker}</td>
+              </tr>
+            </table>
+        </div>
+        <div class="tab-content" id="tab2">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td>$!{document.content}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="tab-content" id="tab3">
+          <form id="form1" name="form1" method="post" action="attachment_del.htm">
+          <div style="padding-right:30px;"><p class="mubutton"><input  name="button" type="image" id="button" src="images/pic_03.jpg" /></p>
+          <ul>
+          #foreach( $item in $document.attachments )
+          <li>
+          <a href="attachment_edit.htm?am=$!{item.id}"><img title="编辑" src="images/attachment.png" width="48" height="48" border="0"></a>
+          <div class="tab-box">
+          <p>#if( $item.status=='default' )默认#else正常#end</p>
+          <p>$!{item.detail}</p>
+          <p>跳转URL：$!{item.url}</p>
+          <p><a href="..$!{item.path}/$!{item.name}">下载</a></p>
+          <p><input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}"></p>
+          </div>
+          </li>
+          #end
+          </ul>
+          <div class="clear"></div>
+          <p class="mubutton"><input  name="button" type="image" id="button" src="images/pic_03.jpg" /></p>
+          </div>
+          </form>
+        </div>
+        <div class="tab-content" id="tab4">
+          <form action="attachment_create.htm" method="post" enctype="multipart/form-data" name="form1" id="form1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">商品：</td>
+                <td>$!{document.title}
+                  <input name="attachment.documentt.id" type="hidden" id="attachment.documentt.id" value="$!{document.id}" /></td>
+              </tr>
+              <tr>
+                <td align="right">文件：</td>
+                <td><input type="file" name="upload" id="upload" />
+                *</td>
+              </tr>
+              <tr>
+                <td align="right">文件说明：</td>
+                <td><textarea name="attachment.detail" id="attachment.detail" cols="45" rows="10"></textarea></td>
+              </tr>
+              <tr>
+                <td align="right">默认：</td>
+                <td>是
+                  <input type="radio" name="attachment.status" id="radio" value="default">
+                  否
+                  <input name="attachment.status" type="radio" id="radio" value="normal" checked="checked"></td>
+              </tr>
+              <tr>
+                <td align="right">&nbsp;点击附件<br />
+                直接跳转URL：</td>
+                <td><textarea name="attachment.url" id="attachment.url" cols="45" rows="4">#</textarea></td>
+              </tr>
+              <tr>
+                <td align="right">排序：</td>
+                <td><input name="attachment.sort" type="text" id="attachment.sort" value="10" size="10" maxlength="11" />
+                  *[数字]</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交" /></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+html{padding:0;margin:0 auto;font-size:12px;border:none;}
+body{padding:0;margin:0 auto;font-size:12px;border:none;}
+div{padding:0;margin:0;font-size:12px;border:none;color:#6b6b6b; font-family: Arial,"ËÎÌו"}
+span{padding:0;margin:0;font-size:100%;border:none;}
+applet{padding:0;margin:0;font-size:100%;border:none;}
+object{padding:0;margin:0;font-size:100%;border:none;}
+iframe{padding:0;margin:0;font-size:100%;border:none;}
+h1{padding:0;margin:0;font-size:100%;border:none;}
+h2{padding:0;margin:0;font-size:100%;border:none;}
+h3{padding:0;margin:0;font-size:100%;border:none;}
+h4{padding:0;margin:0;font-size:100%;border:none;}
+h5{padding:0;margin:0;font-size:100%;border:none;}
+h6{padding:0;margin:0;font-size:100%;border:none;}
+p{padding:0;margin:0;font-size:100%;border:none;}
+blockquote{padding:0;margin:0;font-size:100%;border:none;}
+pre{padding:0;margin:0;font-size:100%;border:none;}
+a{padding:0;margin:0; font-size:100%; border:none;}
+abbr{padding:0;margin:0;font-size:100%;border:none;}
+acronym{padding:0;margin:0;font-size:100%;border:none;}
+address{padding:0;margin:0;font-size:100%;border:none;}
+big{padding:0;margin:0;font-size:100%;border:none;}
+cite{padding:0;margin:0;font-size:100%;border:none;}
+code{padding:0;margin:0;font-size:100%;border:none;}
+del{padding:0;margin:0;font-size:100%;border:none;}
+dfn{padding:0;margin:0;font-size:100%;border:none;}
+em{padding:0;margin:0;font-size:100%;border:none;}
+font{padding:0;margin:0;font-size:100%;border:none;}
+img{padding:0;margin:0;font-size:100%;border:none;}
+ins{padding:0;margin:0;font-size:100%;border:none;}
+kbd{padding:0;margin:0;font-size:100%;border:none;}
+q{padding:0;margin:0;font-size:100%;border:none;}
+s{padding:0;margin:0;font-size:100%;border:none;}
+samp{padding:0;margin:0;font-size:100%;border:none;}
+small{padding:0;margin:0;font-size:100%;border:none;}
+strike{padding:0;margin:0;font-size:100%;border:none;}
+strong{padding:0;margin:0;font-size:100%;border:none;}
+sub{padding:0;margin:0;font-size:100%;border:none;}
+sup{padding:0;margin:0;font-size:100%;border:none;}
+tt{padding:0;margin:0;font-size:100%;border:none;}
+var{padding:0;margin:0;font-size:100%;border:none;}
+b{padding:0;margin:0;font-size:100%;border:none;}
+u{padding:0;margin:0;font-size:100%;border:none;}
+i{padding:0;margin:0;font-size:100%;border:none;}
+center{padding:0;margin:0;font-size:100%;border:none;}
+dl{padding:0;margin:0;font-size:100%;border:none;}
+dt{padding:0;margin:0;font-size:100%;border:none;}
+dd{padding:0;margin:0;font-size:100%;border:none;}
+ol{padding:0;margin:0;font-size:100%;border:none;}
+ul{padding:0;margin:0;font-size:100%;border:none;}
+li{padding:0;margin:0;font-size:100%;border:none;}
+fieldset{padding:0;margin:0;font-size:100%;border:none;}
+form{padding:0;margin:0;font-size:100%;border:none;}
+label{padding:0;margin:0;font-size:100%;border:none;}
+legend{padding:0;margin:0;font-size:100%;border:none;}
+table{padding:0;margin:0;font-size:100%;border:none;}
+caption{padding:0;margin:0;font-size:100%;border:none;}
+tbody{padding:0;margin:0;font-size:100%;border:none;}
+tfoot{padding:0;margin:0;font-size:100%;border:none;}
+thead{padding:0;margin:0;font-size:100%;border:none;}
+tr{padding:0;margin:0;font-size:100%;border:none;}
+th{padding:0;margin:0;font-size:100%;border:none;}
+td{padding:0;margin:0;font-size:100%;border:none;}
+q{padding:0;margin:0;}
+ins{text-decoration:none;}
+del{text-decoration:line-through;}
+.clear{clear:both; height:0; line-height:0px; font-size:0;}

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.MemberMapper">
+
+	<cache />
+	<sql id="sql_searchMemberByName">
+		select
+			ID	        id,
+			NAME	    name,
+			GENDER      gender
+		from
+			TB_MEMBER
+		where
+			NAME like CONCAT('%',#{name, jdbcType=VARCHAR},'%')  
+		and
+			STATUS = 'normal'
+	</sql>
+	
+	<sql id="sql_searchMemberByMember">
+	  select * from tb_member where 1 = 1 
+      <if test="member.account != null">  
+          and account = #{member.account}  
+      </if>
+      <if test="member.status != null">  
+          and status = #{member.status}
+      </if>
+      <if test="member.name != null">  
+          and name = #{member.name}
+      </if>
+      <if test="member.mobile != null">  
+          and mobile = #{member.mobile}
+      </if>
+      <if test="member.group != null">  
+          and group = #{member.group}
+      </if>
+	</sql>
+	
+	<select id="findById" resultType="Member">
+		select
+			*
+		from
+			TB_MEMBER
+		where
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByAccount" resultType="Member">
+		select
+			*
+		from
+			TB_MEMBER
+		where
+			ACCOUNT = #{account, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="searchMemberByName" resultType="UserBasicInfo">
+		<include refid="sql_searchMemberByName"></include>
+		limit #{start, jdbcType=NUMERIC}, #{count, jdbcType=NUMERIC}
+	</select>
+	
+	<select id="searchMemberByNameCount" resultType="int">
+		select count(1) from (
+			<include refid="sql_searchMemberByName"></include>
+		) rs
+	</select>
+	
+	<select id="isExists" resultType="int">
+		select
+			count(1)
+		from
+			TB_MEMBER
+		where
+			ACCOUNT = #{account, jdbcType=VARCHAR}
+		<if test="password!=null">
+		and
+			PASSWORD = #{password, jdbcType=VARCHAR}
+		</if>
+		and
+			STATUS = 'normal'
+	</select>
+	
+	<select id="findAll" resultType="Member">
+		SELECT
+			*
+		FROM
+			TB_MEMBER
+		WHERE
+		    STATUS = 'normal'
+	</select>
+	
+	<select id="findByMember" resultType="Member">
+	   <include refid="sql_searchMemberByMember"></include>
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+    </select>
+    
+    <select id="getCountByMember" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchMemberByMember"></include> 
+      ) rs
+    </select> 
+    
+    <insert id="save" parameterType="Member" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_MEMBER
+		(
+			ID,
+			ACCOUNT,
+			PASSWORD,
+			NAME,
+			ACTIVATION,
+			STATUS,
+			EMAIL,
+			GENDER,
+			BIRTHDAY,
+			IMAGE,
+			CTYPE,
+			`GROUP`,
+			BANK,
+			POINT,
+			NICKNAME,
+			IDCARD,
+			LASTLOGIN,
+			LOGINCOUNT,
+			DISTRICT,
+			STORE,
+			ADDRESS,
+			POSTCODE,
+			TELEPHONE,
+			MOBILE,
+			WECHAT,
+			QQ,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{account,    jdbcType=VARCHAR},
+			#{password,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{activation,    jdbcType=VARCHAR},
+			#{status,    jdbcType=VARCHAR},
+			#{email,    jdbcType=VARCHAR},
+			#{gender,      jdbcType=VARCHAR},
+			#{birthday,      jdbcType=DATE},
+			#{image,      jdbcType=VARCHAR},
+			#{ctype,      jdbcType=VARCHAR},
+			#{group,      jdbcType=VARCHAR},
+			#{bank,      jdbcType=VARCHAR},
+			#{point,      jdbcType=VARCHAR},
+			#{nickname,      jdbcType=VARCHAR},
+			#{idcard,      jdbcType=VARCHAR},
+			#{lastlogin,      jdbcType=DATE},
+			#{logincount,      jdbcType=INTEGER},
+			#{district,    jdbcType=VARCHAR},
+			#{store,    jdbcType=VARCHAR},
+			#{address,    jdbcType=VARCHAR},
+			#{postcode,    jdbcType=VARCHAR},
+			#{telephone,    jdbcType=VARCHAR},
+			#{mobile,    jdbcType=VARCHAR},
+			#{wechat,    jdbcType=VARCHAR},
+			#{qq,    jdbcType=VARCHAR},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="Member">
+		update
+			TB_MEMBER
+		set
+			ACCOUNT    = #{account,   jdbcType=VARCHAR},
+			PASSWORD   = #{password,    jdbcType=VARCHAR},
+			NAME       = #{name,     jdbcType=VARCHAR},
+			ACTIVATION = #{activation,     jdbcType=VARCHAR},
+			STATUS      = #{status,   jdbcType=VARCHAR},
+			EMAIL      = #{email,   jdbcType=VARCHAR},
+			GENDER     = #{gender,   jdbcType=VARCHAR},		
+			BIRTHDAY   = #{birthday,    jdbcType=DATE},
+            IMAGE      = #{image,       jdbcType=VARCHAR},
+            CTYPE      = #{ctype,       jdbcType=VARCHAR},
+            `GROUP`      = #{group,       jdbcType=VARCHAR},
+            BANK       = #{bank,       jdbcType=VARCHAR},
+            POINT      = #{point,       jdbcType=VARCHAR},
+            NICKNAME   = #{nickname,       jdbcType=VARCHAR},
+            IDCARD     = #{idcard,       jdbcType=VARCHAR},
+            LASTLOGIN  = #{lastlogin,    jdbcType=DATE},
+            LOGINCOUNT = #{logincount,       jdbcType=INTEGER},
+            DISTRICT   = #{district,       jdbcType=VARCHAR},
+            STORE      = #{store,       jdbcType=VARCHAR},
+            ADDRESS    = #{address,       jdbcType=VARCHAR},
+            POSTCODE   = #{postcode,       jdbcType=VARCHAR},
+            TELEPHONE  = #{telephone,       jdbcType=VARCHAR},
+            MOBILE     = #{mobile,       jdbcType=VARCHAR},
+			WECHAT     = #{wechat,       jdbcType=VARCHAR},
+			QQ         = #{qq,       jdbcType=VARCHAR},
+            UTIME      = sysdate()
+	    where
+	    	ID = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updatePassword">
+		update
+			TB_MEMBER
+		set
+			PASSWORD = #{password, jdbcType=VARCHAR}
+	    where
+	    	ID = #{id, jdbcType=NUMERIC}
+	</update>
+</mapper>

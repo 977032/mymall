@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<title>类别编辑</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/categorys.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商品类别 - 类别编辑</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="categorys.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回类别列表 </span></a></li>
+      <li><a class="shortcut-button" href="category_input.htm?s=$!{s}"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建主类别 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>编辑商品类别</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form action="category_update.action" method="post" enctype="multipart/form-data" name="form1" id="form1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">上级目录：</td>
+                <td>
+                  <select name="category.category.id" id="category.category.id">
+                    <option value="">无</option>
+			  		#foreach($item in $listtree)
+                    <option value="$!{item.id}" #if($item.id==$category.category.id)selected="selected"#end>$!{item.nodestr}$!{item.name}</option>
+                    #end
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">语言：</td>
+                <td><select name="category.localee.id" id="category.localee.id">
+            #foreach($item in $localelist)
+			<option value="$!{item.id}" #if($category.localee.id==$item.id)selected="selected"#end>$!{item.name}</option>
+			#end
+          </select></td>
+              </tr>
+              <tr>
+                <td align="right">类别名称：</td>
+                <td><input name="category.name" type="text" id="category.name" value="$!{category.name}" size="50" reg="^(?!_)(?!.*?_$)[\S\s]{2,255}$" tip="最少两个字符，最多255个字符" /></td>
+              </tr>
+              <tr>
+                <td align="right">&nbsp;</td>
+                <td><img src="..$!{category.vimage.path}/$!{category.vimage.name}" alt="$!{category.name}" width="70" height="30"></td>
+              </tr>
+              <tr>
+                <td align="right">图片标识：</td>
+                <td><input type="file" name="upload" id="upload" reg="^$|.*gif|png|jpg|jpeg$" tip="允许JPG,GIF,PNG图片文件" /></td>
+              </tr>
+              <tr>
+                <td align="right">说明：</td>
+                <td><textarea name="category.detail" id="category.detail" cols="50" rows="8">$!{category.detail}</textarea></td>
+              </tr>
+              <tr>
+                <td align="right">排序：</td>
+                <td><input name="category.csort" type="text" id="category.csort" value="$!{category.csort}" size="10" reg="^\d{1,11}$" tip="输入商品排序，只允许数字。" /></td>
+              </tr>
+              <tr>
+                <td align="right">本类商品类型：</td>
+                <td>
+                <select name="category.goodtypee.id" id="category.goodtypee.id">
+            <option value="" selected="selected">暂不设置</option>
+			#foreach($item in $goodtypelist)
+			<option value="$!{item.id}" #if($category.goodtypee.id==$item.id)selected="selected"#end>$!{item.name}[$!{item.alias}]</option>
+			#end
+          </select>
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交" />
+                  <input name="category.id" type="hidden" id="category.id" value="$!{category.id}"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

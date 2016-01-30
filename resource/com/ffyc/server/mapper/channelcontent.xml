@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.ChannelContentMapper">
+	<cache />
+	<sql id="sql_searchChcontentByChcontent">
+	  select * from tb_channel_content where 1 = 1 
+      <if test="chcontent.global != null">  
+          and global = #{chcontent.global}  
+      </if>
+      <if test="chcontent.locale != null">  
+          and locale = #{chcontent.locale}  
+      </if>
+      <if test="chcontent.channel != null">  
+          and channel = #{chcontent.channel}  
+      </if>
+      <if test="chcontent.category != null">  
+          and category = #{chcontent.category}  
+      </if>
+      <if test="chcontent.doccate!= null">  
+          and doccate = #{chcontent.doccate}  
+      </if>
+      <if test="chcontent.good!= null">  
+          and good = #{chcontent.good}  
+      </if>
+	</sql>
+	
+	<select id="findAll" resultType="ChannelContent">
+		SELECT
+			*
+		FROM
+			TB_CHANNEL_CONTENT
+	</select>
+	
+	<select id="findById" resultType="ChannelContent">
+		SELECT
+			*
+		FROM
+			TB_CHANNEL_CONTENT
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByChannelContent" resultType="ChannelContent">
+	   <include refid="sql_searchChcontentByChcontent"></include>
+	   order by marker asc
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+    </select>
+    
+    <select id="getCountByChannelContent" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchChcontentByChcontent"></include> 
+      ) rs
+    </select> 
+	
+	<insert id="save" parameterType="ChannelContent" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_CHANNEL_CONTENT
+		(
+			ID,
+			CHANNEL,
+			DOCCATE,
+			DOCUMENT,
+			CATEGORY,
+			GOOD,
+			NUMBER,
+			OFFSET,
+			MARKER,
+			GLOBAL,
+			TYPE,
+			KEYWORD,
+			DETAIL,
+			LOCALE,
+			MANAGER,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{channel,    jdbcType=VARCHAR},
+			#{doccate,    jdbcType=VARCHAR},
+			#{document,       jdbcType=VARCHAR},
+			#{category,       jdbcType=VARCHAR},
+			#{good,       jdbcType=VARCHAR},
+			#{number,       jdbcType=INTEGER},
+			#{offset,       jdbcType=INTEGER},
+			#{marker,       jdbcType=VARCHAR},
+			#{global,       jdbcType=VARCHAR},
+			#{type,       jdbcType=VARCHAR},
+			#{keyword,       jdbcType=VARCHAR},
+			#{detail,       jdbcType=VARCHAR},
+			#{locale,       jdbcType=VARCHAR},
+			#{manager,       jdbcType=VARCHAR},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="ChannelContent">
+		update
+			TB_CHANNEL_CONTENT
+		set
+			CHANNEL= #{channel, jdbcType=VARCHAR},
+			DOCCATE = #{doccate, jdbcType=VARCHAR},
+			DOCUMENT= #{document, jdbcType=VARCHAR},
+		    CATEGORY = #{category, jdbcType=VARCHAR},
+		    GOOD = #{good, jdbcType=VARCHAR},
+		    NUMBER = #{number, jdbcType=INTEGER},
+		    OFFSET = #{offset, jdbcType=INTEGER},
+		    MARKER = #{marker, jdbcType=VARCHAR},
+		    GLOBAL = #{global, jdbcType=VARCHAR},
+		    TYPE = #{type, jdbcType=VARCHAR},
+		    KEYWORD = #{keyword, jdbcType=VARCHAR},
+		    DETAIL = #{detail, jdbcType=VARCHAR},
+		    LOCALE = #{locale, jdbcType=VARCHAR},
+		    MANAGER = #{manager, jdbcType=VARCHAR},
+			UTIME = sysdate()
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_CHANNEL_CONTENT
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

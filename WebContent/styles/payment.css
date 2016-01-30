@@ -1,0 +1,67 @@
+@charset "utf-8";
+/* CSS Document */ 
+#payment input
+{
+	display:none;
+}
+#payment label
+{
+	display:-moz-inline-block;
+	display:inline-block;
+	cursor:pointer;
+	margin:5px 0;
+	line-height:15px;
+	width:144px;
+	height:44px;
+}
+ 
+ /* 支付宝 诚信通 快钱 手机支付 */
+.pay_zfb{ background:url(images/img_zfb.gif) no-repeat left top;}
+.pay_cft{ background:url(images/img_cft.gif) no-repeat left top;}
+.pay_kq{ background:url(images/img_kq.gif) no-repeat left top;}
+.pay_sjzf{ background:url(images/img_sjzf.gif) no-repeat left top;}
+
+.pay_zfb_gray{ background:url(images/img_zfb_gray.gif) no-repeat left top;}
+.pay_cft_gray{ background:url(images/img_cft_gray.gif) no-repeat left top;}
+.pay_kq_gray{ background:url(images/img_kq_gray.gif) no-repeat left top;}
+.pay_sjzf_gray{ background:url(images/img_sjzf_gray.gif) no-repeat left top;}
+
+/* 工商gs 建设js 招商zs 交通jt 农业ny 广发gdfz 深发szfz 北京bj 邮政yz 兴业xy 光大gd 中信zx 浦发pf 中国zg 民生ms 华夏hx */
+.pay_gs { background:url(images/img_gsyh.gif) no-repeat left top;}
+.pay_js { background:url(images/img_jsyh.gif) no-repeat left top;}
+.pay_zs { background:url(images/img_zsyh.gif) no-repeat left top;}
+.pay_jt { background:url(images/img_jtyh.gif) no-repeat left top;}
+.pay_ny { background:url(images/img_nyyh.gif) no-repeat left top;}
+.pay_gdfz { background:url(images/img_gdfzyh.gif) no-repeat left top;}
+.pay_szfz { background:url(images/img_szfzyh.gif) no-repeat left top;}
+.pay_bj { background:url(images/img_bjyh.gif) no-repeat left top;}
+.pay_yz { background:url(images/img_yzyh.gif) no-repeat left top;}
+.pay_xy { background:url(images/img_xyyh.gif) no-repeat left top;}
+.pay_gd { background:url(images/img_gdyh.gif) no-repeat left top;}
+.pay_zx { background:url(images/img_zxyh.gif) no-repeat left top;}
+.pay_pf { background:url(images/img_pfyh.gif) no-repeat left top;}
+.pay_zg { background:url(images/img_zgyh.gif) no-repeat left top;}
+.pay_ms { background:url(images/img_msyh.gif) no-repeat left top;}
+.pay_hx { background:url(images/img_hxyh.gif) no-repeat left top;}
+
+.pay_gs_gray { background:url(images/img_gsyh_gray.gif) no-repeat left top;}
+.pay_js_gray { background:url(images/img_jsyh_gray.gif) no-repeat left top;}
+.pay_zs_gray { background:url(images/img_zsyh_gray.gif) no-repeat left top;}
+.pay_jt_gray { background:url(images/img_jtyh_gray.gif) no-repeat left top;}
+.pay_ny_gray { background:url(images/img_nyyh_gray.gif) no-repeat left top;}
+.pay_gdfz_gray { background:url(images/img_gdfzyh_gray.gif) no-repeat left top;}
+.pay_szfz_gray { background:url(images/img_szfzyh_gray.gif) no-repeat left top;}
+.pay_bj_gray { background:url(images/img_bjyh_gray.gif) no-repeat left top;}
+.pay_yz_gray { background:url(images/img_yzyh_gray.gif) no-repeat left top;}
+.pay_xy_gray { background:url(images/img_xyyh_gray.gif) no-repeat left top;}
+.pay_gd_gray { background:url(images/img_gdyh_gray.gif) no-repeat left top;}
+.pay_zx_gray { background:url(images/img_zxyh_gray.gif) no-repeat left top;}
+.pay_pf_gray { background:url(images/img_pfyh_gray.gif) no-repeat left top;}
+.pay_zg_gray { background:url(images/img_zgyh_gray.gif) no-repeat left top;}
+.pay_ms_gray { background:url(images/img_msyh_gray.gif) no-repeat left top;}
+.pay_hx_gray { background:url(images/img_hxyh_gray.gif) no-repeat left top;}
+
+label.checked
+{
+	background-position:left bottom;
+}

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.SpecValueMapper">
+	<cache />
+	
+	<sql id="sql_searchSpecValueBySpecValue">
+	  select * from tb_specvalue where 1 = 1
+      <if test="specvalue.specitem != null">  
+          and specitem = #{specvalue.specitem}  
+      </if>
+	</sql>
+	
+	<select id="findAll" resultType="SpecValue">
+		SELECT
+			*
+		FROM
+			TB_SPECVALUE
+	</select>
+	
+	<select id="findById" resultType="SpecValue">
+		SELECT
+			*
+		FROM
+			TB_SPECVALUE
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findBySpecValue" resultType="SpecValue">
+	   <include refid="sql_searchSpecValueBySpecValue"></include>
+	   order by ctime desc
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+	</select>
+	
+	<select id="getCountBySpecValue" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchSpecValueBySpecValue"></include> 
+      ) rs
+    </select> 
+
+    <select id="getSpecs" resultType="Spec">
+		select
+			t.* from tb_spec as t inner join tb_spec_specvalue as tt
+		on
+		    tt.spec = t.id and 
+			tt.specvalue = #{id, jdbcType=VARCHAR}
+	</select>
+		
+	<insert id="save" parameterType="SpecValue" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_SPECVALUE
+		(
+			ID,
+			SPECITEM,
+			NAME,
+			IMAGE,
+			PRICE,
+			MANAGER,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{specitem,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{image,    jdbcType=VARCHAR},
+			#{price,    jdbcType=DECIMAL},
+			#{manager,    jdbcType=VARCHAR},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="SpecValue">
+		update
+			TB_SPECVALUE
+		set
+		    SPECITEM = #{specitem, jdbcType=VARCHAR},
+		    NAME = #{name, jdbcType=VARCHAR},
+		    IMAGE = #{image, jdbcType=VARCHAR},
+		    PRICE = #{price, jdbcType=DECIMAL},
+		    MANAGER = #{manager, jdbcType=VARCHAR},
+		    UTIME = sysdate() 
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_SPECVALUE
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

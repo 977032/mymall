@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.DocumentMapper">
+	<cache />
+	
+	<sql id="sql_searchDocumentByDocument">
+	  select * from tb_document where 1 = 1 
+      <if test="document.title != null">  
+          and title like concat('%',#{document.title},'%')  
+      </if>
+      <if test="document.doccate != null">  
+          and doccate = #{document.doccate}  
+      </if>
+	</sql>
+	
+	<select id="findAll" resultType="Document">
+		SELECT
+			*
+		FROM
+			TB_DOCUMENT
+	</select>
+	
+	<select id="findById" resultType="Document">
+		SELECT
+			*
+		FROM
+			TB_DOCUMENT
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findBySql" resultType="Document">
+	   <![CDATA[ ${sql} ${orderby}]]>
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+    </select>
+    
+    <select id="getCountBySql" resultType="Integer" >  
+      select count(1) from (
+      <![CDATA[ ${sql}]]>
+      ) rs
+    </select>
+	
+	<select id="findByDocument" resultType="Document">
+	   <include refid="sql_searchDocumentByDocument"></include>
+	   order by ctime desc 
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+    </select>
+    
+    <select id="getCountByDocument" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchDocumentByDocument"></include> 
+      ) rs
+    </select> 
+	
+	<insert id="save" parameterType="Document" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_DOCUMENT
+		(
+			ID,
+			MANAGER,
+			LOCALE,
+			TITLE,
+			IMAGE,
+			BRIEF,
+			CONTENT,
+			DOCCATE,
+			MARKER,
+			VISTOR,
+			CSORT,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{manager,    jdbcType=VARCHAR},
+			#{locale,    jdbcType=VARCHAR},
+			#{title,       jdbcType=DECIMAL},
+			#{image,       jdbcType=VARCHAR},
+			#{brief,       jdbcType=VARCHAR},
+			#{content,       jdbcType=VARCHAR},
+			#{doccate,       jdbcType=VARCHAR},
+			#{marker,       jdbcType=VARCHAR},
+			#{vistor,       jdbcType=INTEGER},
+			#{csort,       jdbcType=INTEGER},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="Document">
+		update
+			TB_DOCUMENT
+		set
+			MANAGER= #{manager, jdbcType=VARCHAR},
+			LOCALE = #{locale, jdbcType=VARCHAR},
+			TITLE = #{title, jdbcType=VARCHAR},
+			IMAGE = #{image, jdbcType=VARCHAR},
+			BRIEF = #{brief, jdbcType=VARCHAR},
+			CONTENT = #{content, jdbcType=VARCHAR},
+			DOCCATE = #{doccate, jdbcType=VARCHAR},
+			MARKER = #{marker, jdbcType=VARCHAR},
+			VISTOR = #{vistor, jdbcType=INTEGER},
+			CSORT = #{csort, jdbcType=INTEGER},
+			UTIME = sysdate()
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_DOCUMENT
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

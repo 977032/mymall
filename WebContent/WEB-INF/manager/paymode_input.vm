@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<title>创建支付方式</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/paymodes.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商店配置 - 支付方式 - 创建支付方式</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="paymodes.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回列表 </span></a></li>
+      <li><a class="shortcut-button" href="paymode_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建支付方式 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>&nbsp;</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form action="paymode_create.htm" method="post" enctype="multipart/form-data" name="form1" id="form1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">支付类型：</td>
+                <td>
+                <select name="paymode.pmtype" id="paymode.pmtype">
+                  <option value="alipay">支付宝</option>
+                  <option value="other">其他支付方式</option>
+                </select>
+                *
+                </td>
+              </tr>
+              <tr>
+                <td align="right">支付方式名称：</td>
+                <td><input type="text" name="paymode.name" id="paymode.name">
+                *</td>
+              </tr>
+              <tr>
+                <td align="right">图片标识：</td>
+                <td><input type="file" name="upload" id="upload" reg="^$|.*gif|png|jpg|jpeg$" tip="允许JPG,GIF,PNG图片文件" /></td>
+              </tr>
+              <tr>
+                <td align="right">介绍/备注：</td>
+                <td><textarea name="paymode.intro" id="paymode.intro" cols="45" rows="5"></textarea></td>
+              </tr>
+              <tr>
+                <td align="right">费率：</td>
+                <td><input name="paymode.rate" type="text" id="paymode.rate" value="0">
+                *[数字]</td>
+              </tr>
+              <tr>
+                <td align="right">免费额度：</td>
+                <td><input name="paymode.focrating" type="text" id="paymode.focrating" value="0">
+                *[数字]</td>
+              </tr>
+              <tr>
+                <td align="right">排序：</td>
+                <td><input name="paymode.csort" type="text" id="paymode.csort" value="10">
+                *[数字]</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

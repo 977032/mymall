@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.PointMapper">
+	<cache />
+	<select id="findAll" resultType="Point">
+		SELECT
+			*
+		FROM
+			TB_POINT
+	</select>
+	
+	<select id="findById" resultType="Point">
+		SELECT
+			*
+		FROM
+			TB_POINT
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getMembers" resultType="Member">
+		select
+			t.* from tb_member as t inner join tb_point_run_account as tt
+		on
+		    tt.member = t.id and 
+			tt.point = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	
+	<insert id="save" parameterType="Point" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_POINT
+		(
+			ID,
+			ACCOUNT,
+			STATUS,
+			BALANCE,
+			REMARKS,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{account,    jdbcType=VARCHAR},
+			#{status,    jdbcType=VARCHAR},
+			#{balance,    jdbcType=INTEGER},
+			#{remarks,    jdbcType=VARCHAR},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="Point">
+		update
+			TB_POINT
+		set
+		    ACCOUNT = #{account, jdbcType=VARCHAR},
+		    STATUS = #{status, jdbcType=VARCHAR},
+		    BALANCE = #{balance, jdbcType=INTEGER},
+		    REMARKS = #{remarks, jdbcType=VARCHAR},
+		    UTIME = sysdate()
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_POINT
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

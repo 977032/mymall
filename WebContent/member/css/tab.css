@@ -1,0 +1,93 @@
+a:link{
+color:#00F;
+text-decoration:none;
+}
+a:visited {
+color: #00F;
+text-decoration:none;
+}
+a:hover {
+color: #c00;
+text-decoration:underline;
+}
+ul{ list-style:none;}
+
+
+#Tab2{
+width:787px;
+margin:0px;
+padding:0px;
+margin:0 auto;}
+/*菜单class*/
+
+
+.Menubox {
+width:100%;
+background:url(../images/tab_bg.gif);
+height:28px;
+line-height:28px;
+}
+.Menubox ul{
+margin:0px;
+padding:0px;
+}
+.Menubox li{
+float:left;
+display:block;
+cursor:pointer;
+width:114px;
+text-align:center;
+color:#949694;
+font-weight:bold;
+}
+
+.Menubox li.hover{
+padding:0px;
+background:#fff;
+width:116px;
+border-left:1px solid #d3d3d3;
+border-top:#f7000c 2px solid;
+border-right:1px solid #d3d3d3;
+background:url(../images/tab_bg.gif);
+color:#f7000c;
+font-weight:bold;
+height:26px;
+line-height:26px;
+CURSOR: default
+}
+
+.Contentbox{
+clear:both;
+margin-top:0px;
+border:1px solid #d3d3d3;
+background:url(../images/tab_y_bg.jpg);
+background-repeat:repeat-x;
+border-top:none;
+
+text-align:center;
+height:auto;
+
+padding-top:8px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

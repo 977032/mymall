@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>beautyfamily-在线商城 - $!{siteName}</title>
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/global.css" rel="stylesheet" type="text/css" />
+<link href="styles/home.css" rel="stylesheet" type="text/css" />
+<link href="styles/inside.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-extend-AdAdvance.js"></script>
+<script type="text/javascript" src="scripts/jquery-extend-TrunAd2.js"></script>
+<script type="text/javascript" src="scripts/box.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+
+  jQuery("#preloader").hide(); //首先把loading隐藏
+  jQuery("ul a").click(function() {
+    loadTab( jQuery(this).attr("rel") );    //  获取 属性rel的值  用来 动态加载.
+  });
+
+  function loadTab(id) {
+    if ( jQuery("ul a").length > 0) {
+      jQuery("#preloader").show();          //显示loading图标
+      jQuery.ajax({
+        url: id,                     //  属性rel的值
+        cache: false,
+        success: function(message) {
+          jQuery("#tabcontent").empty().append(message);        //把返回的内容存放到id为tabcontent.
+          jQuery("#preloader").hide();                  //隐藏loading图标
+        }
+      });
+    }
+  }
+
+});
+</script>
+</head>
+<body>
+<div id="Box-top">
+  #include("/WEB-INF/publicer/box-top-nav.vm")
+  #parse("/WEB-INF/publicer/box-top-logo.vm")
+  <!------------------------nav------------------------>
+  #include("/WEB-INF/publicer/box-nav.vm")
+  #parse("/WEB-INF/publicer/box-menu-left.vm")
+  #parse("/WEB-INF/publicer/mycart.vm")
+  <div class="clear"></div>
+</div>
+<div class="Box-banner"><img src="images/Home-box_15.jpg" width="980" height="60" /></div>
+<!------------------------内容------------------------>
+<div id="Main-box">
+
+  <div class="Main-left left">
+  <div class="my_left_cat_list">
+  <h2>商品类别</h2>
+  #foreach( $item in $map.get("B") )
+  <div class="h2_cat" onmouseover="this.className='h2_cat active_cat'" onmouseout="this.className='h2_cat'">
+    <h3><a href="browse.htm?c=$!{item.id}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}">$!{item.name}</a></h3>
+    <div class="h3_cat">
+      <div class="shadow">
+        <div class="shadow_border">
+          <ul>
+          	#foreach( $subitem in $item.categories )
+            <li><a href="browse.htm?c=$!{subitem.id}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}">$!{subitem.name}</a></li>
+            #end
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  #end
+</div>
+  <div class="Main-left-subNav" style="margin-top:20px;">
+      <h3>品牌</h3>
+      <ul class="Main-left-Brand">
+        #foreach( $item in $brandlist )
+        <li><a href="browse.htm?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{item.id}">$!{item.name}</a></li>
+        #end
+      </ul>
+    </div>
+    #foreach( $item in $map.get("G_B").getItems() )
+    <p><img src=".$!{item.getDefaultimage().path}/$!{item.getDefaultimage().name}" width="200" height="303" /></p>
+    #end
+  </div>
+  <div class="Main-right right">
+    <div><div id="play">
+      <!--轮播广告-->
+      <div id="play_list"> <a class="track" href="#" target="_blank" name="h-focus-01"><img src="images/Home-box-01.jpg" width="730" height="422"></a> <a class="track" href="#" target="_blank" name="h-focus-02"><img src="images/Home-box-02.jpg" width="730" height="422"></a> <a class="track" href="#" target="_blank" name="h-focus-03"><img src="images/Home-box-03.jpg" width="730" height="422"></a> <a class="track" href="#" target="_blank" name="h-focus-04"><img src="images/Home-box-04.jpg" width="730" height="422"></a> <a class="track" href="#" target="_blank" name="h-focus-05"><img src="images/Home-box-05.jpg" width="730" height="422"></a> <a class="track" href="#" target="_blank" name="h-focus-06"><img src="images/Home-box-06.jpg" width="730" height="422"></a> </div>
+      <div id="play_text"></div>
+      <SCRIPT type=text/javascript> 
+$('#play_list').TrunAd2();
+</SCRIPT>
+    </div></div>
+    <!------------------------新款上市------------------------>
+    <div class="Main-stroke">
+      <div class="Main-Title">
+        <h4 style="border-bottom:2px solid #f773be;"><a href="#" style="color:#f773be">1F.潮流服饰</a></h4>
+        
+        <div class="clear"></div>
+        <div class="navcontainer">
+          <ul class="tab_t clearFix">
+            <li><a id="home_tab1" href="javascript:void(0);" rel="channel.htm?c=hometab&keyword=hot" var="tabcontent" class="cun">本月热销</a></li>
+            <li><a id="home_tab2" href="javascript:void(0);" rel="channel.htm?c=hometab&keyword=btq" var="tabcontent">精品推荐</a></li>
+            <li><a id="home_tab3" href="javascript:void(0);" rel="channel.htm?c=hometab&keyword=new" var="tabcontent">新品上架</a></li>
+          </ul>
+        </div>
+        
+        <div class="clear"></div>
+      </div>
+      
+      <div id="preloader"> <img src="images/sys/loading.gif" width="35" height="35" align="absmiddle"> 正在加载... </div>
+      <div class="clear"></div>
+      <div id="tabcontent">
+      <ul>
+        #foreach( $item in $map.get("C").getItems() )
+        <li><a href="good.htm?c=$!{c}&gid=$!{item.id}"><img src=".$!{item.getDefaultimage().path}/$!{item.getDefaultimage().name}" width="150" height="205" /></a>
+          <div class="women-box">
+            <p><a href="good.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(36,"..")}</a></p>
+            <p>市场价<del class="gray">￥$!{item.mprice}</del>　售价<span class="red">￥$!{item.getPricescope()}</span></p>
+          </div>
+        </li>
+        #end
+      </ul>
+      </div>
+      
+      <div class="clear"></div>
+    </div>
+    <!------------------------新款上市------------------------>
+    <p><img src="images/banner_02.jpg" width="765" height="260" /></p>
+    <!------------------------POLO衫＆T恤推荐------------------------>
+    <div>
+      <div class="Main-Title">
+        <h4 style="border-bottom:2px solid #a10000;"><a href="#" style="color:#a10000">2F.手机数码</a></h4>
+        <span><a href="#">更多 >></a></span>
+        <div class="clear"></div>
+      </div>
+      <ul>
+        #foreach( $item in $map.get("D").getItems() )
+        <li><a href="good.htm?c=$!{c}&gid=$!{item.id}"><img src=".$!{item.getDefaultimage().path}/$!{item.getDefaultimage().name}" width="150" height="205" /></a>
+          <div class="women-box">
+            <p><a href="good.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(36,"..")}</a></p>
+            <p>市场价<del class="gray">￥$!{item.mprice}</del>　售价<span class="red">￥$!{item.getPricescope()}</span></p>
+          </div>
+        </li>
+        #end
+      </ul>
+      <div class="clear"></div>
+    </div>
+    <!------------------------POLO衫＆T恤推荐------------------------>
+    <p><img src="images/banner_03.jpg" width="765" height="260" /></p>
+    <!------------------------衬衫推荐------------------------>
+    <div>
+      <div class="Main-Title">
+        <h4 style="border-bottom:2px solid #9d7b4e;"><a href="#" style="color:#9d7b4e">3F.美容护肤</a></h4>
+        <span><a href="#">更多 >></a></span>
+        <div class="clear"></div>
+      </div>
+      <ul>
+        #foreach( $item in $map.get("E").getItems() )
+        <li><a href="good.htm?c=$!{c}&gid=$!{item.id}"><img src=".$!{item.getDefaultimage().path}/$!{item.getDefaultimage().name}" width="150" height="205" /></a>
+          <div class="women-box">
+            <p><a href="good.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(36,"..")}</a></p>
+            <p>市场价<del class="gray">￥$!{item.mprice}</del>　售价<span class="red">￥$!{item.getPricescope()}</span></p>
+          </div>
+        </li>
+        #end
+      </ul>
+      <div class="clear"></div>
+    </div>
+    <!------------------------衬衫推荐------------------------>
+    <!------------------------针织衫推荐------------------------>
+    <div>
+      <div class="Main-Title">
+        <h4 style="border-bottom:2px solid #9d7b4e;"><a href="#" style="color:#9d7b4e">4F.珠宝饰品</a></h4>
+        <span><a href="#">更多 >></a></span>
+        <div class="clear"></div>
+      </div>
+      <ul>
+        #foreach( $item in $map.get("F").getItems() )
+        <li><a href="good.htm?c=$!{c}&gid=$!{item.id}"><img src=".$!{item.getDefaultimage().path}/$!{item.getDefaultimage().name}" width="150" height="205" /></a>
+          <div class="women-box">
+            <p><a href="good.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(30,"..")}</a></p>
+            <p>市场价<del class="gray">￥$!{item.mprice}</del>　售价<span class="red">￥$!{item.getPricescope()}</span></p>
+          </div>
+        </li>
+        #end
+      </ul>
+      <div class="clear"></div>
+    </div>
+    <!------------------------针织衫推荐------------------------>
+    <!------------------------裙子推荐------------------------>
+    <div>
+      <div class="Main-Title">
+        <h4 style="border-bottom:2px solid #9d7b4e;"><a href="#" style="color:#9d7b4e">5F.图书音像</a></h4>
+        <span><a href="#">更多 >></a></span>
+        <div class="clear"></div>
+      </div>
+      <ul>
+        #foreach( $item in $map.get("G").getItems() )
+        <li><a href="good.htm?c=$!{c}&gid=$!{item.id}"><img src=".$!{item.getDefaultimage().path}/$!{item.getDefaultimage().name}" width="150" height="205" /></a>
+          <div class="women-box">
+            <p><a href="good.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(36,"..")}</a></p>
+            <p>市场价<del class="gray">￥$!{item.mprice}</del>　售价<span class="red">￥$!{item.getPricescope()}</span></p>
+          </div>
+        </li>
+        #end
+      </ul>
+      <div class="clear"></div>
+    </div>
+    <!------------------------裙子推荐------------------------>
+  </div>
+  <div class="clear"></div>
+</div>
+<!------------------------底部------------------------>
+<div id="Box-bottom">
+  <div class="Box-bottom-menu">
+    #foreach( $doccate in $map.get("G_A") )
+    <dl>
+      <dt><strong>$!{doccate.name}</strong></dt>
+      #foreach( $document in $doccate.documents )
+      <dd><a href="channel.htm?c=help&amp;t=v&amp;d=$!{document.id}">$!{document.title}</a></dd>
+      #end
+    </dl>
+    #end
+    #include("/WEB-INF/publicer/contacts.vm")
+    <div class="clear"></div>
+  </div>
+  #include("/WEB-INF/publicer/services.vm")
+  <p><a href="#">首页</a> | <a href="#">公司简介</a> | <a href="#">隐私申明</a> | <a href="#">团购优惠</a> | <a href="#">合作专区</a> | 加入<a href="#">beautyfamily</a> | <a href="#">投诉与建议</a></p>
+  <p>$!{siteCopyright}</p>
+  <div class="clear"></div>
+</div>
+</body>
+</html>

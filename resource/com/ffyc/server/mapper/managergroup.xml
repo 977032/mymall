@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.ManagerGroupMapper">
+	<cache />
+	<select id="findAll" resultType="ManagerGroup">
+		SELECT
+			*
+		FROM
+			TB_MANAGER_GROUP
+	</select>
+	
+	<select id="findById" resultType="ManagerGroup">
+		SELECT
+			*
+		FROM
+			TB_MANAGER_GROUP
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByCode" resultType="ManagerGroup">
+		SELECT
+			*
+		FROM
+			TB_MANAGER_GROUP
+		WHERE
+			CODE = #{code, jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="save" parameterType="ManagerGroup" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_MANAGER_GROUP
+		(
+			ID,
+			NAME,
+			CODE,
+			REMARK
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{code,    jdbcType=VARCHAR},
+			#{remark,    jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="ManagerGroup" >
+		update
+			TB_MANAGER_GROUP
+		set
+		    NAME = #{name, jdbcType=VARCHAR},
+		    CODE = #{code, jdbcType=VARCHAR},
+		    REMARK = #{remark, jdbcType=VARCHAR}
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_MANAGER_GROUP
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

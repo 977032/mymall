@@ -1,0 +1,141 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>选择文件</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function getSelectedButton(buttonGroup){
+	for(var i=0;i<buttonGroup.length;i++){
+		if(buttonGroup[i].checked){
+			return i
+		}	
+	}
+	return 0
+}
+
+function getUrlParam(paramName)
+{
+  var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
+  var match = window.location.search.match(reParam) ;
+ 
+  return (match && match.length > 1) ? match[1] : '' ;
+}
+
+function fullName(form){
+	//alert(form.sid.length);
+	var i=getSelectedButton(form.sid);
+	try{
+		//opener.document.form1.editprodtimage.value=form.sid[i].value;
+		funcNum = getUrlParam('CKEditorFuncNum');
+		window.opener.CKEDITOR.tools.callFunction(funcNum, "/upload"+form.sid[i].value);
+	}catch(err){
+	}
+	self.close();
+}
+
+function MM_callJS(jsStr) { //v2.0
+  return eval(jsStr)
+}
+
+function returnname(fileUrl) { //v2.0
+  window.opener.CKEDITOR.tools.callFunction(2, fileUrl);
+}
+//-->
+</script>
+</head>
+
+<body>
+<form action="file_upload.htm?pardir=$!curfile.getParentfile()&CKEditor=$!{CKEditor}&CKEditorFuncNum=$!{CKEditorFuncNum}&langCode=$!{langCode}" method="post" enctype="multipart/form-data" name="form1">
+  <table width="700" border="0" align="center" cellpadding="5" cellspacing="0">
+    <tr>
+      <td align="right">上传文件：</td>
+      <td><input type="file" name="upload" id="upload"></td>
+    </tr>
+    <tr>
+      <td align="right">文件备注：</td>
+      <td><textarea name="attdetail" id="attdetail" cols="45" rows="5"></textarea></td>
+    </tr>
+    <tr>
+      <td align="right">&nbsp;</td>
+      <td><input type="submit" name="button" id="button" value="上传"></td>
+    </tr>
+  </table>
+</form>
+<table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="1" bgcolor="#CCCCCC"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td width="1" bgcolor="#CCCCCC"></td>
+    <td valign="top"><table border="0" cellpadding="5" cellspacing="1" bgcolor="#CCCCCC">
+      <tr>
+        <td width="60" align="center" bgcolor="#FFFFFF"><a href="files.htm?pardir=&CKEditor=$!{CKEditor}&CKEditorFuncNum=$!{CKEditorFuncNum}&langCode=$!{langCode}">根目录</a></td>
+        <td width="60" align="center" bgcolor="#FFFFFF"><a href="files.htm?pardir=$!curfile.getParentfile()&CKEditor=$!{CKEditor}&CKEditorFuncNum=$!{CKEditorFuncNum}&langCode=$!{langCode}">上级目录</a></td>
+      </tr>
+    </table>
+        <br />
+        <table width="99%" border="0" align="center" cellpadding="5" cellspacing="0">
+          <form id="form" name="form" method="post" action="delete.action">
+            <tr>
+              <td height="1" colspan="5" bgcolor="#CCCCCC"></td>
+            </tr>
+            <tr>
+              <td><input type="radio" name="sid" value=""></td>
+              <td>名称</td>
+              <td>大小</td>
+              <td>类型</td>
+              <td>修改日期</td>
+            </tr>
+            <tr>
+              <td height="1" colspan="5" bgcolor="#CCCCCC"></td>
+            </tr>
+            #foreach($item in $arrayList)
+            <tr>
+              <td width="10"><input type="radio" name="sid" value="$!{item.parentfile}/$!{item.name}"></td>
+              <td>
+				#if($item.filetype == "2")
+                    <a href="files.htm?pardir=$!{item.parentfile}/$!{item.name}&CKEditor=$!{CKEditor}&CKEditorFuncNum=$!{CKEditorFuncNum}&langCode=$!{langCode}">$!{item.name}</a> 
+				#else 
+					<img src="../upload/$!{item.parentfile}/$!{item.name}" width="120" height="50">
+    <br>
+                    <a href="files.htm?pardir=$!{item.parentfile}/$!{item.name}&CKEditor=$!{CKEditor}&CKEditorFuncNum=$!{CKEditorFuncNum}&langCode=$!{langCode}">$!{item.name}</a>
+				#end
+              </td>
+			  <td>
+				#if($item.filetype == "1") 
+					$item.length
+				#end          </td>
+			  <td>
+				#if($item.filetype == "1")
+					 文件
+				#elseif($item.filetype == "2")
+					 文件夹
+				#end          </td>
+              <td>$item.lastedit</td>
+            </tr>
+            <tr>
+              <td height="1" colspan="5" bgcolor="#CCCCCC"></td>
+            </tr>
+            #end
+            <tr>
+              <td>&nbsp;</td>
+              <td><input type="button" name="Submit2" value="选择文件" onClick="fullName(this.form)" /></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td height="1" colspan="5" bgcolor="#CCCCCC"></td>
+            </tr>
+          </form>
+        </table>
+      </td>
+  </tr>
+  <tr>
+    <td height="1" bgcolor="#CCCCCC"></td>
+    <td></td>
+  </tr>
+</table>
+</body>
+</html>

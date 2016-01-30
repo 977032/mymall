@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网店后台管理系统</title>
+<link href="css/css.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+#parse("/WEB-INF/member/zh_CN_top.vm")
+<div id="blankline"></div>
+#include("/WEB-INF/member/zh_CN_nav.vm")
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="202" height="500" align="left" valign="top">
+    <div id="lefttitle">交易管理</div>
+	<div id="leftline"></div>
+	
+    <div style="padding-top:8px;"></div>
+    #include("/WEB-INF/member/zh_CN_menu.vm")
+	</td>
+    <td width="1" bgcolor="#dbdbdb">
+	</td>
+    <td align="left" valign="top" style="padding-left:15px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="42" align="left" valign="middle" bgcolor="#f4f4f4" class="title" style="padding-left:15px;">管理中心&nbsp;--&nbsp;<span class="title1">订单详情</span></td>
+      </tr>
+      <tr>
+        <td height="1" bgcolor="#e5e5e5">
+		</td>
+      </tr>
+    </table>
+    <div style="padding-top:10px;"></div>
+    <table width="100%" border="0" cellspacing="0" cellpadding="5">
+      <tr>
+        <td class="pagen"> 订单：$!{order.code} 状态
+          #if( $order.status=="WAIT_BUYER_PAY" )
+          等待付款&nbsp;&nbsp;&nbsp;<a href="payment.htm?oid=$!{order.id}" target="_blank">付款</a>
+          #end
+          #if( $order.status=="WAIT_BUYER_CONFIRM_GOODS" )
+          已发货&nbsp;&nbsp;&nbsp;<a href="delivered.htm?oid=$!{order.id}" target="_blank">确认收货</a>
+          #end
+          #if( $order.status=="WAIT_SELLER_SEND_GOODS" )
+          买家已付款
+          #end
+          #if( $order.status=="TRADE_FINISHED" )
+          交易成功完成
+          #end
+          #if( $order.status=="TRADE_CLOSED" )
+          交易关闭
+          #end</td>
+      </tr>
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="5">
+      <tr>
+        <td width="80" align="right">订单号：</td>
+        <td width="300">$!{order.code}</td>
+        <td width="80" align="right">下单日期：</td>
+        <td>$!{order.ctime}</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="right">商品总金额：</td>
+        <td>￥$!{order.amount}</td>
+        <td align="right">商品重量：</td>
+        <td>$!{order.weight}
+          g</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="right">实收：</td>
+        <td>￥$!{order.actamount}</td>
+        <td align="right">折扣：</td>
+        <td>$!{order.discount}
+          %</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="right">配送方式：</td>
+        <td>$!{order.areaa.logisticc.name}</td>
+        <td align="right">配送费用：</td>
+        <td>$!{order.logicost}</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="right">支付方式：</td>
+        <td>$!{order.paymodee.name}</td>
+        <td align="right">支付手续费：</td>
+        <td>￥$!{order.paycost}</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="right">发票抬头：</td>
+        <td>$!{order.invoicetitle}</td>
+        <td align="right">税金：</td>
+        <td>￥$!{order.duty}</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="5">
+      <tr class="page">
+        <td class="pagen">商品</td>
+        <td class="pagen">货号</td>
+        <td class="pagen">商品名称</td>
+        <td class="pagen">单价</td>
+        <td class="pagen">数量</td>
+        <td class="pagen">小计</td>
+        <td class="pagen">折扣</td>
+        <td class="pagen">实计</td>
+        <td class="pagen">缺货</td>
+        <td class="pagen">&nbsp;</td>
+      </tr>
+      #foreach( $item in $ps.getItems() )
+      <tr>
+        <td><img src="../$!{item.goodd.defaultImage.path}/$!{item.goodd.defaultImage.name}" width="60" height="60" alt="$!{item.goodd.getSubname(36,'..')}"></td>
+        <td>$!{item.specc.goodcode}</td>
+        <td>
+        $!{item.goodd.name}
+        #foreach( $subitem in $item.specc.specvalues )
+        [$!{subitem.specitemm.name}:$!{subitem.name}]
+        #end
+        </td>
+        <td>$!{item.unitprice}</td>
+        <td>$!{item.number}</td>
+        <td>$!{item.subtotal}</td>
+        <td>$!{item.discount}</td>
+        <td>$!{item.actsum}</td>
+        <td>#if( $item.status=='oos' )
+          是&nbsp;&nbsp;
+          #else
+          否&nbsp;&nbsp;
+          #end</td>
+        <td></td>
+      </tr>
+      #end
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="5">
+      <tr>
+        <td colspan="4">&nbsp;</td>
+        </tr>
+      <tr>
+        <td colspan="4" class="pagen">收货人信息：</td>
+        </tr>
+      <tr>
+        <td>收货人姓名：</td>
+        <td>$!{order.addresss.name}</td>
+        <td>手机：</td>
+        <td>$!{order.addresss.mobile}</td>
+      </tr>
+      <tr>
+        <td>固定电话：</td>
+        <td>$!{order.addresss.telephone}</td>
+        <td>邮编：</td>
+        <td>$!{order.addresss.postcode}</td>
+      </tr>
+      <tr>
+        <td>所在地区：</td>
+        <td colspan="3">$!{order.addresss.districtt.district.name} $!{order.addresss.districtt.name}</td>
+      </tr>
+      <tr>
+        <td>联系地址：</td>
+        <td colspan="3">$!{order.addresss.address}</td>
+      </tr>
+    </table>
+<div style="padding-top:10px;"></div>
+    <table width="787" border="0" cellpadding="0" cellspacing="0" bgcolor="#cdcdcd">
+      <tr>
+        <td width="1">
+		</td>
+      </tr>
+    </table>
+    #include("/WEB-INF/member/zh_CN_footer.vm")
+	</td>
+  </tr>
+</table>
+</body>
+</html>

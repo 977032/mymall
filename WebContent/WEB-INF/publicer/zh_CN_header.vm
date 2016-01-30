@@ -1,0 +1,16 @@
+    <div id="header">
+        <div class="header_box">
+            <p>
+                #if( $session.getAttribute("member") )
+                <span class="gray">您好,</span> <span class="c_orange"><a href="member/index.htm"> $!{session.getAttribute("member").account}</a></span> <a href="member/logout.htm" class="gray">退出</a> &nbsp <span>欢迎来到 magnatehardware！</span>
+                #else
+                <span class="gray">您好,欢迎来到 magnatehardware！</span> <a href="login.htm">[请登录]</a> <span class="gray">，新用户？</span> <a href="register.htm">[免费注册]</a>
+                #end
+            </p>
+            <ul>
+               <!-- <li><a href="/?c=help" target="_blank">帮助中心</a></li>-->
+                <li class="top_fore"><a target="_blank" href="/member/list_bought_items.htm">我的订单</a></li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+    </div>

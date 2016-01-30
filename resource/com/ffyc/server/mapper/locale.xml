@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.LocaleMapper">
+	<cache />
+	<select id="findAll" resultType="Locale">
+		SELECT
+			*
+		FROM
+			TB_LOCALE
+	</select>
+	
+	<select id="findById" resultType="Locale">
+		SELECT
+			*
+		FROM
+			TB_LOCALE
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByIds" resultType="Locale">
+		SELECT
+			*
+		FROM
+			TB_LOCALE
+		WHERE
+			ID IN 
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+          #{item}  
+        </foreach>
+	</select>
+	
+	<insert id="save" parameterType="Locale" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_LOCALE
+		(
+			ID,
+			NAME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="Locale">
+		update
+			TB_LOCALE
+		set
+		    NAME = #{name, jdbcType=VARCHAR}
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_LOCALE
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.PointRunAccountMapper">
+	<cache />
+	
+	<sql id="sql_searchPointRunAccountByPointRunAccount">
+	  select * from tb_point_run_account where 1 = 1
+      <if test="prunacc.point != null">  
+          and point = #{prunacc.point}  
+      </if>
+    </sql>  
+      
+	<select id="findAll" resultType="PointRunAccount">
+		SELECT
+			*
+		FROM
+			TB_POINT_RUN_ACCOUNT
+	</select>
+	
+	<select id="findById" resultType="PointRunAccount">
+		SELECT
+			*
+		FROM
+			TB_POINT_RUN_ACCOUNT
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByPointRunAccount" resultType="PointRunAccount">
+	   <include refid="sql_searchPointRunAccountByPointRunAccount"></include>
+	   order by ctime desc
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+	</select>
+	
+	<select id="getCountByPointRunAccount" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchPointRunAccountByPointRunAccount"></include> 
+      ) rs
+    </select> 
+	
+	<insert id="save" parameterType="PointRunAccount" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_POINT_RUN_ACCOUNT
+		(
+			ID,
+			STATUS,
+			BALANCE,
+			GETOUT,
+			PAYIN,
+			TABLOID,
+			REMARKS,
+			POINT,
+			MEMBER,
+			MANAGER,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{status,    jdbcType=VARCHAR},
+			#{balance,    jdbcType=INTEGER},
+			#{getout,    jdbcType=INTEGER},
+			#{payin,    jdbcType=INTEGER},
+			#{tabloid,    jdbcType=VARCHAR},
+			#{remarks,    jdbcType=VARCHAR},
+			#{point,    jdbcType=VARCHAR},
+			#{member,    jdbcType=VARCHAR},
+			#{manager,    jdbcType=VARCHAR},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="PointRunAccount">
+		update
+			TB_POINT_RUN_ACCOUNT
+		set
+		    STATUS = #{status, jdbcType=VARCHAR},
+		    BALANCE = #{balance, jdbcType=VARCHAR},
+		    GETOUT = #{getout, jdbcType=INTEGER},
+		    PAYIN = #{payin, jdbcType=INTEGER},
+		    TABLOID = #{tabloid, jdbcType=INTEGER},
+		    REMARKS = #{remarks, jdbcType=VARCHAR},
+		    POINT = #{point, jdbcType=VARCHAR},
+		    MEMBER = #{member, jdbcType=VARCHAR},
+		    MANAGER = #{manager, jdbcType=VARCHAR},
+		    UTIME = sysdate()
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_POINT_RUN_ACCOUNT
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

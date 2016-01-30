@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>beautyfamily Login</title>
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+<!--
+#logo {background:#000;margin:0 auto;text-align:center;padding:200px 0 50px 0;}
+#login {margin:0 auto;text-align:center; padding:30px 0 0 0; width:560px;}
+label{font:12px/20px Verdana, Geneva, sans-serif, "宋体"; color:#333;}
+.text-box{font:12px/20px Verdana, Geneva, sans-serif, "宋体"; color:#666; border:1px solid #ccc; height:20px; width:160px; margin:0 10px;}
+.button-box{background: #111; color:#fff;border:1px solid #999;}
+p{text-align:right; padding:10px 19px 0 0;}
+-->
+</style>
+</head>
+<body>
+<div id="logo"><img src="images/logo.png" width="221" height="40" /></div>
+<div id="login">
+  <form action="mloggingin.htm" method="post" id="mlogin">
+    <table width="100%" border="0" cellspacing="3" cellpadding="5">
+      <tr>
+        <td align="right">账号：</td>
+        <td><input name="account" type="text" class="text-box" id="account" value="" /></td>
+        <td align="right">密码：</td>
+        <td><input name="password" type="password" class="text-box" id="password" value="" /></td>
+      </tr>
+      <tr>
+        <td align="right">验证码：</td>
+        <td><input name="validateCode" type="text" class="text-box" id="validateCode" size="8" maxlength="4"></td>
+        <td colspan="2" align="left"><img id=imgVerify src="./images/validateImage" border="0" /></td>
+      </tr>
+    </table>
+    <p>
+      <input name="url" type="hidden" id="url" value="$!{url}">
+    <input name="buttom" type="submit" value="Login" class="button-box" /></p>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<script type="text/javascript">
+function changeFreight(_id,oid){
+	jQuery.ajax({
+		type: "POST",
+		url: "change_area.htm",
+		dataType: "json",
+		data: "ft="+_id+"&oid="+oid,
+		success: function(msg){
+			var json = eval(msg.result);
+			jQuery("#logicost").val(json);
+		}
+	});
+}
+
+function changePaymode(_id,oid){
+	jQuery.ajax({
+		type: "POST",
+		url: "change_paymode.htm",
+		dataType: "json",
+		data: "pm="+_id+"&oid="+oid,
+		success: function(msg){
+			var json = eval(msg.result);
+			jQuery("#paycost").val(json);
+		}
+	});
+}
+
+jQuery(document).ready(function(){
+	jQuery("#discount").change(function(){
+		var amount = jQuery("#amount").val();
+		var discount = jQuery("#discount").val();
+		var actamount = amount - discount / 100 * amount;
+		jQuery("#actamount").val(String(Math.round(actamount*100)/100));
+	});
+});
+</script>
+<title>修改订单</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/orders.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 订单 - 修改订单</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="orders.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回订单列表 </span></a></li>
+      <li><a class="shortcut-button" href="#"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建订单 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>订单：$!{order.code}</h3>
+        <ul class="content-box-tabs">
+          <li><a class="default-tab" href="#tab1">基本信息</a></li>
+          <li><a href="#tab2">订单商品</a></li>
+          <li><a href="#tab3">购买人信息</a></li>
+          <li><a href="#tab4">收货人信息</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form2" name="form2" method="post" action="order_update.htm">
+            <table border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td colspan="4">#if( $order.status=="WAIT_SELLER_SEND_GOODS" )<a href="order_send_goods.htm?oid=$!{order.id}">设置已发货</a>#end</td>
+              </tr>
+              <tr>
+                <td align="right">订单号：</td>
+                <td>$!{order.code}</td>
+                <td align="right">下单日期：</td>
+                <td>$!{order.ctime}</td>
+              </tr>
+              <tr>
+                <td align="right">订单总金额(￥)：</td>
+                <td><input name="order.amount" type="text" id="amount" value="$!{order.amount}" reg="^\d{1,12}(\.\d{1,2})?$" tip="输入订单总金额，只允许数字。"></td>
+                <td align="right">商品重量(g)：</td>
+                <td><input name="order.weight" type="text" id="order.weight" value="$!{order.weight}" reg="^\d{1,12}(\.\d{1,2})?$" tip="输商品重量，只允许数字。"></td>
+              </tr>
+              <tr>
+                <td align="right">实收(￥)：</td>
+                <td><input name="order.actamount" type="text" id="actamount" value="$!{order.actamount}" reg="^\d{1,12}(\.\d{1,2})?$" tip="输入实收金额，只允许数字。"></td>
+                <td align="right">折扣(%)：</td>
+                <td><input name="order.discount" type="text" id="discount" value="$!{order.discount}" reg="^\d{1,12}(\.\d{1,2})?$" tip="输入订单折扣，只允许数字。"></td>
+              </tr>
+              <tr>
+                <td align="right">配送方式：</td>
+                <td>
+                <select name="order.areaa.id" id="order.areaa.id" onchange="changeFreight(this.value,'$!{order.id}')">
+                  #foreach( $item in $arealist )
+                  <option value="$!{item.id}" #if( $order.areaa.id==$item.id )selected="selected"#end>$!{item.logisticc.name}[$!{item.name}]</option>
+                  #end
+                </select></td>
+                <td align="right">配送费用(￥)：</td>
+                <td><input name="order.logicost" type="text" id="logicost" value="$!{order.logicost}" reg="^\d{1,12}(\.\d{1,2})?$" tip="输入配送费用，只允许数字。"></td>
+              </tr>
+              <tr>
+                <td align="right">支付方式：</td>
+                <td>
+                <select name="order.paymodee.id" id="order.paymodee.id" onchange="changePaymode(this.value,'$!{order.id}')">
+                  #foreach( $item in $paymodelist )
+                  <option value="$!{item.id}" #if( $order.paymodee.id==$item.id )selected="selected"#end>$!{item.name}</option>
+                  #end
+                </select></td>
+                <td align="right">支付手续费(￥)：</td>
+                <td><input name="order.paycost" type="text" id="paycost" value="$!{order.paycost}" reg="^\d{1,12}(\.\d{1,2})?$" tip="输入支付手续费，只允许数字。"></td>
+              </tr>
+              <tr>
+                <td align="right">发票抬头：</td>
+                <td><input name="order.invoicetitle" type="text" id="order.invoicetitle" value="$!{order.invoicetitle}" maxlength="255" reg="^$|^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{2,255}$" tip="中文，英文或下划线，最少两个字符，最多255个字符"></td>
+                <td align="right">税金(￥)：</td>
+                <td><input name="order.duty" type="text" id="order.duty" value="$!{order.duty}" reg="^\d{1,12}(\.\d{1,2})?$" tip="输入税金，只允许数字。"></td>
+              </tr>
+              <tr>
+                <td align="right">订单状态：</td>
+                <td>
+                #if( $order.paymodee.pmtype == 'other' )
+                <select name="order.status" id="order.status">
+                  <option value="WAIT_BUYER_PAY" selected="selected">等待买家付款</option>
+                  <option value="WAIT_SELLER_SEND_GOODS">买家已付款</option>
+                </select>
+                #end
+                </td>
+                <td align="right">&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="  修 改  ">
+                  <input name="order.id" type="hidden" id="order.id" value="$!{order.id}"></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+        </div>
+        <div class="tab-content" id="tab2">
+          <form id="form1" name="form1" method="post" action="">
+            #foreach( $item in $ps.getItems() )
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td>货号</td>
+                <td>商品名称</td>
+                <td>单价</td>
+                <td>数量</td>
+                <td>小计</td>
+                <td>折扣</td>
+                <td>实计</td>
+                <td>缺货</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td>$!{item.specc.goodcode}</td>
+                <td>$!{item.goodd.name}</td>
+                <td>$!{item.unitprice}</td>
+                <td>$!{item.number}</td>
+                <td>$!{item.subtotal}</td>
+                <td>$!{item.discount}</td>
+                <td>$!{item.actsum}</td>
+                <td>
+                #if( $item.goodd.inventory >= $item.number )库存：$!{item.goodd.inventory}
+                #else缺货/库存不足#end
+                </td>
+                <td></td>
+              </tr>
+            </table>
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td height="1" bgcolor="#CCCCCC"></td>
+              </tr>
+            </table>
+            #end
+          </form>
+        </div>
+        <div class="tab-content" id="tab3">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td>会员用户名：</td>
+              <td>$!{order.memberr.account}</td>
+              <td>姓名：</td>
+              <td>$!{order.memberr.name}</td>
+            </tr>
+            <tr>
+              <td>联系电话：</td>
+              <td>$!{order.memberr.telephone}</td>
+              <td>手机：</td>
+              <td>$!{order.memberr.mobile}</td>
+            </tr>
+            <tr>
+              <td>EMAIL：</td>
+              <td>$!{order.memberr.email}</td>
+              <td>邮编：</td>
+              <td>$!{order.memberr.postcode}</td>
+            </tr>
+            <tr>
+              <td>所在地区：</td>
+              <td colspan="3">$!{order.memberr.districtt.district.name} $!{order.memberr.districtt.name}</td>
+            </tr>
+            <tr>
+              <td>联系地址：</td>
+              <td colspan="3">$!{order.memberr.address}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="tab-content" id="tab4">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td>收货人姓名：</td>
+              <td>$!{order.addresss.name}</td>
+              <td>手机：</td>
+              <td>$!{order.addresss.mobile}</td>
+            </tr>
+            <tr>
+              <td>固定电话：</td>
+              <td>$!{order.addresss.telephone}</td>
+              <td>邮编：</td>
+              <td>$!{order.addresss.postcode}</td>
+            </tr>
+            <tr>
+              <td>所在地区：</td>
+              <td colspan="3">$!{order.addresss.districtt.district.name} $!{order.addresss.districtt.name}</td>
+            </tr>
+            <tr>
+              <td>联系地址：</td>
+              <td colspan="3">$!{order.addresss.address}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

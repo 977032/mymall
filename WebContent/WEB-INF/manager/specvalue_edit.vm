@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<title>编辑商品规格值</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/specitems.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商品规格项 - 商品规格值 - 编辑规格值</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="specvalues.htm?si=$!{specvalue.specitemm.id}"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回规格项 </span></a></li>
+      <li><a class="shortcut-button" href="specvalue_input.htm?si=$!{specvalue.specitemm.id}"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      添加规格值 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>当前规格项： $!{specvalue.specitemm.name}</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form action="specvalue_update.htm" method="post" enctype="multipart/form-data" name="form1" id="form1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">规格项：</td>
+                <td>$!{specvalue.specitemm.name} </td>
+              </tr>
+              <tr>
+                <td align="right">规格值：</td>
+                <td><input name="specvalue.name" type="text" id="specvalue.name" value="$!{specvalue.name}" size="30" maxlength="255" reg="^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{2,255}$" tip="中文，英文或下划线，最少两个字符，最多255个字符" /></td>
+              </tr>
+              <tr>
+                <td align="right">&nbsp;</td>
+                <td><img src="..$!{specvalue.vimage.path}/$!{specvalue.vimage.name}" alt="$!{specvalue.name}" width="80" height="30"></td>
+              </tr>
+              <tr>
+                <td align="right">规格图片：</td>
+                <td><input type="file" name="upload" id="upload" reg="^$|.*gif|png|jpg|jpeg$" tip="允许JPG,GIF,PNG图片文件"></td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交" />
+                  <input name="specvalue.id" type="hidden" id="specvalue.id" value="$!{specvalue.id}"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

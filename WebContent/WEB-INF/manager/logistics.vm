@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<script type="text/javascript">
+function getDistrict(_id){
+	var select = document.createElement("select");
+	select.id = "freight.district.id";
+	select.name = "freight.district.id";
+
+	jQuery.ajax({
+		type: "POST",
+		url: "getdistrict.action",
+		dataType: "json",
+		data: "id="+_id,
+		success: function(msg){
+			var json = eval(msg.result);
+			jQuery.each(json, function(i, n){
+				select.options[i] = new Option(n.name, n.id);
+			});
+		}
+	});
+	psdiv.innerHTML = "";
+	var object = psdiv.appendChild(select);
+}
+
+</script>
+
+<script type="text/javascript"> 
+<!-- 
+jQuery(document).ready(function() {
+jQuery("#checkall").click(
+    function(){
+		if(this.checked){
+            jQuery("input[name='checkbox']").each(function(){this.checked=true;});
+        }else{
+            jQuery("input[name='checkbox']").each(function(){this.checked=false;});
+        }
+    }
+);
+});
+//--> 
+</script>
+
+<script type="text/javascript">
+var isExtendsValidate = true;
+function extendsValidate(){
+	//checkbox 验证，必须选择一个checkbox
+	if(jQuery("[name='checkbox']:checked").length < 1){
+		alert("至少选择一条信息。");
+		return false;
+	}
+}
+</script>
+
+<title>物流公司</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商店配置 - 物流公司</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="logistic_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建物流公司 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>物流公司</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="logistic_del.action">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td><input type="checkbox" name="checkall" id="checkall" title="全选/反选"></td>
+                <td>物流公司标志</td>
+                <td>物流公司名称</td>
+                <td>网址</td>
+                <td>排序</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              #foreach( $item in $ps.getItems() )
+              <tr>
+                <td><input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}"></td>
+                <td><img src="..$!{item.vimage.path}/$!{item.vimage.name}" alt="$!{item.name}" width="80" height="30"></td>
+                <td>$!{item.name}</td>
+                <td>$!{item.url}</td>
+                <td>$!{item.csort}</td>
+                <td><a href="areas.htm?ls=$!{item.id}">分区管理</a></td>
+                <td><a href="logistic_edit.htm?ls=$!{item.id}">编辑</a></td>
+              </tr>
+              #end
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value=" 删 除 "></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+          <div class="pagination">
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=1&amp;od=$!{od}&amp;sc=$!{sc}" title="首页">首页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPreviousTenPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="前10页">前10页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPreviousPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="上一页">上一页</a>
+#foreach( $infoitem in $ps.getPages() )
+<a class="number" title="第$!{infoitem}页" href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{infoitem}&amp;od=$!{od}&amp;sc=$!{sc}">&nbsp;$!{infoitem}&nbsp;</a>
+#end
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getNextPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="下一页">下一页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getNextTenPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="后10页">后10页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPageCount()&amp;od=$!{od}&amp;sc=$!{sc}" title="最后页">最后页</a>
+<span>&nbsp;共&nbsp;
+                $ps.getTotalCount()
+                &nbsp;条信息，
+                $ps.pageCount
+                页</span>
+</div>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

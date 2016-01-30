@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.PayModeMapper">
+	<cache />
+	<select id="findAll" resultType="PayMode">
+		SELECT
+			*
+		FROM
+			TB_PAYMODE
+	</select>
+	
+	<select id="findById" resultType="PayMode">
+		SELECT
+			*
+		FROM
+			TB_PAYMODE
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="save" parameterType="PayMode" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_PAYMODE
+		(
+			ID,
+			PMTYPE,
+			NAME,
+			IMAGE,
+			INTRO,
+			RATE,
+			FOCRATING,
+			CSORT
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{pmtype,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{image,    jdbcType=VARCHAR},
+			#{intro,    jdbcType=VARCHAR},
+			#{rate,    jdbcType=DECIMAL},
+			#{focrating,    jdbcType=DECIMAL},
+			#{csort,    jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<update id="update" parameterType="PayMode" >
+		update
+			TB_PAYMODE
+		set
+		    PMTYPE = #{pmtype, jdbcType=VARCHAR},
+		    NAME = #{name, jdbcType=VARCHAR},
+		    IMAGE = #{image, jdbcType=VARCHAR},
+		    INTRO = #{intro, jdbcType=VARCHAR},
+		    RATE = #{rate, jdbcType=DECIMAL},
+		    FOCRATING = #{focrating, jdbcType=DECIMAL},
+		    CSORT = #{csort, jdbcType=INTEGER}
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_PAYMODE
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

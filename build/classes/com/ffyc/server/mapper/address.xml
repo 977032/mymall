@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.AddressMapper">
+	<cache />
+	<sql id="sql_searchAddressByAddress">
+	  select * from tb_address where 1 = 1
+      <if test="address.member != null">  
+          and member = #{address.member}  
+      </if>
+      <if test="address.district != null">  
+          and district = #{address.district}  
+      </if>
+      <if test="address.telephone != null">  
+          and telephone = #{address.telephone}  
+      </if>
+      <if test="address.mobile != null">  
+          and mobile = #{address.mobile}  
+      </if>
+      <if test="address.status != null">  
+          and status = #{address.status}  
+      </if>
+    </sql>
+	
+	<select id="findAll" resultType="Address">
+		SELECT
+			*
+		FROM
+			TB_ADDRESS
+	</select>
+	
+	<select id="findById" resultType="Address">
+		SELECT
+			*
+		FROM
+			TB_ADDRESS
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByAddress" resultType="Address">
+	   <include refid="sql_searchAddressByAddress"></include>
+	   order by ctime desc
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+	</select>
+	
+	<select id="getCountByAddress" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchAddressByAddress"></include> 
+      ) rs
+    </select> 
+	
+	<insert id="save" parameterType="Address" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO TB_ADDRESS
+		(
+			ID,
+			MEMBER,
+			DISTRICT,
+			ADDRESS,
+			POSTCODE,
+			NAME,
+			TELEPHONE,
+			MOBILE,
+			STATUS,
+			CTIME,
+			UTIME
+		)
+		VALUES
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{member,    jdbcType=VARCHAR},
+			#{district,    jdbcType=VARCHAR},
+			#{address,    jdbcType=VARCHAR},
+			#{postcode,       jdbcType=VARCHAR},
+			#{name,       jdbcType=VARCHAR},
+			#{telephone,      jdbcType=VARCHAR},
+			#{mobile,      jdbcType=VARCHAR},
+			#{status,      jdbcType=VARCHAR},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="Address">
+		UPDATE
+			TB_ADDRESS
+		SET
+		    MEMBER = #{member, jdbcType=VARCHAR},
+			DISTRICT = #{district, jdbcType=VARCHAR},
+			ADDRESS = #{address, jdbcType=VARCHAR},
+			POSTCODE = #{postcode, jdbcType=VARCHAR},
+			NAME = #{name, jdbcType=VARCHAR},
+			TELEPHONE = #{telephone, jdbcType=VARCHAR},
+			MOBILE = #{mobile, jdbcType=VARCHAR},
+			STATUS = #{status, jdbcType=VARCHAR},
+			UTIME = sysdate()
+	    WHERE
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM 
+			TB_ADDRESS
+		WHERE
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.GoodMapper">
+	<cache />
+	
+	<sql id="sql_searchGoodByGood">
+	  select * from tb_good where 1 = 1 
+      <if test="good.status != null">  
+          and status = #{good.status}  
+      </if>
+      <if test="good.locale != null">  
+          and locale = #{good.locale}  
+      </if>
+      <if test="good.goodtype != null">  
+          and goodtype = #{good.goodtype}  
+      </if>
+      <if test="good.category != null">  
+          and category = #{good.category}  
+      </if>
+      <if test="good.promote != null">  
+          and promote = #{good.promote}
+      </if>
+      <if test="good.keyword != null">  
+          and keyword like concat('%',#{good.keyword},'%') 
+      </if>
+      
+	</sql>
+	
+	<select id="findAll" resultType="Good">
+		SELECT
+			*
+		FROM
+			TB_GOOD
+	</select>
+	
+	<select id="findById" resultType="Good">
+		SELECT
+			*
+		FROM
+			TB_GOOD
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByGood" resultType="Good">
+	   <include refid="sql_searchGoodByGood"></include>
+	   order by csort asc, ctime desc 
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+    </select>
+    
+    <select id="getCountByGood" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchGoodByGood"></include> 
+      ) rs
+    </select>
+    
+    <select id="findBySql" resultType="Good">
+	   <![CDATA[ ${sql} ${orderby}]]>
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+    </select>
+    
+    <select id="getCountBySql" resultType="Integer" >  
+      select count(1) from (
+      <![CDATA[ ${sql}]]>
+      ) rs
+    </select>  
+	
+	<select id="findByLocalAndCategory"  resultType="Good">
+      select g.* from tb_good as g where 1=1
+      and
+      (
+          g.locale = #{locale}  
+      )
+      and
+      (
+	     g.category = #{category}
+	     or  g.category in (
+	     select c.id from tb_category as c  where c.nodepath like  concat('%',#{category},'%') 
+	     )
+	  )
+      <if test="status != null">  
+          and status = #{status}  
+      </if>
+	  and
+	  (
+	     <if test="keywords !=null ">  
+	        <foreach item="keyword" index="index" collection="keywords">
+                g.keyword like concat('%',#{keyword},'%') or 
+            </foreach>
+         </if>
+         1=1
+	  )
+     order by g.ctime desc,g.utime desc,g.csort asc
+    </select>
+    
+    <select id="getExtraAttrValues" resultType="ExtraAttrValue">
+		select
+			t.* from tb_extra_attr_value as t inner join tb_good_extra_attr_value as tt
+		on
+		    tt.extraattrvalue = t.id and 
+			tt.good = #{id, jdbcType=VARCHAR}
+	</select>
+    
+	<insert id="save" parameterType="Good" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_GOOD
+		(
+			ID,
+			LOCALE,
+			CATEGORY,
+			GOODTYPE,
+			NAME,
+			SN,
+			BARCODE,
+			KEYWORD,
+			BRAND,
+			INTRO,
+			DETAIL,
+			PRICE,
+			MPRICE,
+			CPRICE,
+			WEIGHT,
+			FREESHIPPING,
+			POINTS,
+			INVENTORY,
+			PROMOTE,
+			STATUS,
+			CSORT,
+			MANAGER,
+			MKEYWORD,
+			MDESCRIPTION,
+			VISTOR,
+			CTIME,
+			UTIME	
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{locale,    jdbcType=VARCHAR},
+			#{category,    jdbcType=VARCHAR},
+			#{goodtype,       jdbcType=VARCHAR},
+			#{name,       jdbcType=VARCHAR},
+			#{sn,       jdbcType=VARCHAR},
+			#{barcode,       jdbcType=VARCHAR},
+			#{keyword,       jdbcType=VARCHAR},
+			#{brand,       jdbcType=VARCHAR},
+			#{intro,       jdbcType=VARCHAR},
+			#{detail,       jdbcType=VARCHAR},
+			#{price,       jdbcType=DECIMAL},
+			#{mprice,       jdbcType=DECIMAL},
+			#{cprice,       jdbcType=DECIMAL},
+			#{weight,       jdbcType=DECIMAL},
+			#{freeshipping,       jdbcType=VARCHAR},
+			#{points,       jdbcType=INTEGER},
+			#{inventory,       jdbcType=INTEGER},
+			#{promote,       jdbcType=VARCHAR},
+			#{status,       jdbcType=VARCHAR},
+			#{csort,       jdbcType=INTEGER},
+			#{manager,       jdbcType=VARCHAR},
+			#{mkeyword,       jdbcType=VARCHAR},
+			#{mdescription,       jdbcType=VARCHAR},
+			#{vistor,       jdbcType=VARCHAR},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	<insert id="insertExtraAttrValues" parameterType="java.util.List">
+		insert into tb_good_extra_attr_value (good,extraattrvalue) values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{id},#{item.id})
+		</foreach>
+	</insert>
+	<update id="update" parameterType="Good">
+		update
+			TB_GOOD
+		set
+		    LOCALE = #{locale, jdbcType=VARCHAR},
+			CATEGORY= #{category, jdbcType=VARCHAR},
+			GOODTYPE = #{goodtype, jdbcType=VARCHAR},
+			NAME = #{name, jdbcType=VARCHAR},
+			SN = #{sn, jdbcType=VARCHAR},
+			BARCODE = #{barcode, jdbcType=VARCHAR},
+			KEYWORD = #{keyword, jdbcType=VARCHAR},
+			BRAND = #{brand, jdbcType=VARCHAR},
+			INTRO = #{intro, jdbcType=VARCHAR},
+			DETAIL = #{detail, jdbcType=VARCHAR},
+			PRICE = #{price, jdbcType=DECIMAL},
+			MPRICE = #{mprice, jdbcType=DECIMAL},
+			CPRICE = #{cprice, jdbcType=DECIMAL},
+			WEIGHT = #{weight, jdbcType=DECIMAL},
+			FREESHIPPING = #{freeshipping, jdbcType=VARCHAR},
+			POINTS = #{points, jdbcType=INTEGER},
+			INVENTORY = #{inventory, jdbcType=INTEGER},
+			PROMOTE = #{promote, jdbcType=VARCHAR},
+			STATUS = #{status, jdbcType=VARCHAR},
+			CSORT = #{csort, jdbcType=INTEGER},
+			MANAGER = #{manager, jdbcType=VARCHAR},
+			MKEYWORD = #{mkeyword, jdbcType=VARCHAR},
+			MDESCRIPTION = #{mdescription, jdbcType=VARCHAR},
+			VISTOR = #{vistor, jdbcType=INTEGER},
+			UTIME= sysdate()
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_GOOD
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteExtraAttrValues">
+		delete from
+		    tb_good_extra_attr_value
+		where
+			good = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

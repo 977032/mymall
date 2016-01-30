@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.MessageMapper">
+	<cache />
+	
+	<sql id="sql_systemMessageList">
+		select
+			id
+			,content
+			,ctime createTime
+			,0 fromId
+			,#{userId,jdbcType=NUMERIC} toId
+			,'系统消息' fromName 
+		from
+			tb_system_msg
+		where
+			deleted = 0
+		and (to_user_id = 0 or to_user_id = #{userId,jdbcType=VARCHAR})
+		and not exists (select msg_id from tb_system_msg_delete d where d.msg_id = id and d.user_id = #{userId,jdbcType=NUMERIC})
+		order by ctime desc
+	</sql>
+	
+	<sql id="sql_userMessageList">
+		SELECT 
+			m.id
+			,m.content
+			,m.from_id fromId
+			,m.to_id toId
+			,m.ctime createTime
+			,(SELECT u.name FROM tb_manager u WHERE u.id = m.from_id) fromName
+			,(SELECT u.name FROM tb_manager u WHERE u.id = m.to_id) toName
+		FROM tb_user_msg m
+		WHERE 
+			(m.from_id = #{me,jdbcType=VARCHAR} AND m.to_id = #{userId,jdbcType=VARCHAR})
+		OR
+			(m.from_id = #{userId,jdbcType=VARCHAR} AND m.to_id = #{me,jdbcType=VARCHAR})
+		ORDER BY m.ctime DESC
+	</sql>
+	
+	<sql id="sql_getMessageList">
+		select * from (
+			(SELECT
+				id
+				,content
+				,0 fromId
+				,#{userId,jdbcType=VARCHAR} toId
+				,ctime createTime
+				,'系统消息' fromName 
+				,NULL toName
+				,999999999 orderNum
+			FROM
+				TB_SYSTEM_MSG
+			WHERE
+				deleted = 0
+			AND (to_user_id = 0 OR to_user_id = #{userId,jdbcType=VARCHAR})
+			AND NOT EXISTS (SELECT msg_id FROM TB_SYSTEM_MSG_DELETE d WHERE d.msg_id = id and d.user_id = #{userId,jdbcType=VARCHAR})
+			ORDER BY ctime DESC
+			LIMIT 1)
+			
+			UNION
+			
+			(SELECT 
+				m.id
+				,m.content
+				,m.from_id fromId
+				,m.to_id toId
+				,m.ctime createTime
+				,(SELECT u.name FROM vw_manager_member u WHERE u.id = m.from_id) fromName
+				,(SELECT u.name FROM vw_manager_member u WHERE u.id = m.to_id) toName
+				,m.id orderNum
+			FROM TB_USER_MSG m,TB_USER_FRIEND uf
+			WHERE 	uf.user_id = #{userId,jdbcType=VARCHAR}
+			AND	uf.last_msg_id = m.id
+			ORDER BY m.ctime DESC)
+		) aa order by aa.orderNum DESC
+	</sql>
+	
+	
+	<select id="getSystemMessageList" resultType="MessageVO">
+		<include refid="sql_systemMessageList"/>
+	</select>
+	
+	<select id="getSystemMessageListCount" resultType="int">
+		select count(1) from (
+			<include refid="sql_systemMessageList"></include>
+		) rs
+	</select>
+
+	<select id="getUserMessageList" resultType="MessageVO">
+		<include refid="sql_userMessageList"/>
+		limit #{start, jdbcType=NUMERIC}, #{count, jdbcType=NUMERIC}
+	</select>
+	
+	<select id="getUserMessageListCount" resultType="int">
+		select count(1) from (
+			<include refid="sql_userMessageList"></include>
+		) rs
+	</select>
+	
+	<insert id="insertUserMessage" parameterType="MessageVO" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_user_msg(id,content,from_id,to_id,ctime)
+		values(#{id,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{fromId,jdbcType=VARCHAR},#{toId,jdbcType=VARCHAR},sysdate())
+	</insert>
+	
+	<update id="insertOrUpdateUserFriend">
+		INSERT TB_USER_FRIEND(user_id, friend_id,last_msg_id) 
+		VALUES (#{userId,jdbcType=NUMERIC}, #{friendId,jdbcType=NUMERIC},#{lastMsgId,jdbcType=NUMERIC}) 
+		ON DUPLICATE KEY UPDATE last_msg_id=#{lastMsgId,jdbcType=NUMERIC}
+	</update>
+	
+	<select id="getMessageList" resultType="MessageVO">
+		<include refid="sql_getMessageList"/>
+	</select>
+	
+	<select id="getMessageListCount" resultType="int">
+		select count(1) from (
+			<include refid="sql_getMessageList"></include>
+		) rs
+	</select>
+	
+	<update id="insertOrUpdatePushTarget">
+		INSERT TB_PUSH_TARGET(user_id, push_user_id,device_type) 
+		VALUES (#{userId,jdbcType=VARCHAR}, #{pushUserId,jdbcType=VARCHAR},0) 
+		ON DUPLICATE KEY UPDATE push_user_id=#{pushUserId,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="deletePushTarget">
+		delete from TB_PUSH_TARGET where push_user_id = #{pushUserId,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="getPushUserId" resultType="string">
+		select push_user_id from TB_PUSH_TARGET where user_id = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="deleteUserFriendMessage">
+		update TB_USER_FRIEND set last_msg_id = null
+		where user_id = #{userId,jdbcType=NUMERIC} 
+		and	friend_id = #{friendId,jdbcType=NUMERIC}
+	</update>
+	
+    <update id="refreshUserFriendLastMessage">
+		update TB_USER_FRIEND uf set uf.last_msg_id = (
+			select m.id from TB_USER_MSG m 
+			where (m.to_id = #{userId,jdbcType=NUMERIC} and m.from_id = #{friendId,jdbcType=NUMERIC})
+			or (m.from_id = #{userId,jdbcType=NUMERIC} and m.to_id = #{friendId,jdbcType=NUMERIC})
+			order by m.create_time desc
+			limit 1
+		)
+		where uf.user_id = #{userId,jdbcType=NUMERIC} 
+		and	uf.friend_id = #{friendId,jdbcType=NUMERIC}
+	</update>
+	
+	<delete id="deleteUserMessage">
+		delete from TB_USER_MSG where id = #{id,jdbcType=VARCHAR}
+		and (from_id = #{userId,jdbcType=VARCHAR} or to_id = #{userId,jdbcType=VARCHAR})
+	</delete>
+	
+	<select id="getUserMessageToFromId" resultType="map">
+		select to_id toId,from_id fromId from TB_USER_MSG where id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="insertSystemMsgDelete">
+		insert into TB_SYSTEM_MSG_DELETE(user_id,msg_id)
+		values(#{userId,jdbcType=VARCHAR},#{msgId,jdbcType=VARCHAR})
+	</insert>
+	
+</mapper>

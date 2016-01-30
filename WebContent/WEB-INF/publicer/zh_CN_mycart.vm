@@ -1,0 +1,5 @@
+<div id="Box-menu-right">
+	<img src="images/Home-box_02.jpg" width="17" height="16" class="icon" />
+	<a href="my_cart.htm" title="订单金额：$!{cart.getCartAmount()}元">购物车中有 <b>$!{cart.getCartnumber()}</b> 件商品</a>
+	<a href="my_cart.htm"><img src="images/Home-box_11.jpg" width="53" height="19" border="0" class="button-b" /></a>
+</div>

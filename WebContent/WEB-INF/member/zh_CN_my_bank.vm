@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网店后台管理系统</title>
+<link href="css/css.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+#parse("/WEB-INF/member/zh_CN_top.vm")
+<div id="blankline"></div>
+#include("/WEB-INF/member/zh_CN_nav.vm")
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="202" height="500" align="left" valign="top">
+    <div id="lefttitle">交易管理</div>
+	<div id="leftline"></div>
+	
+    <div style="padding-top:8px;"></div>
+	#include("/WEB-INF/member/zh_CN_menu.vm")
+	</td>
+    <td width="1" bgcolor="#dbdbdb">
+	</td>
+    <td align="left" valign="top" style="padding-left:15px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="42" align="left" valign="middle" bgcolor="#f4f4f4" class="title" style="padding-left:15px;">管理中心&nbsp;--&nbsp;<span class="title1">账户信息</span></td>
+      </tr>
+      <tr>
+        <td height="1" bgcolor="#e5e5e5">
+		</td>
+      </tr>
+    </table>
+    <div style="padding-top:10px;"></div>
+    <table width="787" border="0" cellspacing="0" cellpadding="5">
+      <tr>
+        <td colspan="3"><a href="bank_payin.htm" class="bold">立即充值/账务明细</a></td>
+      </tr>
+      <tr>
+        <td width="60" align="right">状态：</td>
+        <td>#if( $member.bankk.status=="normal" )正常#else$!{member.bankk.status}#end</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="right">余额：</td>
+        <td>$!{member.bankk.balance}元</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+    <div style="padding-top:10px;"></div>
+    <table width="787" border="0" cellpadding="0" cellspacing="0" bgcolor="#cdcdcd">
+      <tr>
+        <td width="1">
+		</td>
+      </tr>
+    </table>
+    #include("/WEB-INF/member/zh_CN_footer.vm")
+	</td>
+  </tr>
+</table>
+</body>
+</html>

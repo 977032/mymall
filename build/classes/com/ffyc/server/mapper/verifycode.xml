@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.VerifyCodeMapper">
+
+	<cache />
+	
+	<select id="list" resultType="VerifyCode">
+		select
+			CODE code,
+			DATE date
+		from
+			TB_VERIFY_CODE
+		where
+			`TYPE` = #{type, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="get" resultType="VerifyCode">
+		select
+			CODE code,
+			DATE  date
+		from
+			TB_VERIFY_CODE
+		where
+			`TYPE` = #{type, jdbcType=VARCHAR}
+		and
+			`KEY`  = #{key,  jdbcType=VARCHAR}
+	</select>
+	
+	<select id="isExists" resultType="int">
+		select
+			count(1)
+		from
+			TB_VERIFY_CODE
+		where
+			`TYPE` = #{type, jdbcType=VARCHAR}
+		and
+			`KEY`  = #{key,  jdbcType=VARCHAR}
+	</select>
+	
+	<update id="update">
+		update
+			TB_VERIFY_CODE
+		set
+			CODE = #{verifyCode.code, jdbcType=VARCHAR},
+			DATE = #{verifyCode.date, jdbcType=NUMERIC}
+	    where
+			`TYPE` = #{type, jdbcType=VARCHAR}
+		and
+			`KEY`  = #{key,  jdbcType=VARCHAR}
+	</update>
+	
+	<update id="insert">
+		insert into TB_VERIFY_CODE
+		(
+			ID,
+			`TYPE`,
+			`KEY`,
+			CODE,
+			DATE,
+			CTIME
+		)
+		values
+		(
+		    #{id, jdbcType=VARCHAR},
+			#{type, jdbcType=VARCHAR},
+			#{key,  jdbcType=VARCHAR},
+			#{verifyCode.code, jdbcType=VARCHAR},
+			#{verifyCode.date, jdbcType=NUMERIC},
+			sysdate()
+		)
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_VERIFY_CODE
+		where
+			`TYPE` = #{type, jdbcType=VARCHAR}
+		and
+			`KEY`  = #{key,  jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

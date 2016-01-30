@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<title>商品规格</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商店配置</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="#"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建设置 </span></a></li>H
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>&nbsp;</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="pms_admin_update.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">隶属于：</td>
+                <td>
+                <select name="permission.permission.id" id="permission.permission.id">
+                  <option value="">  无  </option>
+                  #foreach( $item in $permissionroot )
+                  <option value="$!{item.id}" #if( $item.id==$permission.permission.id )selected="selected"#end>$!{item.name}</option>
+                  #end
+                </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">功能模块名称：</td>
+                <td><input name="permission.name" type="text" id="permission.name" value="$!{permission.name}"></td>
+              </tr>
+              <tr>
+                <td align="right">功能模块代码：</td>
+                <td><input name="permission.code" type="text" id="permission.code" value="$!{permission.code}"></td>
+              </tr>
+              <tr>
+                <td align="right">读权限：</td>
+                <td><input name="permission.read" type="text" id="permission.read" value="$!{permission.read}">
+                4</td>
+              </tr>
+              <tr>
+                <td align="right">写权限：</td>
+                <td><input name="permission.write" type="text" id="permission.write" value="$!{permission.write}">
+                2</td>
+              </tr>
+              <tr>
+                <td align="right">删除权限：</td>
+                <td><input name="permission.delete" type="text" id="permission.delete" value="$!{permission.delete}">
+                1</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交">
+                <input name="permission.id" type="hidden" id="permission.id" value="$!{permission.id}"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

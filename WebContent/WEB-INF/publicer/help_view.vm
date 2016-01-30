@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>beautyfamily-在线商城</title>
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/global.css" rel="stylesheet" type="text/css" />
+<link href="styles/inside.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="Box-top">
+  #include("/WEB-INF/publicer/box-top-nav.vm")
+  #parse("/WEB-INF/publicer/box-top-logo.vm")
+  <!------------------------nav------------------------>
+  #include("/WEB-INF/publicer/box-nav.vm")
+  #parse("/WEB-INF/publicer/box-menu-left.vm")
+  #parse("/WEB-INF/publicer/mycart.vm")
+  <div class="clear"></div>
+</div>
+<div class="Box-banner"><img src="images/Home-box_15.jpg" width="980" height="60" /></div>
+<!------------------------内容------------------------>
+<div id="Main-box">
+  <!------------------------左边内容------------------------>
+  <div class="Main-left left">
+    <h2>帮助中心</h2>
+    <div class="Main-left-subNav">
+      #foreach( $item in $map.get("G_A") )
+      <h3>$!{item.name}</h3>
+      <ul>
+        #foreach( $docitem in $item.documents )
+        <li><a href="?c=help&amp;t=v&amp;d=$!{docitem.id}">$!{docitem.title}</a> </li>
+        #end
+      </ul>
+      #end
+    </div>
+    <p><img src="images/Main-img-01.jpg" width="200" height="303" /></p>
+  </div>
+  <!------------------------左边内容------------------------>
+  <!------------------------右边内容------------------------>
+  <div class="Main-right right">
+    <p class="Main-line"><a href="#">首页</a> > <a href="#">帮助</a> > $!document.title</p>
+     <!------------------------标签------------------------>
+     <!------------------------标签------------------------>
+    <div class="Main-products">
+      <p>$!document.content</p>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <!------------------------右边内容------------------------>
+  <div class="clear"></div>
+</div>
+<!------------------------底部------------------------>
+<div id="Box-bottom">
+  <div class="Box-bottom-menu">
+    #foreach( $item in $map.get("G_A") )
+    <dl>
+      <dt><strong>$!{item.name}</strong></dt>
+      #foreach( $docitem in $item.documents )
+      <dd><a href="?c=help&amp;t=v&amp;d=$!{docitem.id}">$!{docitem.title}</a></dd>
+      #end
+    </dl>
+    #end
+    #include("/WEB-INF/publicer/contacts.vm")
+    <div class="clear"></div>
+  </div>
+  #include("/WEB-INF/publicer/services.vm")
+  #include("/WEB-INF/publicer/sitelinks.vm")
+  #include("/WEB-INF/publicer/sitefooter.vm")
+  <div class="clear"></div>
+</div>
+</body>
+</html>

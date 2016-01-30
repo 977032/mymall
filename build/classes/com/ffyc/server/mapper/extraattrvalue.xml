@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.ExtraAttrValueMapper">
+	<cache />
+	<sql id="sql_searchEAValueByEAValue">
+	  select * from tb_extra_attr_value where 1 = 1 
+      <if test="eavalue.extraattr != null">  
+          and extraattr = #{eavalue.extraattr}  
+      </if>
+	</sql>
+	<select id="findAll" resultType="ExtraAttrValue">
+		SELECT
+			*
+		FROM
+			TB_EXTRA_ATTR_VALUE
+	</select>
+	
+	<select id="findById" resultType="ExtraAttrValue">
+		SELECT
+			*
+		FROM
+			TB_EXTRA_ATTR_VALUE
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByExtraAttrValue" resultType="ExtraAttrValue">
+	   <include refid="sql_searchEAValueByEAValue"></include>
+	    order by csort asc
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+	   
+    </select>
+    
+    <select id="getCountByExtraAttrValue" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchEAValueByEAValue"></include> 
+      ) rs
+    </select>
+    
+    <select id="getGoods" resultType="Good">
+		select
+			t.* from tb_good as t inner join tb_good_extra_attr_value as tt
+		on
+		    tt.good = t.id and 
+			tt.extraattrvalue = #{id, jdbcType=VARCHAR}
+	</select> 
+	
+	<insert id="save" parameterType="ExtraAttrValue" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_EXTRA_ATTR_VALUE
+		(
+			ID,
+			EXTRAATTR,
+			VALUE,
+			CSORT		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{extraattr,    jdbcType=VARCHAR},
+			#{value,    jdbcType=VARCHAR},
+			#{csort,       jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<update id="update" parameterType="ExtraAttrValue" >
+		update
+			TB_EXTRA_ATTR_VALUE
+		set
+		    EXTRAATTR = #{extraattr, jdbcType=VARCHAR},
+			VALUE= #{value, jdbcType=VARCHAR},
+			CSORT = #{csort, jdbcType=INTEGER}
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_EXTRA_ATTR_VALUE
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

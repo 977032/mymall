@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript">
+function getDistrict(_id){
+	var select = document.createElement("select");
+	select.id = "area.districtt.id";
+	select.name = "district";
+	select.size = 10;
+	select.multiple = "multiple";
+
+	jQuery.ajax({
+		type: "POST",
+		url: "getdistrict.htm",
+		dataType: "json",
+		data: "id="+_id,
+		success: function(msg){
+			var json = eval(msg.result);
+			jQuery.each(json, function(i, n){
+				select.options[i] = new Option(n.name, n.id);
+			});
+		}
+	});
+	psdiv.innerHTML = "";
+	var object = psdiv.appendChild(select);
+}
+
+</script>
+<title>配送地区</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商品配置 - 配送方式 - 配送地区</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="areas.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回列表 </span></a></li>
+      <li><a class="shortcut-button" href="area_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建分区 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>$!{logistic.name}</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form2" name="form2" method="post" action="area_create.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">地区：</td>
+                <td>
+                <select name="select" id="select" onchange="getDistrict(this.value)">
+                  <option value="0" selected="selected">请选择地区</option>
+                  #foreach( $item in $districtroot )
+                  <option value="$!{item.id}">$!{item.name}</option>
+                  #end
+                </select>
+                </td>
+                <td colspan="2"><div id="psdiv"></div></td>
+              </tr>
+              <tr>
+                <td align="right">名称：</td>
+                <td><input type="text" name="area.name" id="area.name"></td>
+                <td align="right">&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td align="right">首重重量：</td>
+                <td><input name="area.wfirst" type="text" id="area.wfirst" size="12" maxlength="11"></td>
+                <td align="right">续重重量：</td>
+                <td><input name="area.wappend" type="text" id="area.wappend" size="12" maxlength="11"></td>
+              </tr>
+              <tr>
+                <td align="right">首重费用：</td>
+                <td><input name="area.wfcost" type="text" id="area.wfcost" size="12" maxlength="11">
+                *[数字]</td>
+                <td align="right">续重费用：</td>
+                <td><input name="area.wacost" type="text" id="area.wacost" size="12" maxlength="11">
+                *[数字]</td>
+              </tr>
+              <tr>
+                <td align="right">货到付款：</td>
+                <td>支持：
+                  <input type="radio" name="area.cod" id="radio" value="yes">
+                  不支持：
+                  <input name="area.cod" type="radio" id="radio" value="no" checked="checked"></td>
+                <td align="right">保险费率：</td>
+                <td><input name="area.premiumrate" type="text" id="area.premiumrate" size="12" maxlength="11"></td>
+              </tr>
+              <tr>
+                <td align="right">&nbsp;</td>
+                <td><input type="submit" name="button2" id="button2" value="提交">
+                  <input name="ls" type="hidden" id="ls" value="$!{logistic.id}"></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

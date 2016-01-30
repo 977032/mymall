@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网店后台管理系统</title>
+<link href="css/css.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+#parse("/WEB-INF/member/zh_CN_top.vm")
+<div id="blankline"></div>
+#include("/WEB-INF/member/zh_CN_nav.vm")
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="202" height="500" align="left" valign="top">
+    <div id="lefttitle">交易管理</div>
+	<div id="leftline"></div>
+	
+    <div style="padding-top:8px;"></div>
+	#include("/WEB-INF/member/zh_CN_menu.vm")
+	</td>
+    <td width="1" bgcolor="#dbdbdb">
+	</td>
+    <td align="left" valign="top" style="padding-left:15px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="42" align="left" valign="middle" bgcolor="#f4f4f4" class="title" style="padding-left:15px;">管理中心&nbsp;--&nbsp;<span class="title1">积分明细</span></td>
+      </tr>
+      <tr>
+        <td height="1" bgcolor="#e5e5e5">
+		</td>
+      </tr>
+    </table>
+    <div style="padding-top:10px;"></div>
+    <table width="787" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="36" align="left" valign="middle"><img src="images/seach_but.jpg" width="26" height="21" /></td>
+        <td align="left" valign="middle">
+          <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+           <form id="form1" name="form1" method="post" action=""> 
+		   <tr>
+              <td width="12%" align="left" valign="middle">
+			  <select name="select"><option>选择分类</option></select>
+              </td>
+              <td width="12%" align="left" valign="middle"><select name="select">
+                <option>所有品牌</option>
+              </select>
+              </td>
+              <td width="10%" align="left" valign="middle">商品关键字：</td>
+              <td width="20%" align="left" valign="middle"><input name="textarea" type="text" value="" /></td>
+              <td width="46%" align="left" valign="middle"><input type="submit" name="Submit" value="搜 索" /></td>
+            </tr>
+              </form>
+		    </table>
+            
+        </td>
+        </tr>
+    </table>
+    <div style="padding-top:10px;"></div>
+   
+      <table width="787" border="0" cellpadding="0" cellspacing="1" bgcolor="#dcdcdc" >
+         <tr >
+          <td height="34" align="center" valign="middle" background="images/order_top_bg.jpg" bgcolor="#FFFFFF" class="bold" >时间</td>
+          <td height="34" align="center" valign="middle" background="images/order_top_bg.jpg" bgcolor="#FFFFFF" class="bold" >状态</td>
+          <td height="34" align="center" valign="middle" background="images/order_top_bg.jpg" bgcolor="#FFFFFF" class="bold" >余额</td>
+          <td height="34" align="center" valign="middle" background="images/order_top_bg.jpg" bgcolor="#FFFFFF" class="bold" >存入</td>
+          <td height="34" align="center" valign="middle" background="images/order_top_bg.jpg" bgcolor="#FFFFFF" class="bold" >取出</td>
+          <td height="34" align="center" valign="middle" background="images/order_top_bg.jpg" bgcolor="#FFFFFF" class="bold" >摘要</td>
+          <td height="34" align="center" valign="middle" background="images/order_top_bg.jpg" bgcolor="#FFFFFF" class="bold" >备注</td>
+        </tr>
+        #foreach( $item in $ps.getItems() )
+        <tr>
+          <td height="43" align="center" valign="middle" bgcolor="#FFFFFF" >$!{item.ctime}</td>
+          <td height="43" align="center" valign="middle" bgcolor="#FFFFFF" >$!{item.status}</td>
+          <td height="43" align="center" valign="middle" bgcolor="#FFFFFF" >$!{item.balance}</td>
+          <td height="43" align="center" valign="middle" bgcolor="#FFFFFF" >$!{item.payin}</td>
+          <td height="43" align="center" valign="middle" bgcolor="#FFFFFF" >$!{item.getout}</td>
+          <td height="43" align="center" valign="middle" bgcolor="#FFFFFF" >$!{item.tabloid}</td>
+          <td height="43" align="center" valign="middle" bgcolor="#FFFFFF" >$!{item.remarks}</td>
+        </tr>
+        #end
+      </table>
+    
+    <div style="padding-top:10px;"></div>
+    <table width="787" height="80" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="right" valign="top"><table border="0" align="center" cellpadding="0" cellspacing="4" >
+          <tr>
+            <td align="center" class="page" ><a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=1&amp;od=$!{od}&amp;sc=$!{sc}" title="首页" class="topmenu"> <img src="images/Page_First_0.gif" width="14" height="15" border="0" align="absmiddle" /> </a> </td>
+            <td class="page"><a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPreviousTenPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="前10页" class="topmenu"> <img src="images/Page_Previous_More_0.gif" width="14" height="15" border="0" align="absmiddle" /> </a> </td>
+            <td class="page"><a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPreviousPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="上一页" class="topmenu"> <img src="images/Page_Previous_0.gif" width="14" height="15" border="0" align="absmiddle" /> </a> </td>
+            #foreach( $infoitem in $ps.getPages() )
+            <td class="{currentpage}"><a class="number" title="第$!{infoitem}页" href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{infoitem}&amp;od=$!{od}&amp;sc=$!{sc}">&nbsp;$!{infoitem}&nbsp;</a></td>
+            #end
+            <td class="page"><a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getNextPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="下一页" class="topmenu"> <img height="15" src="images/Page_Next.gif" width="14" align="absmiddle" border="0" /> </a> </td>
+            <td class="page"><a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getNextTenPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="后10页" class="topmenu"> <img height="15" src="images/Page_Next_More.gif" width="14" align="absmiddle" border="0" /> </a> </td>
+            <td class="page"><a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPageCount()&amp;od=$!{od}&amp;sc=$!{sc}" title="最后页" class="topmenu"> <img height="15" src="images/Page_Last.gif" width="14" align="absmiddle" border="0" /> </a> </td>
+            <td align="center" class="page">&nbsp;共&nbsp;$!{ps.getTotalCount()}&nbsp;条信息，$!{ps.pageCount}页</td>
+          </tr>
+        </table></td>
+        </tr>
+    </table>
+    
+    <table width="787" border="0" cellpadding="0" cellspacing="0" bgcolor="#cdcdcd">
+      <tr>
+        <td width="1">
+		</td>
+      </tr>
+    </table>
+    #include("/WEB-INF/member/zh_CN_footer.vm")
+	</td>
+  </tr>
+</table>
+</body>
+</html>

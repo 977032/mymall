@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<title>编辑支付方式</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/paymodes.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商店配置 - 支付方式 - 编辑支付方式</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="paymodes.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回列表 </span></a></li>
+      <li><a class="shortcut-button" href="paymode_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建支付方式 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>编辑支付方式</h3>
+        <ul class="content-box-tabs">
+          <li><a class="default-tab" href="#tab1">支付信息</a></li>
+          <li><a href="#tab2">参数设置</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form action="paymode_update.action" method="post" enctype="multipart/form-data" name="form1" id="form1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">支付类型：</td>
+                <td>
+                <select name="paymode.pmtype" id="paymode.pmtype">
+                  <option value="alipay" #if( $paymode.pmtype=="alipay" )selected="selected"#end>支付宝</option>
+                  <option value="other" #if( $paymode.pmtype=="other" )selected="selected"#end>其他支付方式</option>
+                </select>
+                *
+                </td>
+              </tr>
+              <tr>
+                <td align="right">支付方式名称：</td>
+                <td><input name="paymode.name" type="text" id="paymode.name" value="$!{paymode.name}">
+                *</td>
+              </tr>
+              <tr>
+                <td align="right">&nbsp;</td>
+                <td><img src="..$!{paymode.vimage.path}/$!{paymode.vimage.name}" alt="$!{paymode.name}" width="70" height="30"></td>
+              </tr>
+              <tr>
+                <td align="right">图片标识：</td>
+                <td><input type="file" name="upload" id="upload" reg="^$|.*gif|png|jpg|jpeg$" tip="允许JPG,GIF,PNG图片文件" /></td>
+              </tr>
+              <tr>
+                <td align="right">介绍/备注：</td>
+                <td><textarea name="paymode.intro" id="paymode.intro" cols="45" rows="5">$!{paymode.intro}</textarea></td>
+              </tr>
+              <tr>
+                <td align="right">费率：</td>
+                <td><input name="paymode.rate" type="text" id="paymode.rate" value="$!{paymode.rate}" size="12" maxlength="11">
+                  *[数字]</td>
+              </tr>
+              <tr>
+                <td align="right">免费额度：</td>
+                <td><input name="paymode.focrating" type="text" id="paymode.focrating" value="$!{paymode.focrating}" size="12" maxlength="11">
+                *[数字]</td>
+              </tr>
+              <tr>
+                <td align="right">排序：</td>
+                <td><input name="paymode.csort" type="text" id="paymode.csort" value="$!{paymode.csort}" size="12" maxlength="11">
+                *[数字]</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交">
+                  <input name="paymode.id" type="hidden" id="paymode.id" value="$!{paymode.id}"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+        <div class="tab-content" id="tab2">
+          <form id="form2" name="form2" method="post" action="paymode_update_paysetting.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td colspan="3">以下参数由签约的第三方支付厂商提供</td>
+              </tr>
+              <tr>
+                <td width="20%">属性名称</td>
+                <td width="20%">属性变量</td>
+                <td>属性值</td>
+              </tr>
+              #set( $i=0 )
+              #foreach( $item in $list )
+              <tr>
+                <td>$!{item.name}</td>
+                <td>$!{item.property}</td>
+                <td class="pvalue" style="display: inline" id="$!{item.id}"><input name="paysettings[$i].value" type="text" id="paysettings[$i].value" value="$!{item.value}" size="50">
+                <input name="paysettings[$i].property" type="hidden" id="paysettings[$i].property" value="$!{item.property}">
+                <span class="pvalue" style="display: inline">
+                <input name="paysettings[$i].name" type="hidden" id="paysettings[$i].name" value="$!{item.name}">
+                <span class="pvalue" style="display: inline"><span class="pvalue" style="display: inline">
+                <input name="paysettings[$i].pmtype" type="hidden" id="paysettings[$i].pmtype" value="$!{item.pmtype}">
+                </span></span></span></td>
+              </tr>
+              #set( $i=$i+1 )
+              #end
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td class="pvalue" style="display: inline" id="$!{item.id}2"><input type="submit" name="button2" id="button2" value="提交">
+                <input name="pm" type="hidden" id="pm" value="$!{paymode.id}"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

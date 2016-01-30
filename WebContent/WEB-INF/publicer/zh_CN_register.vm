@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>beautyfamily-在线商城</title>
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/global.css" rel="stylesheet" type="text/css" />
+<link href="styles/login.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="Box-top">
+  #include("/WEB-INF/publicer/zh_CN_box-top-nav.vm")
+  #parse("/WEB-INF/publicer/zh_CN_box-top-logo.vm")
+  <!------------------------nav------------------------>
+  #include("/WEB-INF/publicer/zh_CN_box-nav.vm")
+  #parse("/WEB-INF/publicer/zh_CN_box-menu-left.vm")
+  #parse("/WEB-INF/publicer/zh_CN_mycart.vm")
+  <div class="clear"></div>
+</div>
+<div class="Box-banner"><img src="images/Home-box_15.jpg" width="980" height="60" /></div>
+<!------------------------内容------------------------>
+<div id="Register">
+  <h6>用户注册</h6>
+  <p>如果您已经是我们的网上会员，请点此 <a href="#" class="orange">登录我的账户</a></p>
+  <div class="Register">
+  <div class="Register-red"></div>
+ <div class="Register_text"><form action="registering.htm" method="post" name="register" id="register"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="17%" align="right"><strong>登录帐号：</strong></td>
+    <td width="18%"><input name="member.account" type="text" class="inputstyle_a _x_ipt" id="member.account" size="26" maxlength="64"></td>
+    <td width="65%">帐号可以是4-64位英文字母及数字组成，但不能全部是数字。<br /></td>
+  </tr>
+  <tr>
+    <td align="right"><strong>电子邮箱：</strong></td>
+    <td><input name="member.email" type="text" class="inputstyle_a _x_ipt" id="member.email" size="26" maxlength="255"></td>
+    <td>请输入您常用的邮箱，方便日后找回密码。没有电子邮箱？推荐使用<a href="#" class="myBlue">雅虎邮箱</a>、<a href="#" class="myBlue">网易邮箱</a>。</td>
+  </tr>
+  <tr>
+    <td align="right"><strong>会员名：</strong></td>
+    <td><input name="member.name" type="text" class="inputstyle_a _x_ipt" id="member.name" size="26" maxlength="255"></td>
+    <td>5-200个字符，一个汉字为二个字符，推荐使用中文会员名。一旦注册成功会员名不能修改。</td>
+  </tr>
+  <tr>
+    <td align="right"><strong>登录密码：</strong></td>
+    <td><input name="member.cpassword" type="password" class="inputstyle_a _x_ipt" id="member.cpassword" size="26" maxlength="128"></td>
+    <td>6-32个字符，请使用字母加数字或符号的组合密码，不能单独使用字母、数字或符号。</td>
+  </tr>
+  <tr>
+    <td align="right"><strong>确定密码：</strong></td>
+    <td><input name="password2" type="password" class="inputstyle_a _x_ipt" id="password2" size="26" maxlength="128"></td>
+    <td>请再次输入密码。</td>
+  </tr>
+  <tr>
+    <td align="right"><strong>验证码：</strong></td>
+    <td><input name="validateCode" type="text" class="Code" id="validateCode" size="8" maxlength="4" />
+      <img src="./images/validateImage" alt="" border="0" id=imgVerify /></td>
+    <td><a href="#" class="red">看不清楚？换一张。</a></td>
+  </tr>
+  <tr>
+    <td align="right">&nbsp;</td>
+    <td><label>
+      <input type="image" name="imageField" id="imageField" src="images/register_03.jpg" />
+    </label></td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+</form>
+</div> 
+  </div>
+</div>
+<!------------------------底部------------------------>
+<div id="Box-bottom">
+  <div class="Box-bottom-menu">
+    <dl class="Box-helpIntro">
+      <dt><strong>新手指南</strong></dt>
+      <dd><a href="#">注册新用户</a></dd>
+      <dd><a href="#">网站订购流程</a></dd>
+    </dl>
+    <dl>
+      <dt><strong>如何付款/退款</strong></dt>
+      <dd><a href="#">支付方式</a></dd>
+      <dd><a href="#">如何办理退款</a></dd>
+      <dd><a href="#">发票制度说明</a></dd>
+    </dl>
+    <dl>
+      <dt><strong>配送方式</strong></dt>
+      <dd><a href="#">货到付款城市及配送时间</a></dd>
+      <dd><a href="#">款到快递城市及配送时间</a></dd>
+      <dd><a href="#">配送费收取标准</a></dd>
+    </dl>
+    <dl>
+      <dt><strong>售后服务</strong></dt>
+      <dd><a href="#">退换货政策</a></dd>
+      <dd><a href="#">如何办理退换货</a></dd>
+    </dl>
+    <dl>
+      <dt><strong>帮助中心</strong></dt>
+      <dd><a href="#">常见热点问题</a></dd>
+      <dd><a href="#">联系我们</a></dd>
+      <dd><a href="#">投诉与建议</a></dd>
+    </dl>
+    #include("/WEB-INF/publicer/zh_CN_contacts.vm")
+    <div class="clear"></div>
+  </div>
+  #include("/WEB-INF/publicer/zh_CN_services.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitelinks.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitefooter.vm")
+  <div class="clear"></div>
+</div>
+</body>
+</html>

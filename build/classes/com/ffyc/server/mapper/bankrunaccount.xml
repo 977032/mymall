@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.BankRunAccountMapper">
+	<cache />
+	<sql id="sql_searchBRAccountByBRAccount">
+	  select * from tb_bank_run_account where 1 = 1
+      <if test="braccount.status != null and braccount.status !=''">  
+          and status = #{braccount.status}  
+      </if>
+      <if test="braccount.bank != null and braccount.bank !=''">  
+          and bank = #{braccount.bank}  
+      </if>
+      <if test="min !=null and min!=''">
+          <![CDATA[ and DATE_FORMAT(ctime, '%Y-%m-%d')>=  DATE_FORMAT(#{min}, '%Y-%m-%d') ]]>
+        </if>
+        <if test="max!=null and max!=''">
+          <![CDATA[ and DATE_FORMAT(ctime, '%Y-%m-%d')<= DATE_FORMAT(#{max}, '%Y-%m-%d') ]]>
+        </if> 
+     </sql>
+	<select id="findAll" resultType="BankRunAccount">
+		SELECT
+			*
+		FROM
+			TB_BANK_RUN_ACCOUNT
+	</select>
+	
+	<select id="findById" resultType="BankRunAccount">
+		SELECT
+			*
+		FROM
+			TB_BANK_RUN_ACCOUNT
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getTotalBalance" resultType="Double">
+		select sum(bra.balance) from tb_bank_run_account as bra where 1=1
+		<if test="status !=null and status!=''">
+		  and bra.status= #{status}
+		</if> 
+		<if test="min !=null and min!=''">
+          <![CDATA[ and DATE_FORMAT(bra.ctime, '%Y-%m-%d')>=  DATE_FORMAT(#{min}, '%Y-%m-%d') ]]>
+        </if>
+        <if test="max!=null and max!=''">
+          <![CDATA[ and DATE_FORMAT(bra.ctime, '%Y-%m-%d')<= DATE_FORMAT(#{max}, '%Y-%m-%d') ]]>
+        </if> 
+	</select>
+	
+	<select id="findByBankRunAccount" resultType="BankRunAccount">
+	   <include refid="sql_searchBRAccountByBRAccount"></include>
+	   order by ctime desc
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+	</select>
+	
+	<select id="getCountByBankRunAccount" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchBRAccountByBRAccount"></include> 
+      ) rs
+    </select> 
+	
+	<insert id="save" parameterType="BankRunAccount" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_BANK_RUN_ACCOUNT
+		(
+			ID,
+			STATUS,
+			BALANCE,
+			GETOUT,
+			PAYIN,
+			PAYMODE,
+			TABLOID,
+			REMARKS,
+			MREMARKS,
+			BANK,
+			MEMBER,
+			MANAGER,
+			CTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{status,    jdbcType=VARCHAR},
+			#{balance,       jdbcType=DECIMAL},
+			#{getout,    jdbcType=DECIMAL},
+			#{payin,    jdbcType=DECIMAL},
+			#{paymode,       jdbcType=VARCHAR},
+			#{tabloid,       jdbcType=VARCHAR},
+			#{remarks,       jdbcType=VARCHAR},
+			#{mremarks,       jdbcType=VARCHAR},
+			#{bank,       jdbcType=VARCHAR},
+			#{member,       jdbcType=VARCHAR},
+			#{manager,       jdbcType=VARCHAR},
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="BankRunAccount">
+		update
+			TB_BANK_RUN_ACCOUNT
+		set
+		    STATUS = #{status, jdbcType=VARCHAR},
+			BALANCE= #{balance, jdbcType=DECIMAL},
+			GETOUT = #{getout, jdbcType=DECIMAL},
+			PAYIN = #{payin, jdbcType=DECIMAL},
+			PAYMODE = #{paymode, jdbcType=VARCHAR}
+			TABLOID = #{tabloid, jdbcType=DECIMAL},
+			
+			REMARKS = #{remarks, jdbcType=VARCHAR},
+ 			MREMARKS = #{mremarks, jdbcType=VARCHAR},
+ 			BANK = #{bank, jdbcType=VARCHAR},
+ 			MEMBER = #{member, jdbcType=VARCHAR}
+ 			MANAGER = #{manager, jdbcType=VARCHAR}				
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_BANK_RUN_ACCOUNT
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

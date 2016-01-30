@@ -1,0 +1,1384 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<!-- 后台 -->
+	<package name="manager" extends="base-package" namespace="/manager">
+		<!-- 登录权限检查拦截器 -->
+		<interceptors>
+			<interceptor name="managerauth" class="com.ffyc.server.interceptor.ManagerAuthInterceptor">
+				<param name="name">管理权限检查</param>
+			</interceptor>
+			<!-- 操作权限检查拦截器 -->
+			<interceptor name="permission" class="com.ffyc.server.interceptor.PermissionsInterceptor">
+				<param name="name">操作权限检查</param> 
+			</interceptor>
+			<!-- 重新组合拦截器堆栈,加入了默认拦截器 -->
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="managerauth"></interceptor-ref>
+				<interceptor-ref name="permission"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 使用自定义的拦截器 -->
+		<default-interceptor-ref name="mydefault" />
+		<!-- 全局结果 -->
+		<global-results>
+			<result name="notauth" type="redirect">/mlogin.htm</result>
+			<result name="notice" type="velocity">/WEB-INF/manager/notice.vm</result>
+		</global-results>
+		<!-- 登出 -->
+		<action name="logout" class="com.ffyc.server.action.publicer.MloginAction" method="logout">
+			<result name="success" type="redirect">/mlogin.htm</result>
+		</action>
+		<!-- 首页 -->
+		<action name="index" class="com.ffyc.server.action.manager.IndexAction">
+			<param name="funccode">index</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">首页信息读取</param>
+			<result name="success" type="velocity">/WEB-INF/manager/index.vm</result>
+		</action>
+		<!-- 附件 -->
+		<action name="attachment_input" class="com.ffyc.server.action.manager.AttachmentCreateAction">
+			<param name="funccode">attachment</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">附件上传录入</param>
+			<result name="success" type="velocity">/WEB-INF/manager/attachment_input.vm</result>
+		</action>
+		<action name="attachment_create" class="com.ffyc.server.action.manager.AttachmentCreateAction" method="create">
+			<param name="funccode">attachment</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">上传附件</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <!-- <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg,application/octet-stream</param> -->
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/good_view.htm?gid=${gid}#tab3</result>
+			<result name="document" type="redirect">/manager/document_view.htm?d=${d}#tab3</result>
+		</action>
+		<action name="attachment_edit" class="com.ffyc.server.action.manager.AttachmentUpdateAction">
+			<result name="success" type="velocity">/WEB-INF/manager/attachment_edit.vm</result>
+		</action>
+		<action name="attachment_update" class="com.ffyc.server.action.manager.AttachmentUpdateAction" method="update">
+			<result name="success" type="redirect">/manager/good_view.htm?gid=${gid}#tab3</result>
+			<result name="document" type="redirect">/manager/document_view.htm?d=${doc}#tab3</result>
+		</action>
+		<action name="attachment_del" class="com.ffyc.server.action.manager.AttachmentAction" method="delete">
+			<result name="success" type="redirect">/manager/good_view.htm?gid=${gid}#tab3</result>
+			<result name="document" type="redirect">/manager/document_view.htm?d=${dm}#tab3</result>
+		</action>
+		<action name="attachments" class="com.ffyc.server.action.manager.AttachmentAction">
+			<param name="funccode">attachment</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取附件</param>
+			<result name="success" type="velocity">/WEB-INF/manager/attachments.vm</result>
+		</action>
+		<action name="files" class="com.ffyc.server.action.manager.AttachmentAction">
+			<param name="funccode">file</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取附件</param>
+			<result name="success" type="velocity">/WEB-INF/manager/attachments.vm</result>
+		</action>
+		<action name="files_del" class="com.ffyc.server.action.manager.AttachmentAction" method="files_delete">
+			<param name="funccode">file</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除图片文件</param>
+			<result name="success" type="redirect">files.htm</result>
+		</action>
+		<action name="file_upload" class="com.ffyc.server.action.manager.FilesAction" method="uploadFile">
+			<param name="funccode">file</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">上传文件</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">209715200</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/files.htm?CKEditor=${CKEditor}&amp;CKEditorFuncNum=${CKEditorFuncNum}&amp;langCode=${langCode}</result>
+		</action>
+		
+		<!-- 商品分类 -->
+		<action name="category_input" class="com.ffyc.server.action.manager.CategoryCreateAction">
+			<param name="funccode">category</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入商品分类</param>
+			<result name="success" type="velocity">/WEB-INF/manager/category_input.vm</result>
+		</action>
+		<action name="category_create" class="com.ffyc.server.action.manager.CategoryCreateAction" method="create">
+			<param name="funccode">category</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建商品分类</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/categorys.htm</result>
+		</action>
+		<action name="category_edit" class="com.ffyc.server.action.manager.CategoryUpdateAction">
+			<param name="funccode">category</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑商品分类</param>
+			<result name="success" type="velocity">/WEB-INF/manager/category_edit.vm</result>
+		</action>
+		<action name="category_update" class="com.ffyc.server.action.manager.CategoryUpdateAction" method="update">
+			<param name="funccode">category</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新商品分类</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/categorys.htm</result>
+		</action>
+		<action name="category_del" class="com.ffyc.server.action.manager.CategoryAction" method="delete">
+			<param name="funccode">category</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除商品分类</param>
+			<result name="success" type="redirect">/manager/categorys.htm</result>
+		</action>
+		<action name="categorys" class="com.ffyc.server.action.manager.CategoryAction">
+			<param name="funccode">category</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取商品分类</param>
+			<result name="success" type="velocity">/WEB-INF/manager/categorys.vm</result>
+		</action>
+		<!-- 商品 -->
+		<action name="good_input" class="com.ffyc.server.action.manager.GoodCreateAction">
+			<param name="funccode">good</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入商品</param>
+			<result name="success" type="velocity">/WEB-INF/manager/good_input.vm</result>
+		</action>
+		<action name="good_create" class="com.ffyc.server.action.manager.GoodCreateAction" method="create">
+			<param name="funccode">good</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建商品</param>
+			<result name="success" type="redirect">/manager/goods.htm</result>
+		</action>
+		<action name="good_edit" class="com.ffyc.server.action.manager.GoodUpdateAction">
+			<param name="funccode">good</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑商品</param>
+			<result name="success" type="velocity">/WEB-INF/manager/good_edit.vm</result>
+		</action>
+		<action name="good_update" class="com.ffyc.server.action.manager.GoodUpdateAction" method="update">
+			<param name="funccode">good</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新商品</param>
+			<result name="success" type="redirect">/manager/good_edit.action?gid=${gid}</result>
+		</action>
+		<action name="good_del" class="com.ffyc.server.action.manager.GoodAction" method="delete">
+			<param name="funccode">good</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除商品</param>
+			<result name="success" type="redirect">/manager/goods.htm</result>
+		</action>
+		<action name="goods" class="com.ffyc.server.action.manager.GoodAction">
+			<param name="funccode">good</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取商品</param>
+			<result name="success" type="velocity">/WEB-INF/manager/goods.vm</result>
+		</action>
+		<action name="good_view" class="com.ffyc.server.action.manager.GoodViewAction">
+			<param name="funccode">good</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入商品图片</param>
+			<result name="success" type="velocity">/WEB-INF/manager/good_view.vm</result>
+		</action>
+		<action name="good_genthum" class="com.ffyc.server.action.manager.GoodThumbnailAction">
+			<param name="funccode">good</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">生成商品缩略图</param>
+			<result name="success" type="redirect">/manager/goods.htm</result>
+		</action>
+		<action name="good_genallthum" class="com.ffyc.server.action.manager.GoodThumbnailAction" method="createAll">
+			<param name="funccode">good</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">批量生成商品缩略图</param>
+			<result name="success" type="velocity">/WEB-INF/manager/good_thumbnail_create.vm</result>
+		</action>
+		<action name="good_genallthum_do" class="com.ffyc.server.action.manager.GoodThumbnailAction" method="createAllDo">
+			<param name="funccode">good</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">批量生成商品缩略图</param>
+			<result name="success" type="velocity">/WEB-INF/manager/good_thumbnail_wait.vm</result>
+		</action>
+		<action name="good_import" class="com.ffyc.server.action.manager.GoodImportAction">
+			<param name="funccode">good</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">导入商品</param>
+			<result name="success" type="velocity">/WEB-INF/manager/good_import.vm</result>
+		</action>
+		<action name="good_doimport" class="com.ffyc.server.action.manager.GoodImportAction" method="doimport">
+			<param name="funccode">good</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">导入商品</param>
+			<result name="success" type="velocity">/WEB-INF/manager/good_import_result.vm</result>
+		</action>
+		
+		<!-- 商品规格 -->
+		<action name="specs" class="com.ffyc.server.action.manager.SpecAction">
+			<param name="funccode">spec</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取商品规格</param>
+			<result name="success" type="velocity">/WEB-INF/manager/specs.vm</result>
+		</action>
+		<action name="spec_create" class="com.ffyc.server.action.manager.SpecCreateAction">
+			<param name="funccode">spec</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建商品规格</param>
+			<result name="success" type="redirect">/manager/specs.action?gid=${gid}</result>
+		</action>
+		<action name="spec_del" class="com.ffyc.server.action.manager.SpecAction" method="delete">
+			<param name="funccode">spec</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除商品规格</param>
+			<result name="success" type="redirect">/manager/specs.action?gid=${gid}</result>
+		</action>
+		<action name="spec_update_ajax" class="com.ffyc.server.action.manager.SpecItemUpdateAjax">
+			<param name="funccode">spec</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">AJAX更新商品规格</param>
+		</action>
+		
+		<!-- 会员组 -->
+		<action name="group_input" class="com.ffyc.server.action.manager.GroupCreateAction">
+			<param name="funccode">group</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入会员组</param>
+			<result name="success" type="velocity">/WEB-INF/manager/group_input.vm</result>
+		</action>
+		<action name="group_create" class="com.ffyc.server.action.manager.GroupCreateAction" method="create">
+			<param name="funccode">group</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建会员组</param>
+			<result name="success" type="redirect">/manager/groups.htm</result>
+		</action>
+		<action name="group_edit" class="com.ffyc.server.action.manager.GroupUpdateAction">
+			<param name="funccode">group</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑会员组</param>
+			<result name="success" type="velocity">/WEB-INF/manager/group_edit.vm</result>
+		</action>
+		<action name="group_update" class="com.ffyc.server.action.manager.GroupUpdateAction" method="update">
+			<param name="funccode">group</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新会员组</param>
+			<result name="success" type="redirect">/manager/groups.htm</result>
+		</action>
+		<action name="groups" class="com.ffyc.server.action.manager.GroupAction">
+			<param name="funccode">group</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取会员组</param>
+			<result name="success" type="velocity">/WEB-INF/manager/groups.vm</result>
+		</action>
+		<action name="group_del" class="com.ffyc.server.action.manager.GroupAction" method="delete">
+			<param name="funccode">group</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除会员组</param>
+			<result name="success" type="redirect">/manager/groups.htm</result>
+		</action>
+		<!-- 显示权限 -->
+		<action name="msettings" class="com.ffyc.server.action.manager.MsettingAction">
+			<result name="group" type="velocity">/WEB-INF/manager/msetting_group.vm</result>
+			<result name="member" type="velocity">/WEB-INF/manager/msetting_member.vm</result>
+			<result name="mgroup" type="velocity">/WEB-INF/manager/msetting_mgroup.vm</result>
+			<result name="manager" type="velocity">/WEB-INF/manager/msetting_manager.vm</result>
+		</action>
+		<!-- 会员账号 -->
+		<action name="member_input" class="com.ffyc.server.action.manager.MemberCreateAction">
+			<param name="funccode">member</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入会员账号</param>
+			<result name="success" type="velocity">/WEB-INF/manager/member_input.vm</result>
+		</action>
+		<action name="member_create" class="com.ffyc.server.action.manager.MemberCreateAction" method="create">
+			<param name="funccode">member</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建会员账号</param>
+			<result name="success" type="redirect">/manager/members.htm</result>
+		</action>
+		<action name="member_edit" class="com.ffyc.server.action.manager.MemberUpdateAction">
+			<param name="funccode">member</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑会员账号</param>
+			<result name="success" type="velocity">/WEB-INF/manager/member_edit.vm</result>
+		</action>
+		<action name="member_update" class="com.ffyc.server.action.manager.MemberUpdateAction" method="update">
+			<param name="funccode">member</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新会员账号</param>
+			<result name="success" type="redirect">/manager/members.htm</result>
+		</action>
+		<action name="member_password" class="com.ffyc.server.action.manager.MemberPasswordAction">
+			<param name="funccode">member</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">修改会员密码视图</param>
+			<result name="success" type="velocity">/WEB-INF/manager/member_password.vm</result>
+		</action>
+		<action name="member_pass_update" class="com.ffyc.server.action.manager.MemberPasswordAction" method="update">
+			<param name="funccode">member</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">修改会员密码</param>
+			<result name="success" type="redirect">/manager/member_password.htm?mbid=${mbid}</result>
+		</action>
+		<action name="members" class="com.ffyc.server.action.manager.MemberAction">
+			<param name="funccode">member</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取会员账号</param>
+			<result name="success" type="velocity">/WEB-INF/manager/members.vm</result>
+		</action>
+		<action name="member_del" class="com.ffyc.server.action.manager.MemberAction" method="delete">
+			<param name="funccode">member</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除会员账号</param>
+			<result name="success" type="redirect">/manager/members.htm</result>
+		</action>
+		<!-- 会员收货地址 -->
+		<action name="address" class="com.ffyc.server.action.manager.AddressAction">
+			<param name="funccode">address</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取会员收货地址</param>
+			<result name="success" type="velocity">/WEB-INF/manager/address.vm</result>
+		</action>
+		<action name="address_del" class="com.ffyc.server.action.manager.AddressAction" method="delete">
+			<param name="funccode">address</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除会员收货地址</param>
+			<result name="success" type="redirect">address.htm</result>
+		</action>
+		<!-- 管理员组 -->
+		<action name="manager_group_input" class="com.ffyc.server.action.manager.ManagerGroupCreateAction">
+			<param name="funccode">mgroup</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入管理员组</param>
+			<result name="success" type="velocity">/WEB-INF/manager/manager_group_input.vm</result>
+		</action>
+		<action name="manager_group_create" class="com.ffyc.server.action.manager.ManagerGroupCreateAction" method="create">
+			<param name="funccode">mgroup</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建管理员组</param>
+			<result name="success" type="redirect">/manager/manager_groups.htm</result>
+		</action>
+		<action name="manager_group_edit" class="com.ffyc.server.action.manager.ManagerGroupUpdateAction">
+			<param name="funccode">mgroup</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑管理员组</param>
+			<result name="success" type="velocity">/WEB-INF/manager/manager_group_edit.vm</result>
+		</action>
+		<action name="manager_group_update" class="com.ffyc.server.action.manager.ManagerGroupUpdateAction" method="update">
+			<param name="funccode">mgroup</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新管理员组</param>
+			<result name="success" type="redirect">/manager/manager_groups.htm</result>
+		</action>
+		<action name="manager_groups" class="com.ffyc.server.action.manager.ManagerGroupAction">
+			<param name="funccode">mgroup</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取管理员组</param>
+			<result name="success" type="velocity">/WEB-INF/manager/manager_groups.vm</result>
+		</action>
+		<action name="manager_group_del" class="com.ffyc.server.action.manager.ManagerGroupAction" method="delete">
+			<param name="funccode">mgroup</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除管理员组</param>
+			<result name="success" type="redirect">/manager/manager_groups.htm</result>
+		</action>
+		<!-- 管理账号 -->
+		<action name="manager_input" class="com.ffyc.server.action.manager.ManagerCreateAction">
+			<param name="funccode">manager</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入管理账号</param>
+			<result name="success" type="velocity">/WEB-INF/manager/manager_input.vm</result>
+		</action>
+		<action name="manager_create" class="com.ffyc.server.action.manager.ManagerCreateAction" method="create">
+			<param name="funccode">manager</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建管理账号</param>
+			<result name="success" type="redirect">/manager/managers.htm</result>
+		</action>
+		<action name="manager_edit" class="com.ffyc.server.action.manager.ManagerUpdateAction">
+			<param name="funccode">manager</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑管理账号</param>
+			<result name="success" type="velocity">/WEB-INF/manager/manager_edit.vm</result>
+		</action>
+		<action name="manager_update" class="com.ffyc.server.action.manager.ManagerUpdateAction" method="update">
+			<param name="funccode">manager</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新管理账号</param>
+			<result name="success" type="redirect">/manager/managers.htm</result>
+		</action>
+		<action name="managers" class="com.ffyc.server.action.manager.ManagerAction">
+			<param name="funccode">manager</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取管理账号</param>
+			<result name="success" type="velocity">/WEB-INF/manager/managers.vm</result>
+		</action>
+		<action name="manager_del" class="com.ffyc.server.action.manager.ManagerAction" method="delete">
+			<param name="funccode">manager</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除管理员账号</param>
+			<result name="success" type="redirect">/manager/managers.htm</result>
+		</action>
+		<!-- 订单 -->
+		<action name="orders" class="com.ffyc.server.action.manager.OrderAction">
+			<param name="funccode">order</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取订单</param>
+			<result name="success" type="velocity">/WEB-INF/manager/orders.vm</result>
+		</action>
+		<action name="order_del" class="com.ffyc.server.action.manager.OrderAction" method="delete">
+			<param name="funccode">order</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除订单</param>
+			<result name="success" type="redirect">/manager/orders.htm</result>
+		</action>
+		<!-- 订单条目 -->
+		<action name="orderitems" class="com.ffyc.server.action.manager.OrderItemAction">
+			<param name="funccode">orderitem</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取订单条目</param>
+			<result name="success" type="velocity">/WEB-INF/manager/orderitems.vm</result>
+		</action>
+		<!-- 修改订单 -->
+		<action name="order_edit" class="com.ffyc.server.action.manager.OrderUpdateAction">
+			<param name="funccode">order</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑订单</param>
+			<result name="success" type="velocity">/WEB-INF/manager/order_edit.vm</result>
+		</action>
+		<action name="order_update" class="com.ffyc.server.action.manager.OrderUpdateAction" method="update">
+			<param name="funccode">order</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新订单</param>
+			<result name="success" type="redirect">order_edit.htm?oid=${oid}</result>
+			<result name="error" type="velocity">/WEB-INF/manager/error.vm</result>
+		</action>
+		<action name="order_send_goods" class="com.ffyc.server.action.manager.OrderStatusUpdateAction">
+			<param name="funccode">order</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新订单状态 - 卖家已发货</param>
+			<result name="success" type="redirect">orderitems.htm?oid=${oid}</result>
+		</action>
+		<action name="order_close" class="com.ffyc.server.action.manager.OrderStatusUpdateAction" method="close">
+			<param name="funccode">orde</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新订单状态 - 交易关闭</param>
+			<result name="success" type="redirect">orderitems.htm?oid=${oid}</result>
+		</action>
+		<action name="order_paid" class="com.ffyc.server.action.manager.OrderStatusUpdateAction" method="paid">
+			<param name="funccode">order</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新订单状态 - 买家已付款，等待卖家发货</param>
+			<result name="success" type="redirect">orderitems.htm?oid=${oid}</result>
+		</action>
+		<!-- 计算物流配送费用 -->
+		<action name="change_area" class="com.ffyc.server.action.manager.ChangeFreightAction">
+            <result type="json">
+            	<param name="contentType">text/html</param>
+				<param name="objectName">result</param>
+			</result>
+        </action>
+        <!-- 计算支付费用 -->
+		<action name="change_paymode" class="com.ffyc.server.action.manager.ChangePayModeAction">
+            <result type="json">
+            	<param name="contentType">text/html</param>
+				<param name="objectName">result</param>
+			</result>
+        </action>
+		
+		<!-- 物流供应商 -->
+		<action name="logistic_input" class="com.ffyc.server.action.manager.LogisticCreateAction">
+			<param name="funccode">logistic</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入物流供应商</param>
+			<result name="success" type="velocity">/WEB-INF/manager/logistic_input.vm</result>
+		</action>
+		<action name="logistic_create" class="com.ffyc.server.action.manager.LogisticCreateAction" method="create">
+			<param name="funccode">logistic</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建物流供应商</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/logistics.htm</result>
+		</action>
+		<action name="logistic_edit" class="com.ffyc.server.action.manager.LogisticUpdateAction">
+			<param name="funccode">logistic</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑物流供应商</param>
+			<result name="success" type="velocity">/WEB-INF/manager/logistic_edit.vm</result>
+		</action>
+		<action name="logistic_update" class="com.ffyc.server.action.manager.LogisticUpdateAction" method="update">
+			<param name="funccode">logistic</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新物流供应商</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/logistics.htm</result>
+		</action>
+		<action name="logistic_del" class="com.ffyc.server.action.manager.LogisticAction" method="delete">
+			<param name="funccode">logistic</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除物流供应商</param>
+			<result name="success" type="redirect">/manager/logistics.htm</result>
+		</action>
+		<action name="logistics" class="com.ffyc.server.action.manager.LogisticAction">
+			<param name="funccode">logistic</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取物流供应商</param>
+			<result name="success" type="velocity">/WEB-INF/manager/logistics.vm</result>
+		</action>
+		
+		<!-- 配送地区 -->
+		<action name="areas" class="com.ffyc.server.action.manager.AreaAction">
+			<param name="funccode">area</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取配送地区</param>
+			<result name="success" type="velocity">/WEB-INF/manager/areas.vm</result>
+		</action>
+		<action name="area_create" class="com.ffyc.server.action.manager.AreaCreateAction">
+			<param name="funccode">area</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建配送地区</param>
+			<result name="success" type="redirect">areas.action?ls=${ls}</result>
+		</action>
+		<action name="area_update" class="com.ffyc.server.action.manager.AreaUpdateAction">
+			<param name="funccode">area</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">编辑配送地区</param>
+			<result name="success" type="redirect">areas.htm?ls=${ls}</result>
+		</action>
+		<action name="area_del" class="com.ffyc.server.action.manager.AreaAction" method="delete">
+			<param name="funccode">area</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除配送地区</param>
+			<result name="success" type="redirect">areas.htm?ls=${ls}</result>
+		</action>
+		
+		<!-- 地区AJAX -->
+		<action name="districtajax" class="com.ffyc.server.action.manager.DistrictAjaxAction">
+            <result type="json">
+            	<param name="root">list</param>
+			</result>
+        </action>
+		
+		<!-- 地区联动 -->
+		<action name="getdistrict" class="com.ffyc.action.member.DistrictAction">
+            <result type="json">
+            	<param name="root">list</param>
+			</result>
+        </action>
+		
+		<!-- 支付方式 -->
+		<action name="paymode_input" class="com.ffyc.server.action.manager.PayModeCreateAction">
+			<param name="funccode">paymode</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入支付方式</param>
+			<result name="success" type="velocity">/WEB-INF/manager/paymode_input.vm</result>
+		</action>
+		<action name="paymode_create" class="com.ffyc.server.action.manager.PayModeCreateAction" method="create">
+			<param name="funccode">paymode</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建支付方式</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">paymodes.htm</result>
+		</action>
+		<action name="paymode_edit" class="com.ffyc.server.action.manager.PayModeUpdateAction">
+			<param name="funccode">paymode</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑支付方式</param>
+			<result name="success" type="velocity">/WEB-INF/manager/paymode_edit.vm</result>
+		</action>
+		<action name="paymode_update" class="com.ffyc.server.action.manager.PayModeUpdateAction" method="update">
+			<param name="funccode">paymode</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新支付方式</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">paymodes.htm</result>
+		</action>
+		<action name="paymode_update_paysetting" class="com.ffyc.server.action.manager.PayModeUpdateAction" method="updatePaySetting">
+			<param name="funccode">paymode_param</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新支付方式参数</param>
+			<result name="success" type="redirect">paymodes.htm</result>
+		</action>
+		<action name="paymodes" class="com.ffyc.server.action.manager.PayModeAction">
+			<param name="funccode">paymode</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取支付方式</param>
+			<result name="success" type="velocity">/WEB-INF/manager/paymodes.vm</result>
+		</action>
+		<action name="paymode_del" class="com.ffyc.server.action.manager.PayModeAction" method="delete">
+			<param name="funccode">paymode</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除支付方式</param>
+			<result name="success" type="redirect">paymodes.htm</result>
+		</action>
+		
+		<!-- 品牌 -->
+		<action name="brand_input" class="com.ffyc.server.action.manager.BrandCreateAction">
+			<param name="funccode">brand</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入品牌</param>
+			<result name="success" type="velocity">/WEB-INF/manager/brand_input.vm</result>
+		</action>
+		<action name="brand_create" class="com.ffyc.server.action.manager.BrandCreateAction" method="create">
+			<param name="funccode">brand</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建品牌</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/brands.htm</result>
+		</action>
+		<action name="brand_edit" class="com.ffyc.server.action.manager.BrandUpdateAction">
+			<param name="funccode">brand</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑品牌</param>
+			<result name="success" type="velocity">/WEB-INF/manager/brand_edit.vm</result>
+		</action>
+		<action name="brand_update" class="com.ffyc.server.action.manager.BrandUpdateAction" method="update">
+			<param name="funccode">brand</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新品牌</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/brands.htm</result>
+		</action>
+		<action name="brand_del" class="com.ffyc.server.action.manager.BrandAction" method="delete">
+			<param name="funccode">brand</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除品牌</param>
+			<result name="success" type="redirect">/manager/brands.htm</result>
+		</action>
+		<action name="brands" class="com.ffyc.server.action.manager.BrandAction">
+			<param name="funccode">brand</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取品牌</param>
+			<result name="success" type="velocity">/WEB-INF/manager/brands.vm</result>
+		</action>
+		
+		<!-- 规格项 -->
+		<action name="specitem_input" class="com.ffyc.server.action.manager.SpecItemCreateAction">
+			<param name="funccode">specitem</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入规格项</param>
+			<result name="success" type="velocity">/WEB-INF/manager/specitem_input.vm</result>
+		</action>
+		<action name="specitem_create" class="com.ffyc.server.action.manager.SpecItemCreateAction" method="create">
+			<param name="funccode">specitem</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建规格项</param>
+			<result name="success" type="redirect">/manager/specitems.htm</result>
+		</action>
+		<action name="specitem_edit" class="com.ffyc.server.action.manager.SpecItemUpdateAction">
+			<param name="funccode">specitem</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑规格项</param>
+			<result name="success" type="velocity">/WEB-INF/manager/specitem_edit.vm</result>
+		</action>
+		<action name="specitem_update" class="com.ffyc.server.action.manager.SpecItemUpdateAction" method="update">
+			<param name="funccode">specitem</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新规格项</param>
+			<result name="success" type="redirect">/manager/specitems.htm</result>
+		</action>
+		<action name="specitems" class="com.ffyc.server.action.manager.SpecItemAction">
+			<param name="funccode">specitem</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取规格项</param>
+			<result name="success" type="velocity">/WEB-INF/manager/specitems.vm</result>
+		</action>
+		<action name="specitem_del" class="com.ffyc.server.action.manager.SpecItemAction" method="delete">
+			<param name="funccode">specitem</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除规格项</param>
+			<result name="success" type="redirect">/manager/specitems.htm</result>
+		</action>
+		
+		<!-- 规格值 -->
+		<action name="specvalue_input" class="com.ffyc.server.action.manager.SpecValueCreateAction">
+			<param name="funccode">specvalue</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入规格值</param>
+			<result name="success" type="velocity">/WEB-INF/manager/specvalue_input.vm</result>
+		</action>
+		<action name="specvalue_create" class="com.ffyc.server.action.manager.SpecValueCreateAction" method="create">
+			<param name="funccode">specvalue</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建规格值</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/specvalues.action?si=${si}</result>
+		</action>
+		<action name="specvalue_edit" class="com.ffyc.server.action.manager.SpecValueUpdateAction">
+			<param name="funccode">specvalue</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑规格值</param>
+			<result name="success" type="velocity">/WEB-INF/manager/specvalue_edit.vm</result>
+		</action>
+		<action name="specvalue_update" class="com.ffyc.server.action.manager.SpecValueUpdateAction" method="update">
+			<param name="funccode">specvalue</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新规格值</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/specvalues.action?si=${si}</result>
+		</action>
+		<action name="specvalues" class="com.ffyc.server.action.manager.SpecValueAction">
+			<param name="funccode">specvalue</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取规格值</param>
+			<result name="success" type="velocity">/WEB-INF/manager/specvalues.vm</result>
+		</action>
+		<action name="specvalue_del" class="com.ffyc.server.action.manager.SpecValueAction" method="delete">
+			<param name="funccode">specvalue</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除规格值</param>
+			<result name="success" type="redirect">/manager/specvalues.action?si=${si}</result>
+		</action>
+		
+		<!-- 商品类型 -->
+		<action name="goodtype_input" class="com.ffyc.server.action.manager.GoodTypeCreateAction">
+			<param name="funccode">goodtype</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入商品类型</param>
+			<result name="success" type="velocity">/WEB-INF/manager/goodtype_input.vm</result>
+		</action>
+		<action name="goodtype_create" class="com.ffyc.server.action.manager.GoodTypeCreateAction" method="create">
+			<param name="funccode">goodtype</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建商品类型</param>
+			<result name="success" type="redirect">/manager/goodtypes.htm</result>
+		</action>
+		<action name="goodtype_edit" class="com.ffyc.server.action.manager.GoodTypeUpdateAction">
+			<param name="funccode">goodtype</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑商品类型</param>
+			<result name="success" type="velocity">/WEB-INF/manager/goodtype_edit.vm</result>
+		</action>
+		<action name="goodtype_update" class="com.ffyc.server.action.manager.GoodTypeUpdateAction" method="update">
+			<param name="funccode">goodtype</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新商品类型</param>
+			<result name="success" type="redirect">/manager/goodtypes.htm</result>
+		</action>
+		<action name="goodtypes" class="com.ffyc.server.action.manager.GoodTypeAction">
+			<param name="funccode">goodtype</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取商品类型</param>
+			<result name="success" type="velocity">/WEB-INF/manager/goodtypes.vm</result>
+		</action>
+		<action name="goodtype_del" class="com.ffyc.server.action.manager.GoodTypeAction" method="delete">
+			<param name="funccode">goodtype</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除商品类型</param>
+			<result name="success" type="redirect">/manager/goodtypes.htm</result>
+		</action>
+		
+		<!-- 商品扩展属性 -->
+		<action name="extraattr_input" class="com.ffyc.server.action.manager.ExtraAttrCreateAction">
+			<param name="funccode">extraattr</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入商品扩展属性</param>
+			<result name="success" type="velocity">/WEB-INF/manager/extraattr_input.vm</result>
+		</action>
+		<action name="extraattr_create" class="com.ffyc.server.action.manager.ExtraAttrCreateAction" method="create">
+			<param name="funccode">extraattr</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建商品扩展属性</param>
+			<result name="success" type="redirect">/manager/extraattrs.htm</result>
+		</action>
+		<action name="extraattr_edit" class="com.ffyc.server.action.manager.ExtraAttrUpdateAction">
+			<param name="funccode">extraattr</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑商品扩展属性</param>
+			<result name="success" type="velocity">/WEB-INF/manager/extraattr_edit.vm</result>
+		</action>
+		<action name="extraattr_update" class="com.ffyc.server.action.manager.ExtraAttrUpdateAction" method="update">
+			<param name="funccode">extraattr</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新商品扩展属性</param>
+			<result name="success" type="redirect">/manager/extraattrs.htm</result>
+		</action>
+		<action name="extraattrs" class="com.ffyc.server.action.manager.ExtraAttrAction">
+			<param name="funccode">extraattr</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取商品扩展属性</param>
+			<result name="success" type="velocity">/WEB-INF/manager/extraattrs.vm</result>
+		</action>
+		<action name="extraattr_del" class="com.ffyc.server.action.manager.ExtraAttrAction" method="delete">
+			<param name="funccode">extraattr</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除商品扩展属性</param>
+			<result name="success" type="redirect">/manager/extraattrs.htm</result>
+		</action>
+		<action name="extraattr_update_ajax" class="com.ffyc.server.action.manager.ExtraAttrUpdateAction" method="updateDisplay">
+			<param name="funccode">extraattr</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">AJAX更新商品扩展属性是否显示</param>
+		</action>
+		
+		<!-- 商品扩展属性值 -->
+		<action name="extraattrvalue_create" class="com.ffyc.server.action.manager.ExtraAttrValueCreateAction">
+			<param name="funccode">extraattrvalue</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">录入商品扩展属性值</param>
+			<result name="success" type="redirect">/manager/extraattrvalues.action?ea=${ea}</result>
+		</action>
+		<action name="extraattrvalue_update" class="com.ffyc.server.action.manager.ExtraAttrValueUpdateAction">
+			<param name="funccode">extraattrvalue</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新商品扩展属性值</param>
+			<result name="success" type="redirect">/manager/extraattrvalues.action?ea=${ea}</result>
+		</action>
+		<action name="extraattrvalues" class="com.ffyc.server.action.manager.ExtraAttrValueAction">
+			<param name="funccode">extraattrvalue</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取商品扩展属性值</param>
+			<result name="success" type="velocity">/WEB-INF/manager/extraattrvalues.vm</result>
+		</action>
+		<action name="extraattrvalue_del" class="com.ffyc.server.action.manager.ExtraAttrValueAction" method="delete">
+			<param name="funccode">extraattrvalue</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除商品扩展属性值</param>
+			<result name="success" type="redirect">/manager/extraattrvalues.action?ea=${ea}</result>
+		</action>
+		
+		<!-- 商品类型规格 -->
+		<action name="goodtypespecitem_edit" class="com.ffyc.server.action.manager.GoodTypeSpecItemUpdateAction">
+			<param name="funccode">goodtypespecitem</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑商品类型规格</param>
+			<result name="success" type="velocity">/WEB-INF/manager/goodtype_specitems.vm</result>
+		</action>
+		<action name="goodtypespecitem_update" class="com.ffyc.server.action.manager.GoodTypeSpecItemUpdateAction" method="update">
+			<param name="funccode">goodtypespecitem</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新商品类型规格</param>
+			<result name="success" type="redirect">/manager/goodtypespecitem_edit.action?gt=${gt}</result>
+		</action>
+		
+		<!-- 频道 -->
+		<action name="channel_input" class="com.ffyc.server.action.manager.ChannelCreateAction">
+			<param name="funccode">channel</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入频道</param>
+			<result name="success" type="velocity">/WEB-INF/manager/channel_input.vm</result>
+		</action>
+		<action name="channel_create" class="com.ffyc.server.action.manager.ChannelCreateAction" method="create">
+			<param name="funccode">channel</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建频道</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">text/plain,text/html,application/octet-stream</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/WEB-INF/template</param>
+			<result name="success" type="redirect">/manager/channels.htm</result>
+		</action>
+		<action name="channel_edit" class="com.ffyc.server.action.manager.ChannelUpdateAction">
+			<param name="funccode">channel</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑频道</param>
+			<result name="success" type="velocity">/WEB-INF/manager/channel_edit.vm</result>
+		</action>
+		<action name="channel_update" class="com.ffyc.server.action.manager.ChannelUpdateAction" method="update">
+			<param name="funccode">channel</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新频道</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">text/plain,text/html,application/octet-stream</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/WEB-INF/template</param>
+			<result name="success" type="redirect">/manager/channel_edit.htm?cid=${cid}</result>
+		</action>
+		<action name="channels" class="com.ffyc.server.action.manager.ChannelAction">
+			<param name="funccode">channel</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取频道</param>
+			<result name="success" type="velocity">/WEB-INF/manager/channels.vm</result>
+		</action>
+		<action name="channel_del" class="com.ffyc.server.action.manager.ChannelAction" method="delete">
+			<param name="funccode">channel</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除频道</param>
+			<result name="success" type="redirect">/manager/channels.htm</result>
+		</action>
+		
+		<!-- 频道内容 -->
+		<action name="channel_content_input" class="com.ffyc.server.action.manager.ChannelContentCreateAction">
+			<param name="funccode">chcontent</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入频道内容</param>
+			<result name="success" type="velocity">/WEB-INF/manager/channel_content_input.vm</result>
+		</action>
+		<action name="channel_content_doc_input" class="com.ffyc.server.action.manager.ChannelContentCreateAction" method="doc_input">
+			<param name="funccode">channelcontent</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入频道内容</param>
+			<result name="success" type="velocity">/WEB-INF/manager/channel_content_doc_input.vm</result>
+		</action>
+		<action name="channel_content_global_input" class="com.ffyc.server.action.manager.ChannelContentCreateAction" method="global_input">
+			<param name="funccode">channelcontent</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入全局频道内容</param>
+			<result name="success" type="velocity">/WEB-INF/manager/channel_content_global_input.vm</result>
+		</action>
+		<action name="channel_content_create" class="com.ffyc.server.action.manager.ChannelContentCreateAction" method="create">
+			<param name="funccode">channelcontent</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建频道内容</param>
+			<result name="success" type="redirect">/manager/channel_contents.htm?cid=${cid}</result>
+			<result name="channels" type="redirect">/manager/channels.htm</result>
+		</action>
+		<action name="channel_content_edit" class="com.ffyc.server.action.manager.ChannelContentUpdateAction">
+			<param name="funccode">channelcontent</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑频道内容</param>
+			<result name="success" type="velocity">/WEB-INF/manager/channel_content_edit.vm</result>
+			<result name="global" type="velocity">/WEB-INF/manager/channel_content_global_edit.vm</result>
+		</action>
+		<action name="channel_content_update" class="com.ffyc.server.action.manager.ChannelContentUpdateAction" method="update">
+			<param name="funccode">channelcontent</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新频道内容</param>
+			<result name="success" type="redirect">/manager/channel_contents.htm?cid=${cid}</result>
+			<result name="global" type="redirect">/manager/channels.htm</result>
+		</action>
+		<action name="channel_contents" class="com.ffyc.server.action.manager.ChannelContentAction">
+			<param name="funccode">channelcontent</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取频道内容</param>
+			<result name="success" type="velocity">/WEB-INF/manager/channel_contents.vm</result>
+		</action>
+		<action name="channel_content_del" class="com.ffyc.server.action.manager.ChannelContentAction" method="delete">
+			<param name="funccode">channelcontent</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除频道内容</param>
+			<result name="success" type="redirect">/manager/channel_contents.htm?cid=${cid}</result>
+			<result name="global" type="redirect">/manager/channels.htm</result>
+		</action>
+		
+		<!-- 文章分类 -->
+		<action name="document_category_input" class="com.ffyc.server.action.manager.DocumentCategoryCreateAction">
+			<param name="funccode">documentcategory</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入文章分类</param>
+			<result name="success" type="velocity">/WEB-INF/manager/document_category_input.vm</result>
+		</action>
+		<action name="document_category_create" class="com.ffyc.server.action.manager.DocumentCategoryCreateAction" method="create">
+			<param name="funccode">documentcategory</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建文章分类</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/document_categorys.htm</result>
+		</action>
+		<action name="document_category_edit" class="com.ffyc.server.action.manager.DocumentCategoryUpdateAction">
+			<param name="funccode">documentcategory</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑文章分类</param>
+			<result name="success" type="velocity">/WEB-INF/manager/document_category_edit.vm</result>
+		</action>
+		<action name="document_category_update" class="com.ffyc.server.action.manager.DocumentCategoryUpdateAction" method="update">
+			<param name="funccode">documentcategory</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新文章分类</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/document_categorys.htm</result>
+		</action>
+		<action name="document_category_del" class="com.ffyc.server.action.manager.DocumentCategoryAction" method="delete">
+			<param name="funccode">documentcategory</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">删除文章分类</param>
+			<result name="success" type="redirect">/manager/document_categorys.htm</result>
+		</action>
+		<action name="document_categorys" class="com.ffyc.server.action.manager.DocumentCategoryAction">
+			<param name="funccode">documentcategory</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">读取文章分类</param>
+			<result name="success" type="velocity">/WEB-INF/manager/document_categorys.vm</result>
+		</action>
+		
+		<!-- 文章 -->
+		<action name="document_input" class="com.ffyc.server.action.manager.DocumentCreateAction">
+			<param name="funccode">document</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入文章</param>
+			<result name="success" type="velocity">/WEB-INF/manager/document_input.vm</result>
+		</action>
+		<action name="document_create" class="com.ffyc.server.action.manager.DocumentCreateAction" method="create">
+			<param name="funccode">document</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建文章</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/documents.htm</result>
+		</action>
+		<action name="document_edit" class="com.ffyc.server.action.manager.DocumentUpdateAction">
+			<param name="funccode">document</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑文章</param>
+			<result name="success" type="velocity">/WEB-INF/manager/document_edit.vm</result>
+		</action>
+		<action name="document_update" class="com.ffyc.server.action.manager.DocumentUpdateAction" method="update">
+			<param name="funccode">document</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新文章</param>
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="mydefault" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">/manager/documents.htm</result>
+		</action>
+		<action name="document_del" class="com.ffyc.server.action.manager.DocumentAction" method="delete">
+			<param name="funccode">document</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除文章</param>
+			<result name="success" type="redirect">/manager/documents.htm</result>
+		</action>
+		<action name="document_view" class="com.ffyc.server.action.manager.DocumentUpdateAction">
+			<param name="funccode">document</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑文章</param>
+			<result name="success" type="velocity">/WEB-INF/manager/document_view.vm</result>
+		</action>
+		<action name="documents" class="com.ffyc.server.action.manager.DocumentAction">
+			<param name="funccode">document</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取文章</param>
+			<result name="success" type="velocity">/WEB-INF/manager/documents.vm</result>
+		</action>
+		
+		<!-- 系统设置 -->
+		<action name="paysetting_input" class="com.ffyc.server.action.manager.PaySettingCreateAction">
+			<param name="funccode">paymode_param</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入支付方式参数</param>
+			<result name="success" type="velocity">/WEB-INF/manager/paysetting_input.vm</result>
+		</action>
+		<action name="paysetting_create" class="com.ffyc.server.action.manager.PaySettingCreateAction" method="create">
+			<param name="funccode">paymode_param</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">创建支付方式参数</param>
+			<result name="success" type="redirect">paysetting_input.htm?pm=${pm}</result>
+		</action>
+		<action name="paysetting_update" class="com.ffyc.server.action.manager.PaySettingUpdateAction">
+			<param name="funccode">paymode_param</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">AJAX更新支付方式参数</param>
+		</action>
+		<action name="paysettings" class="com.ffyc.server.action.manager.PaySettingAction">
+			<param name="funccode">paymode_param</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取支付方式参数</param>
+			<result name="success" type="velocity">/WEB-INF/manager/paysettings.vm</result>
+		</action>
+		<action name="paysetting_del" class="com.ffyc.server.action.manager.PaySettingAction" method="delete">
+			<param name="funccode">paymode_param</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除支付方式参数</param>
+			<result name="success" type="redirect">paysetting_input.htm?pm=${pm}</result>
+		</action>
+		
+		<!-- 权限 -->
+		<action name="pms_member" class="com.ffyc.server.action.manager.PermissionAction" method="member">
+			<result name="success" type="velocity">/WEB-INF/manager/pms_member.vm</result>
+		</action>
+		<action name="pms_groups" class="com.ffyc.server.action.manager.PermissionAction" method="groups">
+			<result name="success" type="velocity">/WEB-INF/manager/pms_groups.vm</result>
+		</action>
+		<action name="pms_manager" class="com.ffyc.server.action.manager.PermissionAction" method="manager">
+			<param name="funccode">pms_manager</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">查看管理员权限</param>
+			<result name="success" type="velocity">/WEB-INF/manager/pms_manager.vm</result>
+		</action>
+		<action name="pms_manager_update" class="com.ffyc.server.action.manager.PermissionManagerUpdateAction">
+			<param name="funccode">pms_manager</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">设置更新管理员权限</param>
+			<result name="success" type="redirect">/manager/pms_manager.htm?mgid=${mgid}</result>
+		</action>
+		<action name="pms_mgroup" class="com.ffyc.server.action.manager.PermissionAction" method="mgroup">
+			<result name="success" type="velocity">/WEB-INF/manager/pms_mgroup.vm</result>
+		</action>
+		<action name="pms_mgroup_update" class="com.ffyc.server.action.manager.PermissionMgroupUpdateAction">
+			<param name="funccode">pms_mgroup</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">设置更新管理员组权限</param>
+			<result name="success" type="redirect">/manager/pms_mgroup.htm?mgpid=${mgpid}</result>
+		</action>
+		<!-- 高级权限管理 -->
+		<action name="pms_admin_input" class="com.ffyc.server.action.manager.PermissionAdminCreateAction">
+			<param name="funccode">pms_admin</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入权限</param>
+			<result name="success" type="velocity">/WEB-INF/manager/pms_admin_input.vm</result>
+		</action>
+		<action name="pms_admin_create" class="com.ffyc.server.action.manager.PermissionAdminCreateAction" method="create">
+			<param name="funccode">pms_admin</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">新建权限</param>
+			<result name="success" type="redirect">pms_admin.htm</result>
+		</action>
+		<action name="pms_admin_edit" class="com.ffyc.server.action.manager.PermissionAdminUpdateAction">
+			<param name="funccode">pms_admin</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑权限</param>
+			<result name="success" type="velocity">/WEB-INF/manager/pms_admin_edit.vm</result>
+		</action>
+		<action name="pms_admin_update" class="com.ffyc.server.action.manager.PermissionAdminUpdateAction" method="update">
+			<param name="funccode">pms_admin</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新权限</param>
+			<result name="success" type="redirect">pms_admin.htm</result>
+		</action>
+		<action name="pms_admin_delete" class="com.ffyc.server.action.manager.PermissionAdminAction" method="delete">
+			<param name="funccode">pms_admin</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除权限</param>
+			<result name="success" type="redirect">pms_admin.htm</result>
+		</action>
+		<action name="pms_admin" class="com.ffyc.server.action.manager.PermissionAdminAction">
+			<param name="funccode">pms_admin</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取权限</param>
+			<result name="success" type="velocity">/WEB-INF/manager/pms_admin.vm</result>
+		</action>
+		
+		<!-- 地区管理 -->
+		<action name="districts" class="com.ffyc.server.action.manager.DistrictAction">
+			<param name="funccode">district</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取地区信息</param>
+			<result name="success" type="velocity">/WEB-INF/manager/districts.vm</result>
+		</action>
+		
+		<!-- 商品用户评论 -->
+		<action name="comments" class="com.ffyc.server.action.manager.CommentAction">
+			<param name="funccode">comment</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取用户评论</param>
+			<result name="success" type="velocity">/WEB-INF/manager/comments.vm</result>
+		</action>
+		<action name="comment_update" class="com.ffyc.server.action.manager.CommentAction" method="update">
+			<param name="funccode">comment</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新用户评论</param>
+			<result name="success" type="redirect">comments.htm</result>
+		</action>
+		<action name="comment_del" class="com.ffyc.server.action.manager.CommentAction" method="delete">
+			<param name="funccode">comment</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除用户评论</param>
+			<result name="success" type="redirect">comments.htm</result>
+		</action>
+		
+		<!-- 系统配置 -->
+		<action name="configs" class="com.ffyc.server.action.manager.ConfigAction">
+			<param name="funccode">config</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取系统配置</param>
+			<result name="success" type="velocity">/WEB-INF/manager/configs.vm</result>
+		</action>
+		<action name="config_input" class="com.ffyc.server.action.manager.ConfigCreateAction">
+			<param name="funccode">config</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">录入系统配置</param>
+			<result name="success" type="velocity">/WEB-INF/manager/config_input.vm</result>
+		</action>
+		<action name="config_create" class="com.ffyc.server.action.manager.ConfigCreateAction" method="create">
+			<param name="funccode">config</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">新建系统配置</param>
+			<result name="success" type="redirect">configs.htm</result>
+		</action>
+		<action name="config_edit" class="com.ffyc.server.action.manager.ConfigUpdateAction">
+			<param name="funccode">config</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">管理编辑系统配置</param>
+			<result name="success" type="velocity">/WEB-INF/manager/config_edit.vm</result>
+		</action>
+		<action name="config_update" class="com.ffyc.server.action.manager.ConfigUpdateAction" method="update">
+			<param name="funccode">config</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">管理更新系统配置</param>
+			<result name="success" type="redirect">configs.htm</result>
+		</action>
+		<action name="config_set" class="com.ffyc.server.action.manager.ConfigUpdateAction">
+			<param name="funccode">config</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">编辑系统配置</param>
+			<result name="success" type="velocity">/WEB-INF/manager/config_set.vm</result>
+		</action>
+		<action name="config_doset" class="com.ffyc.server.action.manager.ConfigUpdateAction" method="doset">
+			<param name="funccode">config</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">更新系统配置</param>
+			<result name="success" type="redirect">configs.htm</result>
+		</action>
+		<action name="config_update_ajax" class="com.ffyc.server.action.manager.ConfigUpdateAjaxAction">
+			
+		</action>
+		<action name="config_getoptional" class="com.ffyc.server.action.manager.ConfigUpdateAjaxAction" method="getOptional">
+			<result type="json">
+            	<param name="contentType">text/html</param>
+				<param name="objectType">array</param>
+				<param name="objectName">optionallist</param>
+				<param name="includeProperties">optionallist</param>
+			</result>
+		</action>
+		<action name="config_delete" class="com.ffyc.server.action.manager.ConfigAction" method="delete">
+			<param name="funccode">config</param>
+			<param name="funcaction">delete</param>
+			<param name="funcname">删除系统配置</param>
+			<result name="success" type="redirect">configs.htm</result>
+		</action>
+		
+		<!-- 资金管理 -->
+		<action name="bank" class="com.ffyc.server.action.manager.BankAction">
+			<param name="funccode">bank</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">读取资金信息</param>
+			<result name="success" type="velocity">/WEB-INF/manager/bank.vm</result>
+		</action>
+		<!-- 充值提现申请信息-->
+		<action name="payin_getout" class="com.ffyc.server.action.manager.PayinGetoutAction">
+			<param name="funccode">bank</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">充值提现申请信息列表</param>
+			<result name="success" type="velocity">/WEB-INF/manager/payin_getout.vm</result>
+		</action>
+		<!-- 充值提现审核 -->
+		<action name="payin_getout_view" class="com.ffyc.server.action.manager.PayinGetoutAction" method="view">
+			<param name="funccode">bank</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">查看充值提现申请</param>
+			<result name="success" type="velocity">/WEB-INF/manager/payin_getout_view.vm</result>
+		</action>
+		<action name="payin_getout_audit" class="com.ffyc.server.action.manager.PayinGetoutAction" method="audit">
+			<param name="funccode">bank</param>
+			<param name="funcaction">write</param>
+			<param name="funcname">审核充值提现申请</param>
+			<result name="success" type="redirect">payin_getout.htm</result>
+		</action>
+		<!-- 数据库管理 -->
+		<action name="db_backup" class="com.ffyc.server.action.manager.DataBaseAction" method="backup">
+			<param name="funccode">database</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">备份数据库</param>
+		    <result name="success" type="velocity">/WEB-INF/manager/db_backup.vm</result>
+		</action>
+		<action name="db_restore" class="com.ffyc.server.action.manager.DataBaseAction">
+			<param name="funccode">database</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">恢复数据库</param>
+			<result name="success" type="velocity">/WEB-INF/manager/db_restore.vm</result>
+		</action>
+		<action name="db_restore_do" class="com.ffyc.server.action.manager.DataBaseAction" method="restore">
+			<param name="funccode">database</param>
+			<param name="funcaction">read</param>
+			<param name="funcname">恢复数据库</param>
+			<result name="success" type="velocity">/WEB-INF/manager/db_restore.vm</result>
+		</action>
+	</package>
+</struts>

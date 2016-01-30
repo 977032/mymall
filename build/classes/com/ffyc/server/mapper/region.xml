@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.RegionMapper">
+	<cache />
+	<select id="findAll" resultType="Region">
+		SELECT
+			*
+		FROM
+			TB_REGION
+	</select>
+	
+	<select id="findById" resultType="Region">
+		SELECT
+			*
+		FROM
+			TB_REGION
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="save" parameterType="Region" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_REGION
+		(
+			ID,
+			NAME,
+			STATUS,
+			MANAGER,
+			REMARK,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{status,    jdbcType=VARCHAR},
+			#{manager,    jdbcType=VARCHAR},
+			#{remark,    jdbcType=VARCHAR},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="Region">
+		update
+			TB_REGION
+		set
+		    NAME = #{name, jdbcType=VARCHAR},
+		    STATUS = #{status, jdbcType=VARCHAR},
+		    MANAGER = #{manager, jdbcType=VARCHAR},
+		    REMARK = #{remark, jdbcType=VARCHAR},
+		    UTIME = sysdate()
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_REGION
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

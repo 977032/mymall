@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>beautyfamily在线商城 - $!{siteName}</title>
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/global.css" rel="stylesheet" type="text/css" />
+<link href="styles/inside.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.2.3.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery-extend-AdAdvance.js"></script>
+<script type="text/javascript" src="scripts/jquery-extend-TrunAd2.js"></script>
+<script type="text/javascript" src="scripts/box.js"></script>
+</head>
+<body>
+<div id="Box-top">
+  <div id="Box-top-nav"><a onfocus="this.blur()" href="member/">我的账户</a><a onfocus="this.blur()" href="#">每日特惠</a><a onfocus="this.blur()" href="#">断码专区</a><a onfocus="this.blur()" href="#">积分回馈</a><a onfocus="this.blur()" href="#">论坛</a><a onfocus="this.blur()" href="#">网站联盟</a><a onfocus="this.blur()" href="#">帮助中心</a><a onfocus="this.blur()" href="#"><img src="images/Home-box_01.jpg" width="70" height="16" alt="在线客服" /></a></div>
+  <div id="Box-top-logo">
+    <h1><a onfocus="this.blur()" href="#"><img src="images/Home-box_03.jpg" alt="beautyfamily 美丽家族 在线商城" width="244" height="32" /></a></h1>
+    <p class="Box-top-login">您好，欢迎光临beautyfamily 美丽家族。#if( $session.getAttribute("member") )<a href="member/index.htm">我的beautyfamily</a>#else<a onfocus="this.blur()" href="login.htm">登录</a> | <a onfocus="this.blur()" href="register.htm">注册</a>#end</p>
+    <p class="Box-top-tel"><img src="images/Home-box_05.jpg" alt="订购热线" width="122" height="14" /></p>
+    <div class="clear"></div>
+  </div>
+  <!------------------------nav------------------------>
+  <div id="Box-nav">
+    <ul>
+      <li><a onfocus="this.blur()" href="index.htm">首页</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=2ffdf86fa01f44d9a5ee997a4cba6426">潮流服饰</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=87e9d2853d7b48f1a7867e3f87f44356">美容护肤</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=702742dcbf4b4467972e6c4ef46d6316">手机数码</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=833fb464077d4a77a2a4553212193f76">珠宝饰品</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=10ff85acdec645349dd6a52e3f0a58c8">食品保健</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=dc1a3f5f11e94de3a82dce52be404483">图书音像</a></li>
+    </ul>
+    <p><a href="http://www.beautyfamily.com" target="_blank"><img src="images/Home-box_07.jpg" alt="http://www.beautyfamily.com" width="187" height="26" border="0" /></a></p>
+    <div class="clear"></div>
+  </div>
+  <div id="Box-menu-left">
+    <div class="Box-sort white"><span>热门分类：</span><a href="#">手机</a><a href="#">T恤</a><a href="#">连衣裙</a><a href="#">雪纺裙</a><a href="#">玫琳凯</a><span class="orange">特别关注：</span><a href="#">IPHONE四代无锁版</a>|<a href="#">诺基亚E71售1650元</a>|<a href="#">会员积分换购</a></div>
+    <div class="Box-search">
+      <form action="browse.htm" method="post" id="search">
+        <label>
+          <input name="keyword" type="text" id="keyword" value="$!{keyword}">
+        </label>
+        <label>
+          <select name="c" id="c">
+            <option value="">所有分类</option>
+            #foreach( $item in $caterootlist )
+            <option value="$!{item.id}" #if( $category.id==$item.id )selected="selected"#end>$!{item.name}</option>
+            #end
+          </select>
+        </label>
+        <input name="button" type="submit" id="button" value="搜索" class="button" />
+        <label>热门关键词:#foreach( $skey in $searchKeyList )<a href="browse.htm?c=&&keyword=$!{skey}">$!{skey}</a>#end</label>
+      </form>
+    </div>
+  </div>
+  <div id="Box-menu-right"><img src="images/Home-box_02.jpg" width="17" height="16" class="icon" /><a href="my_cart.htm" title="订单金额：$!{cart.getCartAmount()}元">购物车中有 <b>$!{cart.getCartNumber()}</b> 件商品</a><a href="my_cart.htm"><img src="images/Home-box_11.jpg" width="53" height="19" border="0" class="button-b" /></a></div>
+  <div class="clear"></div>
+</div>
+<div class="Box-banner"><img src="images/Home-box_15.jpg" width="980" height="60" /></div>
+<!------------------------内容------------------------>
+<div id="Main-box">
+
+  <div class="Main-left left">
+  <div class="my_left_cat_list">
+  <h2>商品类别</h2>
+  #foreach( $item in $map.get("B") )
+  <div class="h2_cat" onmouseover="this.className='h2_cat active_cat'" onmouseout="this.className='h2_cat'">
+    <h3><a href="browse.htm?c=$!{item.id}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}">$!{item.name}</a></h3>
+    <div class="h3_cat">
+      <div class="shadow">
+        <div class="shadow_border">
+          <ul>
+          	#foreach( $subitem in $item.categories )
+            <li><a href="browse.htm?c=$!{subitem.id}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}">$!{subitem.name}</a></li>
+            #end
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  #end
+</div>
+  <div class="Main-left-subNav" style="margin-top:20px;">
+      <h3>品牌</h3>
+      <ul class="Main-left-Brand">
+        #foreach( $item in $brandlist )
+        <li><a href="browse.htm?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{item.id}">$!{item.name}</a></li>
+        #end
+      </ul>
+    </div>
+    <p><img src="images/Main-img-01.jpg" width="200" height="303" /></p>
+    #foreach( $item in $map.get("G_B").getItems() )
+    <p><img src="images/Main-img-02.jpg" width="200" height="350" /></p>
+    <p><a href="goods.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(36,"..")}</a></p>
+    #end
+  </div>
+  <div class="Main-right right">
+    <div><div id="play">
+      <!--轮播广告-->
+      <div id="play_list">
+      #foreach( $item in $map.get("A").attachments )
+      <a class="track" href="$!{item.url}" target="_blank" name="h-focus-01"><img src=".$!{item.path}/$!{item.name}" width="730" height="422"></a>
+      #end
+      </div>
+      <div id="play_text"></div>
+      <SCRIPT type=text/javascript> 
+		$('#play_list').TrunAd2();
+	  </SCRIPT>
+    </div></div>
+    <!------------------------新款上市------------------------>
+    <div class="Main-stroke">
+      <div class="Main-Title">
+        <h4 style="border-bottom:2px solid #f773be;"><a href="#" style="color:#f773be">1F.潮流服饰</a></h4>
+        <span><a href="#">更多2 >></a></span>
+        <div class="clear"></div>
+      </div>
+      <ul>
+        #foreach( $item in $map.get("C").getItems() )
+        <li><a href="goods.htm?c=$!{c}&gid=$!{item.id}"><img src=".$!{item.getDefaultImage().path}/$!{item.getDefaultImage().name}" width="150" height="205" /></a>
+          <div class="women-box">
+            <p><a href="goods.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(36,"..")}</a></p>
+            <p>市场价<del class="gray">￥$!{item.mprice}</del>　售价<span class="red">￥$!{item.getPriceScope()}</span></p>
+          </div>
+        </li>
+        #end
+      </ul>
+      <div class="clear"></div>
+    </div>
+    <!------------------------新款上市------------------------>
+    <p><img src="images/banner_02.jpg" width="765" height="260" /></p>
+    <!------------------------POLO衫＆T恤推荐------------------------>
+    <div>
+      <div class="Main-Title">
+        <h4 style="border-bottom:2px solid #a10000;"><a href="#" style="color:#a10000">2F.手机数码</a></h4>
+        <span><a href="#">更多 >></a></span>
+        <div class="clear"></div>
+      </div>
+      <ul>
+        #foreach( $item in $map.get("D").getItems() )
+        <li><a href="goods.htm?c=$!{c}&gid=$!{item.id}"><img src=".$!{item.getDefaultImage().path}/$!{item.getDefaultImage().name}" width="150" height="205" /></a>
+          <div class="women-box">
+            <p><a href="goods.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(36,"..")}</a></p>
+            <p>市场价<del class="gray">￥$!{item.mprice}</del>　售价<span class="red">￥$!{item.getPriceScope()}</span></p>
+          </div>
+        </li>
+        #end
+      </ul>
+      <div class="clear"></div>
+    </div>
+    <!------------------------POLO衫＆T恤推荐------------------------>
+    <p><img src="images/banner_03.jpg" width="765" height="260" /></p>
+    <!------------------------衬衫推荐------------------------>
+    <div>
+      <div class="Main-Title">
+        <h4 style="border-bottom:2px solid #9d7b4e;"><a href="#" style="color:#9d7b4e">3F.美容护肤</a></h4>
+        <span><a href="#">更多 >></a></span>
+        <div class="clear"></div>
+      </div>
+      <ul>
+        #foreach( $item in $map.get("E").getItems() )
+        <li><a href="goods.htm?c=$!{c}&gid=$!{item.id}"><img src=".$!{item.getDefaultImage().path}/$!{item.getDefaultImage().name}" width="150" height="205" /></a>
+          <div class="women-box">
+            <p><a href="goods.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(36,"..")}</a></p>
+            <p>市场价<del class="gray">￥$!{item.mprice}</del>　售价<span class="red">￥$!{item.getPriceScope()}</span></p>
+          </div>
+        </li>
+        #end
+      </ul>
+      <div class="clear"></div>
+    </div>
+    <!------------------------衬衫推荐------------------------>
+    <!------------------------针织衫推荐------------------------>
+    <div>
+      <div class="Main-Title">
+        <h4 style="border-bottom:2px solid #9d7b4e;"><a href="#" style="color:#9d7b4e">4F.珠宝饰品</a></h4>
+        <span><a href="#">更多 >></a></span>
+        <div class="clear"></div>
+      </div>
+      <ul>
+        #foreach( $item in $map.get("F").getItems() )
+        <li><a href="goods.htm?c=$!{c}&gid=$!{item.id}"><img src=".$!{item.getDefaultImage().path}/$!{item.getDefaultImage().name}" width="150" height="205" /></a>
+          <div class="women-box">
+            <p><a href="goods.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(30,"..")}</a></p>
+            <p>市场价<del class="gray">￥$!{item.mprice}</del>　售价<span class="red">￥$!{item.getPriceScope()}</span></p>
+          </div>
+        </li>
+        #end
+      </ul>
+      <div class="clear"></div>
+    </div>
+    <!------------------------针织衫推荐------------------------>
+    <!------------------------裙子推荐------------------------>
+    <div>
+      <div class="Main-Title">
+        <h4 style="border-bottom:2px solid #9d7b4e;"><a href="#" style="color:#9d7b4e">5F.图书音像</a></h4>
+        <span><a href="#">更多 >></a></span>
+        <div class="clear"></div>
+      </div>
+      <ul>
+        #foreach( $item in $map.get("G").getItems() )
+        <li><a href="goods.htm?c=$!{c}&gid=$!{item.id}"><img src=".$!{item.getDefaultImage().path}/$!{item.getDefaultImage().name}" width="150" height="205" /></a>
+          <div class="women-box">
+            <p><a href="goods.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(36,"..")}</a></p>
+            <p>市场价<del class="gray">￥$!{item.mprice}</del>　售价<span class="red">￥$!{item.getPriceScope()}</span></p>
+          </div>
+        </li>
+        #end
+      </ul>
+      <div class="clear"></div>
+    </div>
+    <!------------------------裙子推荐------------------------>
+  </div>
+  <div class="clear"></div>
+</div>
+<!------------------------底部------------------------>
+<div id="Box-bottom">
+  <div class="Box-bottom-menu">
+    #foreach( $doccate in $map.get("G_A") )
+    <dl>
+      <dt><strong>$!{doccate.name}</strong></dt>
+      #foreach( $document in $doccate.documents )
+      <dd><a href="channel.htm?c=help&amp;t=v&amp;d=$!{document.id}">$!{document.title}</a></dd>
+      #end
+    </dl>
+    #end
+    <dl class="Box-Nosty">
+      <dt><strong>订购热线</strong>(免长途费)</dt>
+      <dd><strong>400 600 6888</strong></dd>
+      <dt><strong>客户服务热线</strong>(免长途费)</dt>
+      <dd><strong>400 650 7099</strong></dd>
+    </dl>
+    <div class="clear"></div>
+  </div>
+  <p class="bZp"><a href="#"><img src="images/service01.jpg" width="157" height="55" /></a><a href="#"><img src="images/service02.jpg" width="178" height="55" /></a><a href="#"><img src="images/service03.jpg" width="198" height="55" /></a></p>
+  <p><a href="#">首页</a> | <a href="#">公司简介</a> | <a href="#">隐私申明</a> | <a href="#">团购优惠</a> | <a href="#">合作专区</a> | 加入<a href="3">beautyfamily</a> | <a href="#">投诉与建议</a></p>
+  <p>Copyright 2007 - 2020 <a href="http://www.beautyfamily.com" target="_blank">beautyfamily.com</a> All Rights Reserved 京ICP备08088888号</p>
+  <div class="clear"></div>
+</div>
+</body>
+</html>

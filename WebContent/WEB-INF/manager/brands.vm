@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<script type="text/javascript"> 
+<!-- 
+jQuery(document).ready(function() {
+jQuery("#checkall").click(
+    function(){
+		if(this.checked){
+            jQuery("input[name='checkbox']").each(function(){this.checked=true;});
+        }else{
+            jQuery("input[name='checkbox']").each(function(){this.checked=false;});
+        }
+    }
+);
+});
+//--> 
+</script>
+
+<script type="text/javascript">
+var isExtendsValidate = true;
+function extendsValidate(){
+	//checkbox 验证，必须选择一个checkbox
+	if(jQuery("[name='checkbox']:checked").length < 1){
+		alert("至少选择一条信息。");
+		return false;
+	}
+}
+</script>
+<title>品牌管理</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 品牌管理</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="brand_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建品牌 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>品牌管理</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="brand_del.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td><input type="checkbox" name="checkall" id="checkall" title="全选/反选"></td>
+                <td>品牌LOGO</td>
+                <td>品牌名称</td>
+                <td>品牌网址</td>
+                <td>排序</td>
+              </tr>
+              #foreach( $item in $ps.getItems() )
+              <tr>
+                <td><input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}"></td>
+                <td><img src="..$!{item.vlogo.path}/$!{item.vlogo.name}" alt="$!{item.name}" width="80" height="30"></td>
+                <td><a href="brand_edit.htm?bd=$!{item.id}">$!{item.name}</a></td>
+                <td>$!{item.url}</td>
+                <td>$!{item.csort}</td>
+              </tr>
+              #end
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="删除"></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+          <div class="pagination">
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=1&amp;od=$!{od}&amp;sc=$!{sc}" title="首页">首页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPreviousTenPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="前10页">前10页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPreviousPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="上一页">上一页</a>
+#foreach( $infoitem in $ps.getPages() )
+<a class="number" title="第$!{infoitem}页" href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{infoitem}&amp;od=$!{od}&amp;sc=$!{sc}">&nbsp;$!{infoitem}&nbsp;</a>
+#end
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getNextPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="下一页">下一页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getNextTenPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="后10页">后10页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPageCount()&amp;od=$!{od}&amp;sc=$!{sc}" title="最后页">最后页</a>
+<span>&nbsp;共&nbsp;
+                $ps.getTotalCount()
+                &nbsp;条信息，
+                $ps.pageCount
+                页</span>
+</div>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

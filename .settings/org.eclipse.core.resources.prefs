@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//WebContent/member/css/css.css=UTF-8
+encoding//src/com/ffyc/server/action/BaseAction.java=UTF-8
+encoding//src/com/ffyc/server/action/SuperAction.java=UTF-8
+encoding//src/com/ffyc/server/action/manager/BaseAction.java=UTF-8
+encoding//src/com/ffyc/server/interceptor=UTF-8
+encoding//src/com/ffyc/server/utils/AmountUtil.java=GBK
+encoding//src/com/ffyc/server/utils/alipay/Dom4j.java=UTF-8
+encoding/<project>=UTF-8

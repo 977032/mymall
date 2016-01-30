@@ -1,0 +1,117 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* 全局公共样式的设定 */
+*{margin:0; padding:0;}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,dl,dt,dd{margin:0;padding:0;border:0;}
+body{font:12px/1.55em arial, helvetica, sans-serif; background:#fff url(../images/menu_nav_dabg.jpg) repeat-x;}
+li{list-style-type:none;}
+h1,h2,h3,h4,h5,h6 {font-size:12px; font-weight:normal;}
+input,button,textarea,select{ font-family:Tahoma, Arial, Helvetica, "宋体"; font-size:12px}
+
+/* 默认全局样式超链接样式 */
+a{color:#4d6b76; text-decoration:none; font-size:12px;}/* 链接基本样式 */
+a:hover {color:#0c457e; text-decoration:underline; }/* 链接移上时的样式 */
+
+
+
+
+/* 其它常用样式的定义 */
+.left{ float: left;}
+.right{ float: right;}
+.clear{ clear: both; }
+.noBorder{border:none;	}
+.bd{ border:1px solid #ccc;}
+
+
+
+.gouwu { width:980px; margin:0 auto;}
+.gouwu1 {}
+.zhishi .xiaoguo1 {background:url(../images/top_03_03.jpg) no-repeat; width:187px; height:24px; display:block; text-align:center; line-height:24px; font-size:14px; font-weight:bold; color:#fff;}
+.zhishi .xiaoguo2 {background:url(../images/top_03_04.jpg) no-repeat; width:190px; height:24px; display:block; text-align:center; line-height:24px; font-size:14px; font-weight:bold; color:#000;}
+.zhishi .xiaoguo3 {background:url(../images/top_03_05.jpg) no-repeat; width:190px; height:24px; display:block; text-align:center; line-height:24px; font-size:14px; font-weight:bold; color:#000;}
+.zhishi .xiaoguo4 {background:url(../images/top_03_06.jpg) no-repeat; width:190px; height:24px; display:block; text-align:center; line-height:24px; font-size:14px; font-weight:bold; color:#000;}
+.zhishi .xiaoguo5 {background:url(../images/top_03_07.jpg) no-repeat; width:219px; height:24px; display:block; text-align:center; line-height:24px; font-size:14px; font-weight:bold; color:#000;}
+
+
+.quanxuan{ margin-top:20px; border-bottom:#8ab4f5 solid 3px;}
+
+.dianpu p { margin-left:15px; line-height:30px; margin-top:30px;}
+.ze { float:right; margin-top:20px;}
+
+
+
+.box { margin-top:20px; height:auto; overflow:hidden;}
+
+.box1 a{ float:left; background:url(../images/shan_03.jpg) no-repeat; width:100px; height:26px; line-height:26px; display:block; text-align:center;color:#333;}
+.box1  { }
+.box1 a:hover { color:#333; background:url(../images/shan_031_03.jpg) no-repeat; display:block; line-height:26px; height:26px; width:100px; text-align:center; color:#FFF; font-weight:bold;}
+
+
+
+
+.box2 {float:right; background:url(../images/shan_03.jpg) no-repeat; width:100px; height:26px; line-height:26px; display:block; text-align:center;}
+.box2 a {color:#333}
+.box2 a:hover {color:#333; background:url(../images/shan_031_03.jpg) no-repeat; display:block; line-height:26px; height:26px; width:100px; text-align:center; color:#FFF; font-weight:bold;}
+
+
+.db { float:right; padding-top:10px;}
+.btn {border-bottom:#8ab4f5 solid 3px;}
+.btn1 { margin:20px 0 20px 50px;}
+.btn h3 span { font-size:16px; font-weight:bold;}
+.btn ul { margin-top:10px;}
+.btn ul span { color:#F00;}
+.btn ul li{ margin-top:10px;}
+
+/* 大按钮样式 */
+.btn_pay input{
+	border:none;
+	line-height:44px;
+	background:url("images/big_btns.gif") no-repeat scroll 0 0 transparent;
+	float:left;
+	height:44px;
+	margin-right:0;
+	overflow:hidden;
+	text-indent:-500px;
+	width:144px;
+}
+
+/* 常用table样式 */
+.tb_lightblue {}
+.tb_lightblue caption {
+    padding: 0 0 5px 0; 
+    font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    text-align:center;
+}
+.tb_lightblue table{
+    border-left: 1px solid #C1DAD7;
+}
+.tb_lightblue th {
+    font: bold 14px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    color: #4f6b72;
+    border-right: 1px solid #C1DAD7;
+    border-bottom: 1px solid #C1DAD7;
+    border-top: 3px solid #8AB4F5;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align:center;
+    padding: 6px 6px 6px 12px;
+    background: #CAE8EA ;
+}
+.tb_lightblue td {
+    border-right: 1px solid #C1DAD7;
+    border-bottom: 1px solid #C1DAD7;
+    background: #f6fbff;
+    font-size:11px;
+    padding: 6px 6px 6px 12px;
+    color: #4f6b72;
+}
+.tb_lightblue td.alt {
+    background: #F5FAFA;
+    color: #797268;
+}
+.tb_lightblue tr.alt td{background:#ecf6fc;}
+	
+	
+
+

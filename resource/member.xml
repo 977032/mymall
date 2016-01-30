@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<!-- 会员后台 -->
+	<package name="member" extends="json-default" namespace="/member">
+		<!-- 登录权限检查拦截器 -->
+		<interceptors>
+			<interceptor name="memberauth" class="com.ffyc.server.interceptor.MemberAuthInterceptor">
+				<param name="name">管理权限检查</param>
+			</interceptor>
+			<!-- 重新组合拦截器堆栈,加入了默认拦截器 -->
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="memberauth"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 使用自定义的拦截器 -->
+		<default-interceptor-ref name="mydefault" />
+		<!-- 全局结果 -->
+		<global-results>
+			<result name="notauth" type="redirect">/login.htm</result>
+			<result name="notice" type="velocity">/WEB-INF/member/notice.vm</result>
+		</global-results>
+		
+		<!-- 登出 -->
+		<action name="logout" class="com.ffyc.server.action.member.LoginAction" method="logout">
+			<result name="success" type="redirect">/index.htm</result>
+		</action>
+		<!-- 购物 -->
+		<!-- 查看持久购物车 -->
+		<action name="my_cart" class="com.ffyc.server.action.member.CartAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_my_cart.vm</result>
+		</action>
+		<!-- 更新购物车商品数量 -->
+		<action name="cart_update_amount" class="com.ffyc.server.action.member.CartUpdateAction">
+			<result name="success" type="redirect">my_cart.htm</result>
+		</action>
+		<!-- 删除购物车商品 -->
+		<action name="cart_del_item" class="com.ffyc.server.action.member.CartUpdateAction" method="delorderitem">
+			<result name="success" type="redirect">my_cart.htm</result>
+		</action>
+		<!-- 地区联动 -->
+		<action name="getdistrict" class="com.ffyc.server.action.member.DistrictAction">
+            <result type="json">
+            	<param name="root">list</param>
+			</result>
+        </action>
+		<!-- 选择订单收货地址 -->
+		<action name="address_sel" class="com.ffyc.server.action.member.AddressSelAction">
+			<result name="success" type="velocity">/WEB-INF/member/address_sel.vm</result>
+		</action>
+		<!-- 设置订单收货地址 -->
+		<action name="address_set" class="com.ffyc.server.action.member.AddressSetAction">
+			<result name="success" type="redirect">freight_sel.htm?str=${str}</result>
+		</action>
+		<!-- 选择订单配送方式 -->
+		<action name="freight_sel" class="com.ffyc.server.action.member.FreightSelAction">
+			<result name="success" type="velocity">/WEB-INF/member/freight_sel.vm</result>
+		</action>
+		<!-- 设置订单配送方式 -->
+		<action name="freight_set" class="com.ffyc.server.action.member.FreightSetAction">
+			<result name="success" type="redirect">paymode_sel.htm?str=${str}&amp;ft=${ft}</result>
+		</action>
+		<!-- 选择订单支付方式 -->
+		<action name="paymode_sel" class="com.ffyc.server.action.member.PayModeSelAction">
+			<result name="success" type="velocity">/WEB-INF/member/paymode_sel.vm</result>
+		</action>
+		<!-- 生成订单 -->
+		<action name="checkout" class="com.ffyc.server.action.member.CheckoutAction">
+			<result name="success" type="redirect">orderitems.htm?oid=${oid}</result>
+		</action>
+		
+		<!-- 支付 -->
+		<action name="payment" class="com.ffyc.server.action.member.PaymentAction">
+			<result name="success" type="redirect">${urlparam}</result>
+			<result name="details" type="redirect">orderitems.htm?oid=${oid}</result>
+			<!-- 
+			<result name="success" type="redirect">${urlparam}</result>
+			<result name="offline" type="velocity">/WEB-INF/member/${defLocale.id}_offline.vm</result>
+			-->
+		</action>
+		<!-- alipay服务器通知 -->
+		<action name="alipay_notify" class="com.ffyc.server.action.payment.alipay.NotifyAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_alipay_notify.vm</result>
+		</action>
+		
+		<!-- 确认收货 -->
+		<action name="delivered" class="com.ffyc.server.action.member.OrderAction" method="delivered">
+			<result name="success" type="redirect">list_bought_items.htm</result>
+		</action>
+		
+		<!-- 首页 -->
+		<action name="index" class="com.ffyc.server.action.member.IndexAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_index.vm</result>
+		</action>
+		<!-- 查看资金账户 -->
+		<action name="my_bank" class="com.ffyc.server.action.member.BankAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_my_bank.vm</result>
+		</action>
+		<!-- 账户充值 -->
+		<action name="bank_payin" class="com.ffyc.server.action.member.BankPayinAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_bank_payin.vm</result>
+		</action>
+		<action name="bank_paying" class="com.ffyc.server.action.member.BankPayinAction" method="payin">
+			<result name="success" type="redirect">bank_run_acc_view.htm?bra=${bra}</result>
+		</action>
+		<action name="bank_alipay" class="com.ffyc.server.action.member.BankPayinAction" method="alipay">
+			<result name="success" type="redirect">${urlparam}</result>
+			<result name="error" type="velocity">/WEB-INF/member/error.vm</result>
+		</action>
+		<!-- 查看积分账户 -->
+		<action name="my_point" class="com.ffyc.server.action.member.PointAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_my_point.vm</result>
+		</action>
+		<!-- 开通资金账户 -->
+		<action name="open_bank_account" class="com.ffyc.server.action.member.BankAction" method="openaccount">
+			<result name="success" type="redirect">my_bank.htm</result>
+			<result name="error" type="velocity">/WEB-INF/member/error.vm</result>
+		</action>
+		<!-- 资金账户流水详细记录 -->
+		<action name="bank_run_acc_view" class="com.ffyc.server.action.member.BankRunAccountAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_bank_run_acc_view.vm</result>
+		</action>
+		<!-- 删除资金账户流水记录 -->
+		<action name="bank_payin_cancel" class="com.ffyc.server.action.member.BankRunAccountAction" method="delete">
+			<result name="success" type="redirect">bank_payin.htm</result>
+		</action>
+		<!-- 积分账户流水记录 -->
+		<action name="point_run_account" class="com.ffyc.server.action.member.PonitRunAccountAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_point_run_account.vm</result>
+		</action>
+		<!-- 已买到的商品/历史订单 -->
+		<action name="list_bought_items" class="com.ffyc.server.action.member.OrderAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_list_bought_items.vm</result>
+		</action>
+		<!-- 我的收藏 -->
+		<action name="my_favorite" class="com.ffyc.server.action.member.FavoriteAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_my_favorite.vm</result>
+		</action>
+		<!-- 订单条目 -->
+		<action name="orderitems" class="com.ffyc.server.action.member.OrderItemAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_orderitems.vm</result>
+		</action>
+		<!-- 已买到的商品/历史订单 //可删除-->
+		<action name="ositem_view" class="com.ffyc.server.action.member.OrderAction" method="view">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_orderitem_view.vm</result>
+		</action>
+		<!-- 修改密码 -->
+		<action name="password" class="com.ffyc.server.action.member.PassWordAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_password.vm</result>
+		</action>
+		<action name="password_change" class="com.ffyc.server.action.member.PassWordAction" method="change">
+			<result name="success" type="redirect">index.htm</result>
+		</action>
+		<!-- 账户安全-->
+		<action name="security" class="com.ffyc.server.action.member.SecurityAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_security.vm</result>
+		</action>
+		<!-- 注册资料-->
+		<action name="profile" class="com.ffyc.server.action.member.ProfileAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_profile.vm</result>
+		</action>
+		<action name="profile_edit" class="com.ffyc.server.action.member.ProfileAction" method="edit">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_profile_edit.vm</result>
+		</action>
+		<action name="profile_update" class="com.ffyc.server.action.member.ProfileAction" method="update">
+			<interceptor-ref name="fileUpload">
+                <!-- 配置允许上传的文件类型 -->
+                <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/GPG,image/x-png,image/pjpeg</param>
+                <!-- 配置上传文件的大小 -->
+                <param name="maximumSize">20971520</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack" />
+			<param name="savePath">/upload</param>
+			<result name="success" type="redirect">profile.htm</result>
+		</action>
+		<!-- 收货地址管理 -->
+		<action name="address_input" class="com.ffyc.server.action.member.AddressCreateAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_address_input.vm</result>
+		</action>
+		<action name="address_create" class="com.ffyc.server.action.member.AddressCreateAction" method="create">
+			<result name="success" type="redirect">address.htm</result>
+		</action>
+		<action name="address_edit" class="com.ffyc.server.action.member.AddressUpdateAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_address_edit.vm</result>
+		</action>
+		<action name="address_update" class="com.ffyc.server.action.member.AddressUpdateAction" method="update">
+			<result name="success" type="redirect">address.htm</result>
+		</action>
+		<action name="address" class="com.ffyc.server.action.member.AddressAction">
+			<result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_address.vm</result>
+		</action>
+		<action name="address_del" class="com.ffyc.server.action.member.AddressAction" method="delete">
+			<result name="success" type="redirect">address.htm</result>
+		</action>
+		<action name="address_setdefault" class="com.ffyc.server.action.member.AddressAction" method="setDefault">
+			<result name="success" type="redirect">address.htm</result>
+		</action>
+		<!-- 新增收货地址AJAX -->
+		<action name="address_create_ajax" class="com.ffyc.server.action.member.AddressCreateAjaxAction">
+            <result type="json"></result>
+        </action>
+        <!-- 订单选择物流区域AJAX -->
+		<action name="area_ajax" class="com.ffyc.server.action.member.AreaAjaxAction">
+            <result name="success" type="velocity">/WEB-INF/member/${defLocale.id}_areaajax.vm</result>
+        </action>
+	</package>
+</struts>

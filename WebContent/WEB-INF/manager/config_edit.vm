@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<title>商品配置</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/configs.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商店配置</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="#"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建设置 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>新建属性</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="config_update.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td>隶属于：</td>
+                <td>
+                <select name="config.config.id" id="config.config.id">
+                  <option value="">  无  </option>
+                  #foreach( $item in $configroot )
+                  <option value="$!{item.id}" #if( $item.id==$config.config.id )selected="selected"#end>$!{item.name}</option>
+                  #end
+                </select>
+                </td>
+              </tr>
+              <tr>
+                <td>属性名称：</td>
+                <td><input name="config.name" type="text" id="config.name" value="$!{config.name}" size="50"></td>
+              </tr>
+              <tr>
+                <td>属性变量：</td>
+                <td><input name="config.property" type="text" id="config.property" value="$!{config.property}" size="50"></td>
+              </tr>
+              <tr>
+                <td>属性值：</td>
+                <td>
+                  #if( $config.vtype=='text' )
+                  <input name="config.value" type="text" id="config.value" value="$!{config.value}">
+                  #end
+                  #if( $config.vtype=='textarea' )
+                  <textarea name="config.value" id="config.value" cols="45" rows="5">$!{config.value}</textarea>
+                  #end
+                  #if( $config.vtype=='select' )
+                  <select name="config.value" id="config.value">
+                    #foreach( $item in $config.getOptionals() )
+                    <option value="$!{item}" #if( $config.value==$item )selected="selected"#end>#if( $item=='enable' )是#else否#end</option>
+                    #end
+                  </select>
+                  #end
+                </td>
+              </tr>
+              <tr>
+                <td>说明：</td>
+                <td><textarea name="config.content" id="config.content" cols="45" rows="5">$!{config.content}</textarea></td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交">
+                <input name="config.id" type="hidden" id="config.id" value="$!{config.id}"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

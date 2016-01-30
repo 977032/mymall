@@ -1,0 +1,71 @@
+body{padding:0;margin:0 auto;font-size:12px;border:none;background:url(../images/bg-body.gif) #f0f0f0 repeat-y left top; font-family:Arial, Helvetica, sans-serif}
+div{padding:0;margin:0;font-size:12px;border:none;color:#7e7e66;}
+a{text-decoration:none;}
+#main{background:url(../images/bg-radial-gradient.gif) fixed no-repeat 230px top;}
+#left{width:230px; left:0; top:0; height:100%;position:absolute;}
+#left a{color:#CCC;}
+#Hello{text-align:right; padding-right:10px;}
+#Hello a{color:#ccc; text-decoration:none;}
+#right{padding:0 20px 0 250px;}
+#right h2{ font-size:24px; line-height:40px;}
+.shortcut-buttons-set li{float:left; width:100px; border:1px solid #ccc; text-align:center; margin-right:20px; padding:10px; height:100px;}
+.page-intro{padding-bottom:20px; font-size:17px;}
+
+
+
+.notification {BORDER-RIGHT: 1px solid; PADDING-RIGHT: 0px; BACKGROUND-POSITION: 10px 11px; BORDER-TOP: 1px solid; PADDING-LEFT: 0px; FONT-SIZE: 13px; PADDING-BOTTOM: 0px; MARGIN: 0px 0px 15px; BORDER-LEFT: 1px solid; WIDTH: 99.8%; PADDING-TOP: 0px; BORDER-BOTTOM: 1px solid; BACKGROUND-REPEAT: no-repeat! important; POSITION: relative}
+.attention {BORDER-LEFT-COLOR: #e6db55; BACKGROUND: url(../images/exclamation.png) #fffbcc no-repeat 10px 11px; BORDER-BOTTOM-COLOR: #e6db55; COLOR: #666452; BORDER-TOP-COLOR: #e6db55; BORDER-RIGHT-COLOR: #e6db55}
+.information {BORDER-LEFT-COLOR: #a2b4ee; BACKGROUND: url(../images/information.png) #dbe3ff no-repeat no-repeat 10px 11px; BORDER-BOTTOM-COLOR: #a2b4ee; COLOR: #585b66; BORDER-TOP-COLOR: #a2b4ee; BORDER-RIGHT-COLOR: #a2b4ee}
+.success {BORDER-LEFT-COLOR: #9adf8f; BACKGROUND: url(../images/tick_circle.png) #d5ffce no-repeat 10px 11px; BORDER-BOTTOM-COLOR: #9adf8f; COLOR: #556652; BORDER-TOP-COLOR: #9adf8f; BORDER-RIGHT-COLOR: #9adf8f}
+.error {BORDER-LEFT-COLOR: #df8f8f; BACKGROUND: url(../images/cross_circle.png) #ffcece no-repeat 10px 11px; BORDER-BOTTOM-COLOR: #df8f8f; COLOR: #665252; BORDER-TOP-COLOR: #df8f8f; BORDER-RIGHT-COLOR: #df8f8f}
+.notification DIV {PADDING-RIGHT: 10px; DISPLAY: block; PADDING-LEFT: 36px; PADDING-BOTTOM: 10px; LINE-HEIGHT: 1.5em; PADDING-TOP: 10px; FONT-STYLE: normal}
+.notification .close {FONT-SIZE: 9px;RIGHT: 5px;COLOR: #990000;POSITION: absolute;TOP: 5px;height: 4px;width: 6px;}
+.input-notification {PADDING-RIGHT: 0px; BACKGROUND-POSITION: left 2px; PADDING-LEFT: 22px; PADDING-BOTTOM: 2px; MARGIN: 0px 0px 0px 5px; PADDING-TOP: 2px; BACKGROUND-REPEAT: no-repeat; BACKGROUND-COLOR: transparent}
+#login-wrapper #login-content .notification {BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; COLOR: #fff! important; BACKGROUND-COLOR: #141414; BORDER-RIGHT-WIDTH: 0px}
+BODY#login {BACKGROUND: url(../images/bg-login.gif) #222; COLOR: #fff}
+#login-wrapper {BACKGROUND: url(../images/bg-login-top.png) repeat-x left top}
+#login-wrapper #login-top {PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 50px; WIDTH: 100%; PADDING-TOP: 140px; TEXT-ALIGN: center}
+#login-wrapper #login-content {MARGIN: 0px auto; WIDTH: 300px; TEXT-ALIGN: left}
+#login-wrapper #login-content LABEL {PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-WEIGHT: normal; FONT-SIZE: 14px; FLOAT: left; PADDING-BOTTOM: 0px; WIDTH: 70px; COLOR: #fff; PADDING-TOP: 0px; FONT-FAMILY: Helvetica, Arial, sans-serif}
+
+
+table .bg td{background:#f3f3f3;}
+table  td{padding:10px;}
+
+
+.button{BORDER-RIGHT: #459300 1px solid; PADDING-RIGHT: 7px! important; BORDER-TOP: #459300 1px solid; DISPLAY: inline-block; PADDING-LEFT: 7px! important; FONT-SIZE: 11px! important; BACKGROUND: url(../images/bg-button-green.gif) #459300 repeat-x left top; PADDING-BOTTOM: 4px! important; BORDER-LEFT: #459300 1px solid; CURSOR: pointer; COLOR: #fff! important; PADDING-TOP: 4px! important; BORDER-BOTTOM: #459300 1px solid; FONT-FAMILY: Verdana, Arial, sans-serif}
+.button:hover {
+	TEXT-DECORATION: underline
+}
+.button:active {PADDING-RIGHT: 7px! important; PADDING-LEFT: 7px! important; PADDING-BOTTOM: 3px! important; PADDING-TOP: 5px! important}
+
+.text-content p{padding-bottom:10px;}
+.text-content label{font:bold 12px/30px Verdana, Geneva, sans-serif, "ËÎÌו"; color:#555; display:block;}
+.text-input{font:12px/30px Verdana, Geneva, sans-serif, "ËÎÌו"; color:#999; border:1px solid #ddd; height:30px;}
+.input-notification{background:url(../images/tick_circle.png) no-repeat 10px center; padding:0 0 0 30px;}
+.medium-input{background:url(../images/cross_circle.png) no-repeat 10px center; padding:0 0 0 30px;}
+.text-textfield{font:12px/14px Verdana, Geneva, sans-serif, "ËÎÌו"; color:#999; border:1px solid #ddd; height:190px;}
+.large-input{width:95%}
+
+
+.closed-box{border:1px solid #ccc; width:49%; float:left; margin-top:20px; margin-bottom:20px;}
+.column-right{ margin-right:1.4%;}
+.content-box-header{background:#e7e7e7; border-bottom:1px solid #ccc;}
+.content-box-header h3{font: bold 20px/30px Arial, Helvetica, sans-serif; padding:5px 10px; color:#000}
+.content-box-content{padding:20px; background:#FFF}
+.content-box-content h4{font: bold 16px/20px Arial, Helvetica, sans-serif; color:#333; padding:0 0 10px 0;}
+
+#footer a{color:#72b400; text-decoration:none}
+
+#main-nav {PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px 15px; WIDTH: 206px; PADDING-TOP: 0px; FONT-FAMILY: Helvetica, Arial, sans-serif}
+#main-nav li {PADDING-BOTTOM: 10px; LIST-STYLE-TYPE: none; TEXT-ALIGN: right}
+#main-nav li A.nav-top-item {PADDING-RIGHT: 15px; DISPLAY: block; PADDING-LEFT: 15px; FONT-SIZE: 14px; BACKGROUND: url(../images/bg-menu-item-green.gif) no-repeat right center; PADDING-BOTTOM: 10px; CURSOR: pointer; COLOR: #fff; PADDING-TOP: 10px; TEXT-DECORATION: none}
+#main-nav li A.current {FONT-WEIGHT: bold; BACKGROUND-IMAGE: url(../images/bg-menu-item-current.gif)! important; COLOR: #333}
+#main-nav li A.current:hover {COLOR: #333}
+#main-nav UL {PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 12px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px}
+#main-nav ul li {PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; LIST-STYLE-TYPE: none; TEXT-ALIGN: right}
+#main-nav ul li a {PADDING-RIGHT: 15px; DISPLAY: block; PADDING-LEFT: 15px; FONT-SIZE: 13px; PADDING-BOTTOM: 8px; COLOR: #aaa; LINE-HEIGHT: 1.2em; PADDING-TOP: 8px}
+#main-nav ul li a:hover {COLOR: #fff}
+#main-nav ul li a.current {COLOR: #fff}
+#main-nav ul li a.current:hover {COLOR: #fff}
+#main-nav ul li a.current {BACKGROUND: url(../images/menu-current-arrow.gif) no-repeat right center}

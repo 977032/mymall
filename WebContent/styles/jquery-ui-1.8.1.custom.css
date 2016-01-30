@@ -1,0 +1,29 @@
+
+/* Interaction states----------------------------------*/
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{background: url(../images/goods.jpg) no-repeat left top;text-align:center;color: #999;}
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {color:#999; text-decoration: none;text-align:center;}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {background: url(../images/goods.jpg) no-repeat left top;color: #fff;text-align:center;}
+.ui-state-hover a, .ui-state-hove r a:hover { color: #69050f; text-decoration: none;text-align:center;}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {background: url(../images/goods.jpg) no-repeat left -36px; font-weight:bold;color:#69050f;text-align:center;}
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #69050f;text-decoration: none}
+.ui-widget :active { outline: none; }
+
+
+
+
+
+
+/* Tabs----------------------------------*/
+
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer;} /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
+.ui-tabs .ui-tabs-panel {display: block;border-width: 0;background: none;padding-top: 1em;padding-right: 0em;padding-bottom: 1em;padding-left: 0em;}
+.ui-tabs .ui-tabs-hide { display: none !important; }
+
+.tabsNav{border-bottom:1px solid #69050f; height:30px;}
+.tabsNav li{float:left; width:123px;text-align:center; padding-right:1px; line-height:31px; height:31px}
+.tabsNav li a{ display:block}
+
+
+

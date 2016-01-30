@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>beautyfamily-在线商城</title>
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/global.css" rel="stylesheet" type="text/css" />
+<link href="styles/inside.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery.min.js"></script>
+<script type="text/javascript">
+	//根据参数变量查询值，返回值数组
+	function getParameterByName(name) {
+		name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+		var regexS = "[\\?&]" + name + "=([^&#]*)";
+		var regex = new RegExp(regexS,"g");//g全局匹配，否则只匹配第一个
+		var url = window.location.href;
+		var results = url.match(regex);
+		
+		var resarr = new Array();//初始化返回数组
+		if(results!=null && results!="") {
+			for(var i=0; i<results.length; i++) {
+				results[i] = decodeURIComponent(results[i].replace(/\+/g, " "));//将+号变空格，一般不会出现
+				pos = results[i].indexOf('=');//查找=号
+				if(pos == -1) { continue; }
+				// 获取name 和 value 
+				paraName = results[i].substring(0, pos); 
+				paraValue = results[i].substring(pos + 1); 
+				//alert(paraName+"=="+paraValue);
+				resarr[i] = paraValue;
+			}
+		}
+		
+		return resarr;
+	} 
+	
+	function GetQueryString(name)
+	{
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+		if (r!=null) return unescape(r[2]); return null;
+	}
+	
+	jQuery(document).ready(function() {
+		try
+		{
+			if (GetQueryString("page") == null)
+			{
+				jQuery("#page_1").addClass("cur");
+			}else
+			{
+				jQuery("#page_"+GetQueryString("page")).addClass("cur");
+			}
+		}catch(err)
+		{}
+		
+		//查询ev变量的值数组
+		var strarr = getParameterByName("ev");
+		jQuery("[name='ev']").each(function(){
+			for(var i=0; i<strarr.length; i++) {
+				if(strarr[i] == jQuery(this).val()) {
+					//alert(strarr[i] + "===" + jQuery(this).val());
+					jQuery(this).attr("checked",'true');//如果在URL中有该值，就默认选中
+				}
+			}
+		});
+		
+		//商品属性多选并刷新页面
+		jQuery("input[name='ev']").live('click',function(){
+			//alert(jQuery(this).attr("value"));
+			
+			var str = "";
+			jQuery("[name='ev'][checked]").each(function(){
+				str+="&amp;ev="+jQuery(this).val();
+		   		//alert(jQuery(this).val());
+			});
+			//alert(str);
+			var url = "browse.htm?c=$!{c}&keyword=$!{keyword}&bd=$!{brand.id}";
+			//alert(url+str);
+			jQuery(location).attr('href',url+str);
+		});
+	});
+</script>
+</head>
+<body>
+<div id="Box-top">
+  #include("/WEB-INF/publicer/zh_CN_box-top-nav.vm")
+  #parse("/WEB-INF/publicer/zh_CN_box-top-logo.vm")
+  <!------------------------nav------------------------>
+  #include("/WEB-INF/publicer/zh_CN_box-nav.vm")
+  #parse("/WEB-INF/publicer/zh_CN_box-menu-left.vm")
+  #parse("/WEB-INF/publicer/zh_CN_mycart.vm")
+  <div class="clear"></div>
+</div>
+<div class="Box-banner"><img src="images/Home-box_15.jpg" width="980" height="60" /></div>
+<!------------------------内容------------------------>
+<div id="Main-box">
+  <!------------------------左边内容------------------------>
+  <div class="Main-left left">
+    <h2>$!{category.name}</h2>
+    <div class="Main-left-subNav">
+      <h3>产品分类</h3>
+      <ul>
+        #foreach( $item in $category.categories )
+        <li><a href="browse.htm?c=$!{item.id}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}">$!{item.name}</a> </li>
+        #end
+      </ul>
+    </div>
+
+    <div class="Main-left-subNav" style=" margin-top:20px;">
+      <h3>品牌分类</h3>
+      <ul class="Main-left-Brand">
+        #foreach( $item in $brandSet )
+        <li><a href="browse.htm?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{item.id}">$!{item.name}</a></li>
+        #end
+      </ul>
+    </div>
+    #foreach( $item in $map.get("G_B").getItems() )
+    <p><img src=".$!{item.getDefaultimage().path}/$!{item.getDefaultimage().name}" width="200" height="303" /></p>
+    #end
+  </div>
+  <!------------------------左边内容------------------------>
+  <!------------------------右边内容------------------------>
+  <div class="Main-right right">
+    <p class="Main-line"><a href="index.htm">首页</a> > $!{category.name}(共$!{ps.getTotalCount()}件) #if($extraattrvalue.value)$!{extraattrvalue.value}<a onfocus="this.blur()" href="browse.htm?c=$!{c}&keyword=$!{keyword}&ev=&bd=$!{brand.id}"><img src="images/cancel.jpg" width="15" height="15" alt="取消"></a>#end  #if($brand.name)$!{brand.name}<a onfocus="this.blur()" href="browse.htm?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd="><img src="images/cancel.jpg" width="15" height="15" alt="取消"></a>#end</p>
+     <!------------------------标签------------------------>
+    <div class="Main-list">
+      <dl>
+        #foreach( $item in $extraattrSet )
+        #if( $item.viewtype=='progressive' && $item.display=='yes' )
+<dt>$!{item.name}</dt>
+        #foreach( $subitem in $item.extraattrvalues )
+        <dd><input name="ev" type="checkbox" id="ev" value="$!{subitem.id}" url="browse.htm?c=$!{c}&keyword=$!{keyword}&bd=$!{brand.id}" /><a href="browse.htm?c=$!{c}&keyword=$!{keyword}&ev=$!{subitem.id}&bd=$!{brand.id}">$!{subitem.value}</a></dd>
+        #end
+        #end
+        #end
+      </dl>
+      <div class="clear"></div>
+    </div>
+     <!------------------------标签------------------------>
+     <div class="Main-products-titler">
+     <p>显示方式：</p>
+     <p><a href="#" class="listmode_a" onfocus="this.blur()"></a> <a href="#" class="listmode_b" onfocus="this.blur()"></a> <a href="#" class="listmode_c" onfocus="this.blur()"></a></p>
+     <p style="padding-right:330px;">共找到<span class="red">$!{ps.getTotalCount()}</span>个产品</p>
+     <p style="padding-right:5px;"><span href="#" class="pageall">$!{ps.currentPage}</span>$!{ps.pageCount}</p> 
+     <p><a href="?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}&page=$!{ps.getPreviousPage()}" class="pagecurrent" onfocus="this.blur()"></a> <a href="?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}&page=$!{ps.getNextPage()}" class="unprev" onfocus="this.blur()"></a></p>
+     <div class="clear"></div>
+     </div>
+    <div class="Main-products">
+      <ul>
+        #foreach( $item in $ps.getItems() )
+        <li><a href="good.htm?c=$!{c}&gid=$!{item.id}"><img src=".$!{item.getDefaultimage().path}/$!{item.getDefaultimage().name}" width="150" height="205" /></a>
+          <div class="women-box">
+          <p><span style="font-size:14px;color: #b91b12;"><strong>￥$!{item.getPricescope()}</strong></span></p>
+            <p><input type="checkbox" name="checkbox" id="checkbox"><a href="good.htm?c=$!{c}&gid=$!{item.id}">$!{item.getSubname(36,"..")}</a></p>
+            <p><span class="mycolor">已售：</span><span class="myOrange"><strong>$!{item.getSellNumber()}</strong></span> <a href="#" class="myBlue">($!{item.commentses.size()}人评论) </a></p>
+          </div>
+        </li>
+        #end
+      </ul>
+      <div class="clear"></div>
+    </div>
+    <div class="yahoo2">
+    <a title="首页" href="?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}&page=1">首页</a>
+    <a title="前10页" href="?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}&page=${ps.getPreviousTenPage()}">前10页</a>
+    <a title="上一页" href="?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}&page=${ps.getPreviousPage()}">上一页</a>
+    #foreach( $infoitem in $ps.getPages() )
+    <a id="page_${infoitem}" title="第$infoitem页" href="?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}&page=${infoitem}">$infoitem</a>
+    #end
+    <a title="下一页" href="?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}&page=${ps.getNextPage()}">下一页</a>
+    <a title="后10页" href="?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}&page=${ps.getNextTenPage()}">后10页</a>
+    <a title="最后页" href="?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}&page=${ps.getPageCount()}">最后页</a>
+	<span>&nbsp;&nbsp;( 共 $!{ps.getTotalCount()} 件  $!{ps.getPageCount()} 页 )</span>
+    </div>
+  </div>
+  <!------------------------右边内容------------------------>
+  <div class="clear"></div>
+</div>
+<!------------------------底部------------------------>
+<div id="Box-bottom">
+  <div class="Box-bottom-menu">
+    #foreach( $doccate in $map.get("G_A") )
+    <dl>
+      <dt><strong>$!{doccate.name}</strong></dt>
+      #foreach( $document in $doccate.documents )
+      <dd><a href="channel.htm?c=help&amp;t=v&amp;d=$!{document.id}">$!{document.title}</a></dd>
+      #end
+    </dl>
+    #end
+    #include("/WEB-INF/publicer/zh_CN_contacts.vm")
+    <div class="clear"></div>
+  </div>
+  #include("/WEB-INF/publicer/zh_CN_services.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitelinks.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitefooter.vm")
+  <div class="clear"></div>
+</div>
+</body>
+</html>

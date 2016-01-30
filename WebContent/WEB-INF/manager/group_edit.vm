@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<title>编辑会员组</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/groups.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 用户和组 - 会员组 - 编辑组</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="groups.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回会员组列表 </span></a></li>
+      <li><a class="shortcut-button" href="group_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建会员组 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>编辑会员组</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="group_update.action">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">组名：</td>
+                <td><input name="group.name" type="text" id="group.name" value="$!{group.name}" size="30" maxlength="255" reg="^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{2,255}$" tip="中文，英文或下划线，最少两个字符，最多255个字符">
+                *</td>
+              </tr>
+              <tr>
+                <td align="right">折扣：</td>
+                <td><input name="group.discount" type="text" id="group.discount" value="$!{group.discount}" size="20" maxlength="11" reg="^\d{1,12}(\.\d{1,2})?$" tip="输入该等级会员享受的折扣，只允许数字。">
+                  %</td>
+              </tr>
+              <tr>
+                <td align="right">是否默认组别：</td>
+                <td>是：
+              <input type="radio" name="group.isdefault" id="radio" value="yes" #if($group.isdefault=="yes")checked="checked"#end>
+              否：
+            <input name="group.isdefault" type="radio" id="radio" value="no" #if($group.isdefault=="no")checked="checked"#end></td>
+              </tr>
+              <tr>
+                <td align="right">需要积分：</td>
+                <td><input name="group.requirepoints" type="text" id="group.requirepoints" value="$!{group.requirepoints}" size="20" maxlength="11" reg="^\d{1,11}$" tip="会员税分必须达到额度才可以申请成为该等级的会员，只允许数字。"></td>
+              </tr>
+              <tr>
+                <td align="right">备注：</td>
+                <td><textarea name="group.remarks" id="group.remarks" cols="45" rows="10">$!{group.remarks}</textarea></td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交">
+                  <input name="group.id" type="hidden" id="group.id" value="$!{group.id}"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

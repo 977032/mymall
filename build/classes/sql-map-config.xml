@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="com.ffyc.server.vo.AppversionVO" alias="AppversionVO" />
+		<typeAlias type="com.ffyc.server.vo.LoginVO" alias="LoginVO" />
+		<typeAlias type="com.ffyc.server.vo.UserTokenVO" alias="UserTokenVO" />
+		<typeAlias type="com.ffyc.server.vo.MessageVO" alias="MessageVO" />
+		
+		<typeAlias type="com.ffyc.server.model.Address" alias="Address" />
+		<typeAlias type="com.ffyc.server.model.Area" alias="Area" />
+		<typeAlias type="com.ffyc.server.model.Attachment" alias="Attachment" />
+		<typeAlias type="com.ffyc.server.model.Bank" alias="Bank" />
+		<typeAlias type="com.ffyc.server.model.BankRunAccount" alias="BankRunAccount" />
+		<typeAlias type="com.ffyc.server.model.Brand" alias="Brand" />
+		<typeAlias type="com.ffyc.server.model.Category" alias="Category" />
+		<typeAlias type="com.ffyc.server.model.ChannelContent" alias="ChannelContent" />
+		<typeAlias type="com.ffyc.server.model.Channel" alias="Channel" />
+		<typeAlias type="com.ffyc.server.model.Comment" alias="Comment" />
+		<typeAlias type="com.ffyc.server.model.Config" alias="Config" />
+		<typeAlias type="com.ffyc.server.model.District" alias="District" />
+		<typeAlias type="com.ffyc.server.model.DocumentCategory" alias="DocumentCategory" />
+		<typeAlias type="com.ffyc.server.model.Document" alias="Document" />
+		<typeAlias type="com.ffyc.server.model.Evaluate" alias="Evaluate" />
+		<typeAlias type="com.ffyc.server.model.ExtraAttr" alias="ExtraAttr" />
+		<typeAlias type="com.ffyc.server.model.ExtraAttrValue" alias="ExtraAttrValue" />
+		<typeAlias type="com.ffyc.server.model.Good" alias="Good" />
+		<typeAlias type="com.ffyc.server.model.GoodType" alias="GoodType" />
+		<typeAlias type="com.ffyc.server.model.Group" alias="Group" />
+		<typeAlias type="com.ffyc.server.model.Locale" alias="Locale" />
+		<typeAlias type="com.ffyc.server.model.Logistic" alias="Logistic" />
+		<typeAlias type="com.ffyc.server.model.ManagerGroup" alias="ManagerGroup" />
+		
+		<typeAlias type="com.ffyc.server.model.Manager" alias="Manager" />
+		<typeAlias type="com.ffyc.server.model.Member" alias="Member" />
+		
+		<typeAlias type="com.ffyc.server.model.OrderItem" alias="OrderItem" />
+		<typeAlias type="com.ffyc.server.model.Order" alias="Order" />
+		<typeAlias type="com.ffyc.server.model.PayMode" alias="PayMode" />
+		<typeAlias type="com.ffyc.server.model.Permission" alias="Permission" />
+		<typeAlias type="com.ffyc.server.model.Point" alias="Point" />
+		<typeAlias type="com.ffyc.server.model.PointRunAccount" alias="PointRunAccount" />
+		<typeAlias type="com.ffyc.server.model.Region" alias="Region" />
+		<typeAlias type="com.ffyc.server.model.PaySetting" alias="PaySetting" />
+		<typeAlias type="com.ffyc.server.model.SpecItem" alias="SpecItem" />
+		<typeAlias type="com.ffyc.server.model.Spec" alias="Spec" />
+		<typeAlias type="com.ffyc.server.model.SpecValue" alias="SpecValue" />
+		<typeAlias type="com.ffyc.server.model.Store" alias="Store" />
+		
+		<typeAlias type="com.ffyc.server.model.User" alias="User" />
+		<typeAlias type="com.ffyc.server.model.VerifyCode" alias="VerifyCode" />
+		
+		<typeAlias type="com.ffyc.server.model.UserBasicInfo" alias="UserBasicInfo" />
+		<typeAlias type="com.ffyc.server.model.UserMessage" alias="UserMessage" />
+		
+	</typeAliases>
+	<mappers>
+	    <mapper resource="com/ffyc/server/mapper/address.xml" />
+	    <mapper resource="com/ffyc/server/mapper/app.xml" />
+	    <mapper resource="com/ffyc/server/mapper/appversion.xml" />
+	    
+		<mapper resource="com/ffyc/server/mapper/area.xml" />
+		<mapper resource="com/ffyc/server/mapper/attachment.xml" />
+		<mapper resource="com/ffyc/server/mapper/bank.xml" />
+		<mapper resource="com/ffyc/server/mapper/bankrunaccount.xml" />
+		<mapper resource="com/ffyc/server/mapper/brand.xml" />
+	
+		<mapper resource="com/ffyc/server/mapper/category.xml" />
+		<mapper resource="com/ffyc/server/mapper/channel.xml" />
+		<mapper resource="com/ffyc/server/mapper/channelcontent.xml" />
+		<mapper resource="com/ffyc/server/mapper/comment.xml" />
+		<mapper resource="com/ffyc/server/mapper/config.xml" />
+		
+		<mapper resource="com/ffyc/server/mapper/district.xml" />
+		<mapper resource="com/ffyc/server/mapper/documentcategory.xml" />
+		<mapper resource="com/ffyc/server/mapper/document.xml" />
+		
+		<mapper resource="com/ffyc/server/mapper/evaluate.xml" />
+		<mapper resource="com/ffyc/server/mapper/extraattr.xml" />
+		<mapper resource="com/ffyc/server/mapper/extraattrvalue.xml" />
+		<mapper resource="com/ffyc/server/mapper/good.xml" />
+		<mapper resource="com/ffyc/server/mapper/goodtype.xml" />
+		
+		<mapper resource="com/ffyc/server/mapper/group.xml" />
+		<mapper resource="com/ffyc/server/mapper/locale.xml" />
+		<mapper resource="com/ffyc/server/mapper/logistic.xml" />
+		<mapper resource="com/ffyc/server/mapper/managergroup.xml" />
+		<mapper resource="com/ffyc/server/mapper/orderitem.xml" />
+		<mapper resource="com/ffyc/server/mapper/order.xml" />
+		<mapper resource="com/ffyc/server/mapper/paymode.xml" />
+		<mapper resource="com/ffyc/server/mapper/permission.xml" />
+		<mapper resource="com/ffyc/server/mapper/point.xml" />
+		<mapper resource="com/ffyc/server/mapper/pointrunaccount.xml" />
+		
+		<mapper resource="com/ffyc/server/mapper/region.xml" />
+		<mapper resource="com/ffyc/server/mapper/paysetting.xml" />
+		<mapper resource="com/ffyc/server/mapper/specitem.xml" />
+		<mapper resource="com/ffyc/server/mapper/spec.xml" />
+		<mapper resource="com/ffyc/server/mapper/specvalue.xml" />
+		<mapper resource="com/ffyc/server/mapper/store.xml" />
+		
+		<mapper resource="com/ffyc/server/mapper/thirdpart.xml" />
+		<mapper resource="com/ffyc/server/mapper/manager.xml" />
+		<mapper resource="com/ffyc/server/mapper/member.xml" />
+		<mapper resource="com/ffyc/server/mapper/message.xml" />
+		
+		<mapper resource="com/ffyc/server/mapper/user.xml" />
+		<mapper resource="com/ffyc/server/mapper/verifycode.xml" />
+	</mappers>
+</configuration>

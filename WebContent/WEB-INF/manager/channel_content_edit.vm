@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<title>频道内容编辑</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/channels.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 网站频道 - 频道内容 - 频道内容编辑</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="channel_contents.htm?cid=$!{chcontent.channell.id}"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回频道 </span></a></li>
+      <li><a class="shortcut-button" href="channel_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建频道 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>&nbsp;</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="channel_content_update.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">内容类型：</td>
+                <td>
+                <select name="chcontent.type" id="chcontent.type">
+                    <option value="dmenu" #if( $chcontent.type=='dmenu' )selected="selected"#end>文章分类 | dmenu</option>
+                    <option value="dlist" #if( $chcontent.type=='dlist' )selected="selected"#end>文章列表 | dlist</option>
+                    <option value="drclist" #if( $chcontent.type=='drclist' )selected="selected"#end>推荐文章列表 | drclist</option>
+                    <option value="dpagelist" #if( $chcontent.type=='dpagelist' )selected="selected"#end>分页文章列表 | dpagelist</option>
+                    <option value="dsingle" #if( $chcontent.type=='dsingle' )selected="selected"#end>单条信息 | dsingle</option>
+                    <option value="gmenu" #if( $chcontent.type=='gmenu' )selected="selected"#end>商品分类 | gmenu</option>
+                    <option value="glist" #if( $chcontent.type=='glist' )selected="selected"#end>商品列表 | glist</option>
+                    <option value="grclist" #if( $chcontent.type=='grclist' )selected="selected"#end>推荐商品列表 | grclist</option>
+                    <option value="gpagelist" #if( $chcontent.type=='gpagelist' )selected="selected"#end>分页商品列表 | gpagelist</option>
+          		</select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">文章分类：</td>
+                <td>
+                <select name="chcontent.doccatee.id" id="chcontent.doccatee.id">
+                  <option selected="selected" value="">请选择文章分类</option>
+            	  #foreach( $item in $doccates )
+                  <option value="$!{item.id}" #if( $chcontent.doccatee.id==$item.id )selected="selected"#end>$!{item.nodestr} $!{item.name}</option>
+                  #end
+                </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">商品分类：</td>
+                <td>
+                <select name="chcontent.categoryy.id" id="chcontent.categoryy.id">
+                  <option selected="selected" value="">请选择商品分类</option>
+                  <option value="" #if( ( $chcontent.type=='gmenu' || $chcontent.type=='glist' || $chcontent.type=='grclist' || $chcontent.type=='gpagelist' ) && !$chcontent.categoryy )selected="selected"#end>所有分类</option>
+            	  #foreach( $item in $categorys )
+                  <option value="$!{item.id}" #if( $chcontent.categoryy.id==$item.id )selected="selected"#end>$!{item.nodestr} $!{item.name}</option>
+                  #end
+                </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">商品标签：</td>
+                <td>
+                精品：<input name="chcontent.keys" type="checkbox" id="chcontent.keys" value="btq" #if( $chcontent.hasKeyword('btq') )checked="checked"#end>
+                新品：<input name="chcontent.keys" type="checkbox" id="chcontent.keys" value="new" #if( $chcontent.hasKeyword('new') )checked="checked"#end>
+                热销：<input name="chcontent.keys" type="checkbox" id="chcontent.keys" value="hot" #if( $chcontent.hasKeyword('hot') )checked="checked"#end>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">数量：</td>
+                <td><input name="chcontent.number" type="text" id="chcontent.number" value="$!{chcontent.number}">
+                *[数字]</td>
+              </tr>
+              <tr>
+                <td align="right">偏移：</td>
+                <td><input name="chcontent.offset" type="text" id="chcontent.offset" value="$!{chcontent.offset}">
+                *[数字]</td>
+              </tr>
+              <tr>
+                <td align="right">模板标记：</td>
+                <td><select name="chcontent.marker" id="chcontent.marker">
+                  <option value="A" #if( $chcontent.marker=='A' )selected="selected"#end>A</option>
+                  <option value="B" #if( $chcontent.marker=='B' )selected="selected"#end>B</option>
+                  <option value="C" #if( $chcontent.marker=='C' )selected="selected"#end>C</option>
+                  <option value="D" #if( $chcontent.marker=='D' )selected="selected"#end>D</option>
+                  <option value="E" #if( $chcontent.marker=='E' )selected="selected"#end>E</option>
+                  <option value="F" #if( $chcontent.marker=='F' )selected="selected"#end>F</option>
+                  <option value="G" #if( $chcontent.marker=='G' )selected="selected"#end>G</option>
+                  <option value="H" #if( $chcontent.marker=='H' )selected="selected"#end>H</option>
+                  <option value="I" #if( $chcontent.marker=='I' )selected="selected"#end>I</option>
+                  <option value="J" #if( $chcontent.marker=='J' )selected="selected"#end>J</option>
+                  <option value="K" #if( $chcontent.marker=='K' )selected="selected"#end>K</option>
+                  <option value="L" #if( $chcontent.marker=='L' )selected="selected"#end>L</option>
+                  <option value="M" #if( $chcontent.marker=='M' )selected="selected"#end>M</option>
+                  <option value="N" #if( $chcontent.marker=='N' )selected="selected"#end>N</option>
+                  <option value="O" #if( $chcontent.marker=='O' )selected="selected"#end>O</option>
+                  <option value="P" #if( $chcontent.marker=='P' )selected="selected"#end>P</option>
+                  <option value="Q" #if( $chcontent.marker=='Q' )selected="selected"#end>Q</option>
+                  <option value="R" #if( $chcontent.marker=='R' )selected="selected"#end>R</option>
+                  <option value="S" #if( $chcontent.marker=='S' )selected="selected"#end>S</option>
+                  <option value="T" #if( $chcontent.marker=='T' )selected="selected"#end>T</option>
+                  <option value="U" #if( $chcontent.marker=='U' )selected="selected"#end>U</option>
+                  <option value="V" #if( $chcontent.marker=='V' )selected="selected"#end>V</option>
+                  <option value="W" #if( $chcontent.marker=='W' )selected="selected"#end>W</option>
+                  <option value="X" #if( $chcontent.marker=='X' )selected="selected"#end>X</option>
+                  <option value="Y" #if( $chcontent.marker=='Y' )selected="selected"#end>Y</option>
+                  <option value="Z" #if( $chcontent.marker=='Z' )selected="selected"#end>Z</option>
+              	  <option value="AA" #if( $chcontent.marker=='AA' )selected="selected"#end>AA</option>
+                  <option value="AB" #if( $chcontent.marker=='AB' )selected="selected"#end>AB</option>
+                  <option value="AC" #if( $chcontent.marker=='AC' )selected="selected"#end>AC</option>
+                  <option value="AD" #if( $chcontent.marker=='AD' )selected="selected"#end>AD</option>
+                  <option value="AE" #if( $chcontent.marker=='AE' )selected="selected"#end>AE</option>
+                  <option value="AF" #if( $chcontent.marker=='AF' )selected="selected"#end>AF</option>
+                  <option value="AG" #if( $chcontent.marker=='AG' )selected="selected"#end>AG</option>
+                  <option value="AH" #if( $chcontent.marker=='AH' )selected="selected"#end>AH</option>
+                  <option value="AI" #if( $chcontent.marker=='AI' )selected="selected"#end>AI</option>
+                  <option value="AJ" #if( $chcontent.marker=='AJ' )selected="selected"#end>AJ</option>
+                  <option value="AK" #if( $chcontent.marker=='AK' )selected="selected"#end>AK</option>
+                  <option value="AL" #if( $chcontent.marker=='AL' )selected="selected"#end>AL</option>
+                  <option value="AM" #if( $chcontent.marker=='AM' )selected="selected"#end>AM</option>
+                  <option value="AN" #if( $chcontent.marker=='AN' )selected="selected"#end>AN</option>
+                  <option value="AO" #if( $chcontent.marker=='AO' )selected="selected"#end>AO</option>
+                  <option value="AP" #if( $chcontent.marker=='AP' )selected="selected"#end>AP</option>
+                  <option value="AQ" #if( $chcontent.marker=='AQ' )selected="selected"#end>AQ</option>
+                  <option value="AR" #if( $chcontent.marker=='AR' )selected="selected"#end>AR</option>
+                  <option value="AS" #if( $chcontent.marker=='AS' )selected="selected"#end>AS</option>
+                  <option value="AT" #if( $chcontent.marker=='AT' )selected="selected"#end>AT</option>
+                  <option value="AU" #if( $chcontent.marker=='AU' )selected="selected"#end>AU</option>
+                  <option value="AV" #if( $chcontent.marker=='AV' )selected="selected"#end>AV</option>
+                  <option value="AW" #if( $chcontent.marker=='AW' )selected="selected"#end>AW</option>
+                  <option value="AX" #if( $chcontent.marker=='AX' )selected="selected"#end>AX</option>
+                  <option value="AY" #if( $chcontent.marker=='AY' )selected="selected"#end>AY</option>
+                  <option value="AZ" #if( $chcontent.marker=='AZ' )selected="selected"#end>AZ</option>
+            	</select>
+                *[字母]</td>
+              </tr>
+              <tr>
+                <td align="right">详细页显示：</td>
+                <td>
+                <input type="radio" name="chcontent.detail" id="radio" value="yes" #if( $chcontent.detail=='yes' )checked="checked"#end>是
+            	<input type="radio" name="chcontent.detail" id="radio" value="no" #if( $chcontent.detail=='no' )checked="checked"#end>否
+                </td>
+              </tr>
+              <tr>
+                <td align="right">语言：</td>
+                <td>
+                <select name="chcontent.localee.id" id="chcontent.localee.id">
+                    #foreach( $item in $localelist )
+                    <option value="$!{item.id}" #if( $item.id==$chcontent.localee.id )selected="selected"#end>$!{item.name}</option>
+                    #end
+                </select>
+                *</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="提交">
+                <input name="chcontent.id" type="hidden" id="chcontent.id" value="$!{chcontent.id}"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

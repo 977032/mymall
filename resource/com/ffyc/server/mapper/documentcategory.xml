@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.DocumentCategoryMapper">
+	<cache />
+	
+	<select id="findAll" resultType="DocumentCategory">
+		SELECT
+			*
+		FROM
+			TB_DOCUMENT_CATEGORY
+	</select>
+	
+	<select id="findById" resultType="DocumentCategory">
+		SELECT
+			*
+		FROM
+			TB_DOCUMENT_CATEGORY
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByIds" resultType="DocumentCategory">
+		SELECT
+			*
+		FROM
+			TB_DOCUMENT_CATEGORY
+		WHERE
+			ID IN 
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+          #{item}  
+        </foreach>
+	</select>
+	
+	<select id="findByDocumentCategory" parameterType="DocumentCategory"  resultType="DocumentCategory">
+	  select * from tb_document_category where 1 = 1 
+	  <if test="pid == 'null'">  
+          and pid is null 
+      </if>
+      <if test="pid !='null' and pid != null">  
+          and pid = #{pid}  
+      </if>
+      <if test="locale != null"> 
+          and locale = #{locale}
+      </if>
+	    order by csort asc
+    </select>
+	
+	<insert id="save" parameterType="DocumentCategory" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_DOCUMENT_CATEGORY
+		(
+			ID,
+			PID,
+			NODEPATH,
+			NODETYPE,
+			LOCALE,
+			IMAGE,
+			NAME,
+			DETAIL,
+			CSORT,
+			MKEYWORD,
+			MDESCRIPTION
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{pid,    jdbcType=VARCHAR},
+			#{nodepath,    jdbcType=VARCHAR},
+			#{nodetype,       jdbcType=VARCHAR},
+			#{locale,       jdbcType=VARCHAR},
+			#{image,       jdbcType=VARCHAR},
+			#{name,       jdbcType=VARCHAR},
+			#{detail,       jdbcType=VARCHAR},
+			#{csort,       jdbcType=INTEGER},
+			#{mkeyword,       jdbcType=VARCHAR},
+			#{mdescription,       jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="DocumentCategory">
+		update
+			TB_DOCUMENT_CATEGORY
+		set
+		    PID = #{pid, jdbcType=VARCHAR},
+			NODEPATH= #{nodepath, jdbcType=VARCHAR},
+			NODETYPE = #{nodetype, jdbcType=VARCHAR},
+			LOCALE = #{locale, jdbcType=VARCHAR},
+			IMAGE = #{image, jdbcType=VARCHAR},
+			NAME = #{name, jdbcType=VARCHAR},
+			DETAIL = #{detail, jdbcType=VARCHAR},
+			CSORT = #{csort, jdbcType=INTEGER},
+			MKEYWORD = #{mkeyword, jdbcType=VARCHAR},
+			MDESCRIPTION = #{mdescription, jdbcType=VARCHAR}
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_DOCUMENT_CATEGORY
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

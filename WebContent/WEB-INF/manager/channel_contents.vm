@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<title>频道内容</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/channels.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 网站频道 - 频道内容</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="channels.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回频道列表 </span></a></li>
+      <li><a class="shortcut-button" href="channel_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建频道 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>$!{channel.title}</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td>频道ID</td>
+              <td>频道名称</td>
+              <td>网页模板</td>
+              <td>频道说明</td>
+            </tr>
+            <tr>
+              <td>$!{channel.id}</td>
+              <td>$!{channel.title}</td>
+              <td>$!{channel.templatee.path}/$!{channel.templatee.name}</td>
+              <td>$!{channel.intro}</td>
+            </tr>
+          </table>          
+        </div>
+      </div>
+    </div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>$!{channel.title}的内容</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab2">
+          <form id="form1" name="form1" method="post" action="channel_content_del.htm?cid=$!{channel.id}">
+          <table width="100%" border="0" cellspacing="0" cellpadding="3">
+            <tr>
+              <td>[<a href="channel_content_input.htm?cid=$!{channel.id}">为$!{channel.title}增加内容</a>]</td>
+            </tr>
+          </table>
+          <table width="100%" border="0" cellspacing="0" cellpadding="2">
+            <tr>
+              <td width="10">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>模板代码</td>
+              <td>类型</td>
+              <td>商品分类</td>
+              <td>数量</td>
+              <td>偏移</td>
+              <td>标记</td>
+              <td>详细页显示</td>
+              <td>语言</td>
+            </tr>
+            #foreach( $item in $list )
+          <tr>
+            <td><input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}"></td>
+            <td><a href="channel_content_edit.htm?ccid=$!{item.id}">编辑</a></td>
+            <td>$item.type</td>
+            <td>$!{item.typetext}</td>
+            <td>
+              #if( $item.type=='dmenu' )[$!{item.doccatee.name}]文章目录下的子目录#end
+              #if( $item.type=='dlist' )[$!{item.doccatee.name}]目录下的文章列表#end
+              #if( $item.type=='drclist' )[$!{item.doccatee.name}]目录下的推荐文章列表#end
+              #if( $item.type=='dpagelist' )[$!{item.doccatee.name}]目录下的文章列表分页#end
+              #if( $item.type=='dsingle' )文章：[$!{item.documentt.title}]#end
+              #if( ( $item.type=='gmenu' || $item.type=='glist' || $item.type=='grclist' || $item.type=='gpagelist' ) && !$item.category )
+              [所有商品分类]
+              #else
+              #if( $item.type=='gmenu' )[$!{item.categoryy.name}]商品目录下的子目录#end
+              #if( $item.type=='glist' )[$!{item.categoryy.name}]目录下的商品列表#end
+              #if( $item.type=='grclist' )[$!{item.categoryy.name}]目录下的推荐文章列表#end
+              #if( $item.type=='gpagelist' )[$!{item.categoryy.name}]目录下的文章列表分页#end
+              #end
+              #if( $item.hasKeyword('hot') )[热销]#end
+              #if( $item.hasKeyword('new') )[新品]#end
+              #if( $item.hasKeyword('btq') )[精品]#end
+              #if( $item.type=='gsingle' )商品：[$!{item.goodd.name}]#end
+            </td>
+            <td>$!{item.number}</td>
+            <td>$!{item.offset}</td>
+            <td>$!{item.marker}</td>
+            <td>#if( $item.detail=='yes' )是#else否#end</td>
+            <td>$!{item.localee.name}</td>
+          </tr>
+          #end
+          <tr>
+            <td colspan="10"><input type="submit" name="button" id="button" value="删除"></td>
+          </tr>
+          </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

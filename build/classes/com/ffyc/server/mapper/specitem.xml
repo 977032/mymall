@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.SpecItemMapper">
+	<cache />
+	<select id="findAll" resultType="SpecItem">
+		SELECT
+			*
+		FROM
+			TB_SPECITEM
+		ORDER BY REMARK ASC
+	</select>
+	
+	<select id="findById" resultType="SpecItem">
+		SELECT
+			*
+		FROM
+			TB_SPECITEM
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getGoodTypes" resultType="GoodType">
+		select
+			t.* from tb_good_type as t inner join tb_good_type_spec_item as tt
+		on
+		    tt.goodtype = t.id and 
+			tt.specitem = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="save" parameterType="SpecItem" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_SPECITEM
+		(
+			ID,
+			NAME,
+			REMARK,
+			DTYPE,
+			DSTYLE
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{remark,    jdbcType=VARCHAR},
+			#{dtype,    jdbcType=VARCHAR},
+			#{dstyle,    jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="SpecItem">
+		update
+			TB_SPECITEM
+		set
+		    NAME = #{name, jdbcType=VARCHAR},
+		    REMARK = #{remark, jdbcType=VARCHAR},
+		    DTYPE = #{dtype, jdbcType=VARCHAR},
+		    DSTYLE = #{dstyle, jdbcType=VARCHAR}
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_SPECITEM
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

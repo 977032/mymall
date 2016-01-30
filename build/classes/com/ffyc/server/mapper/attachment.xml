@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.AttachmentMapper">
+	<cache />
+	
+	<sql id="sql_searchAttachmentByAttachment">
+	  select * from tb_attachment where 1 = 1
+      <if test="attachment.good != null">  
+          and good = #{attachment.good}  
+      </if>
+      <if test="attachment.document != null"> 
+          and document = #{attachment.document}  
+      </if>
+      <if test="attachment.status != null"> 
+          and status = #{attachment.status}  
+      </if>
+      <if test="attachment.path != null"> 
+          and path like concat('',#{attachment.path},'%')  
+      </if>
+      <if test="attachment.detail != null"> 
+          and detail like concat('%',#{attachment.detail},'%')  
+      </if>
+	</sql>
+	
+	<select id="findAll" resultType="Attachment">
+		SELECT
+			*
+		FROM
+			TB_ATTACHMENT
+	</select>
+	
+	<select id="findAllTemplate" resultType="Attachment">
+		SELECT
+			*
+		FROM
+			TB_ATTACHMENT
+		WHERE PATH like '/template%'
+	</select>
+	
+	<select id="findById" resultType="Attachment">
+		SELECT
+			*
+		FROM
+			TB_ATTACHMENT
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByIds" resultType="Attachment">
+		SELECT
+			*
+		FROM
+			TB_ATTACHMENT
+		WHERE
+			ID IN 
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+          #{item}  
+        </foreach>
+	</select>
+	
+	<select id="findByAttachment" resultType="Attachment">
+	   <include refid="sql_searchAttachmentByAttachment"></include>
+	   order by ctime desc
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+	</select>
+	
+	<select id="getCountByAttachment" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchAttachmentByAttachment"></include> 
+      ) rs
+    </select> 
+	
+	<insert id="save" parameterType="Attachment" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_ATTACHMENT
+		(
+			ID,
+			NAME,
+			FTYPE,
+			STATUS,
+			SORT,
+			PATH,
+			ONAME,
+			DETAIL,
+			MANAGER,
+			GOOD,
+			DOCUMENT,
+			URL,
+			CTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{ftype,    jdbcType=VARCHAR},
+			#{status,    jdbcType=VARCHAR},
+			#{sort,       jdbcType=INTEGER},
+			#{path,       jdbcType=VARCHAR},
+			#{oname,      jdbcType=VARCHAR},
+			#{detail,      jdbcType=VARCHAR},
+			#{manager,      jdbcType=VARCHAR},
+			#{good,      jdbcType=VARCHAR},
+			#{document,      jdbcType=VARCHAR},
+			#{url,      jdbcType=VARCHAR},
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="Attachment">
+		update
+			TB_ATTACHMENT
+		set
+		    NAME = #{name, jdbcType=VARCHAR},
+			FTYPE = #{ftype, jdbcType=VARCHAR},
+			STATUS= #{status, jdbcType=VARCHAR},
+			SORT = #{sort, jdbcType=INTEGER},
+			PATH = #{path, jdbcType=VARCHAR},
+			ONAME = #{oname, jdbcType=VARCHAR},
+			
+			DETAIL = #{detail, jdbcType=VARCHAR},
+			MANAGER = #{manager, jdbcType=VARCHAR},
+			GOOD = #{good, jdbcType=VARCHAR},
+			DOCUMENT = #{document, jdbcType=VARCHAR},
+			URL = #{url, jdbcType=VARCHAR}
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_ATTACHMENT
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,468 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>beautyfamily网上商城</title>
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/global.css" rel="stylesheet" type="text/css" />
+<link href="styles/good.css" rel="stylesheet" type="text/css" />
+<link href="styles/cloud-zoom.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/jquery-ui-1.8.1.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery.min.js"></script>
+<script type="text/JavaScript" src="scripts/cloud-zoom.1.0.2.min.js"></script>
+<script language="JavaScript" type="text/javascript">
+	function psi(obj)   
+	{   
+		if(obj.name=="psi_plus")
+		{
+			document.getElementById(obj.getAttribute("forid")).value++;
+		}
+		if(obj.name=="psi_subtract")
+		{
+			if (document.getElementById(obj.getAttribute("forid")).value > 1)
+			document.getElementById(obj.getAttribute("forid")).value--;
+		}
+	}  
+
+jQuery(document).ready(function(){
+     //预览大图
+    jQuery("#pic img").hover(function () {
+		var lapic = $(this).attr("src");
+		$("#pic img").attr("class","goods");
+		$(this).attr("class","goodsImg");
+      	jQuery("#lpic").attr("src",lapic);
+    });
+	//选中的规格价格，改变标题价格
+	$("input[name='sc']").click(function() {
+		$(".goods_data_pic").html($("input[name='sc'][checked]").attr("var"));
+    });
+  });
+</script>
+<script type="text/javascript" src="scripts/jquery-ui-1.8.1.custom.min.js"></script>
+<script>function changeAtt(t) {
+t.lastChild.checked='checked';
+for (var i = 0; i<t.parentNode.childNodes.length;i++) {
+        if (t.parentNode.childNodes[i].className == 'cattsel') {
+            t.parentNode.childNodes[i].className = '';
+        }
+    }
+t.className = "cattsel";
+changePrice();
+}
+</script>
+<!--评论-->
+<script type="text/javascript">
+function toSubmit(){
+	var content = $("#content").val();
+	if (content == "") {
+		alert("必须输入评论内容。");
+		return false;
+	}
+	var validateCode = $("#validateCode").val();
+	var gid = $("#gid").val();
+	var json_data = {"validateCode": validateCode, "content": content, "gid": gid};
+	jQuery.ajax({
+		type: "POST",
+		url: "comment_submit.htm",
+		dataType: "json",
+		data: json_data,
+		success: function(msg){
+			var json = eval(msg);
+			jQuery.each(json, function(i, n){
+				alert(n);
+				$("#validateCode").attr("value",'');
+				$("#content").attr("value",'');
+			});
+		}
+	});
+}
+</script>
+<!--卡式窗口-->
+<script type="text/javascript">
+			$(function(){
+				// Tabs
+				$('#tabs').tabs();
+				//hover states on the static widgets
+				$('#dialog_link, ul#icons li').hover(
+					function() { $(this).addClass('ui-state-hover'); }, 
+					function() { $(this).removeClass('ui-state-hover'); }
+				);			
+				$('#tabs2').tabs();
+				//hover states on the static widgets
+				$('#dialog_link, ul#icons li').hover(
+					function() { $(this).addClass('ui-state-hover'); }, 
+					function() { $(this).removeClass('ui-state-hover'); }
+				);
+				$('#tabs3').tabs();
+				//hover states on the static widgets
+				$('#dialog_link, ul#icons li').hover(
+					function() { $(this).addClass('ui-state-hover'); }, 
+					function() { $(this).removeClass('ui-state-hover'); }
+				);
+			});			
+		</script>
+</head>
+<body>
+<div id="Box-top">
+  #include("/WEB-INF/publicer/zh_CN_box-top-nav.vm")
+  #parse("/WEB-INF/publicer/zh_CN_box-top-logo.vm")
+  <!------------------------nav------------------------>
+  #include("/WEB-INF/publicer/zh_CN_box-nav.vm")
+  #parse("/WEB-INF/publicer/zh_CN_box-menu-left.vm")
+  #parse("/WEB-INF/publicer/zh_CN_mycart.vm")
+  <div class="clear"></div>
+</div>
+<div class="Box-banner"><img src="images/Home-box_15.jpg" width="980" height="60" /></div>
+<!------------------------内容------------------------>
+<div id="goods">
+  <div class="goods_left">
+<!------------------------左边内容------------------------>
+  <div class="Main-left left">
+    <h2>$!{good.categoryy.name}</h2>
+    <div class="Main-left-subNav">
+      <h3>相关分类</h3>
+      <ul>
+      	#if( $good.categoryy.categories.size() > 0 )
+            #foreach( $item in $good.categoryy.categories )
+            <li><a href="browse.htm?c=$!{item.id}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}">$!{item.name}</a> </li>
+            #end
+        #else
+            #foreach( $item in $good.categoryy.category.categories )
+            <li><a href="browse.htm?c=$!{item.id}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{brand.id}">$!{item.name}</a> </li>
+            #end
+        #end
+      </ul>
+    </div>
+
+    <div class="Main-left-subNav" style=" margin-top:20px;">
+      <h3>相关品牌</h3>
+      <ul class="Main-left-Brand">
+      	#if( $good.category.goodtype )
+            #foreach( $item in $good.categoryy.goodtypee.brands )
+            <li><a href="browse.htm?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{item.id}">$!{item.name}</a></li>
+            #end
+        #else
+        	#foreach( $item in $good.categoryy.category.goodtypee.brands )
+            <li><a href="browse.htm?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{item.id}">$!{item.name}</a></li>
+            #end
+        #end
+      </ul>
+    </div>
+    
+    <div class="Main-left-subNav" style=" margin-top:20px;">
+      <h3>所有品牌</h3>
+      <ul class="Main-left-Brand">
+      	#foreach( $item in $brandPs.getItems() )
+        <li><a href="browse.htm?c=$!{c}&keyword=$!{keyword}&ev=$!{ev}&bd=$!{item.id}">$!{item.name}</a></li>
+        #end
+      </ul>
+    </div>
+    
+    <p><img src="images/Main-img-01.jpg" width="200" height="303" /></p>
+    <p><img src="images/Main-img-02.jpg" width="200" height="350" /></p>
+  </div>
+  <!------------------------左边内容------------------------>
+    
+  </div>
+  <div class="goods_right">
+  <h3>$!{good.name}</h3>
+    <Div>
+      <div class="goods_pic">
+        <div style="text-align:left;"> <a href='.$!{good.getDefaultimage().path}/$!{good.getDefaultimage().name}' class="cloud-zoom" id='zoom1' rel="adjustX: 10, adjustY:-4"> <img src=".$!{good.getDefaultimage().path}/$!{good.getDefaultimage().name}" alt='' width="300" height="310" title="$!{good.getDefaultimage().detail}" /> </a>
+        #foreach( $item in $good.attachments )
+        <a href='.$!{item.path}/$!{item.name}' class="cloud-zoom-gallery" title='detail' rel="useZoom: 'zoom1', smallImage: '.$!{item.path}/$!{item.name}' "> <img src=".$!{item.path}/$!{item.name}" alt = "$!{item.detail}" width="54" height="54" title="$!{item.detail}"/> </a>
+        #end
+      </div>
+        <p style="padding:10px 0 30px 0;"><a href="#" class="goods_img_a myBlue">分享给好友</a> <a href="#" class=" goods_img_b myBlue">收藏该商品</a>( 人收藏) </p>
+      </div>
+      <div class="goods_data"><form id="addtocart" name="addtocart" method="post" action="add_to_cart.htm">
+        <h6 style="font-weight:normal">价　　格：<span class="goods_data_pic">$!{good.getPricescope()}</span></h6>
+        <p>促　　销：</p>
+        <p>至：快递: 元　</p>
+        <p>已 售 出：<strong class="goods_red">$!{good.trans} </strong>件</p>
+        <p>评　　价：分(<a href="#" class="myBlue">已有 人评价</a>)</p>
+        <p>送 积 分：单件送<strong class="green" style="font: bold 14px/30px Tahoma, Arial, Helvetica, sans-serif"> $!{good.points}</strong> 分 </p>
+        <p>选择规格：</p>
+        <div class="goods_select">
+        <p class="goods_color">
+        	#foreach( $spec in $good.specs )
+			    <input type="radio" name="sc" id="rprice" value="$!{spec.id}" var="$!{spec.price}">[$!{spec.goodcode}：$!{spec.price}]
+				#foreach( $specvalue in $spec.getSpecvalues())
+					#if($specvalue.specitemm.dtype=='image')
+			         [$!{specvalue.specitemm.name}：$!{specvalue.name}] <img src="./$!{specvalue.vimage.path}/$!{specvalue.vimage.name}" alt="$!{specvalue.name}" width="50" height="50" />
+			        #else
+			         [$!{specvalue.specitemm.name}：$!{specvalue.name}]
+			        #end
+				#end
+            [库存：$!{spec.inventory}]
+			<br />
+			#end
+        </p>  
+        <p style="line-height:24px;">
+			<span class=psi>
+				<dl class="amount">
+				<dd class="nor">数   　量：</dd>
+				<dd>
+				<a name="psi_subtract" href="javascript:void(0)" onclick="javascript:psi(this);" class="psi_subtract" forid="num">-</a>
+				<input name="num" type="text" id="num" value="1" class="psi_input"><input name="gid" type="hidden" id="gid" value="$!{good.id}">
+				<a name="psi_plus" href="javascript:void(0)" onclick="javascript:psi(this);" class="psi_plus" forid="num">+</a>
+				</dd>
+				<dd class="nor">件</dd>
+				<dd class="nor" style="color:#999">(库存$!{good.inventory}件)</dd> 
+				</dl>
+			</span>
+        </p>
+		
+		
+		<div class="clear"></div>
+        <p class="Woek-shopping">
+            <input type="image" name="imageField" id="imageField" src="images/goods_img_01.jpg">
+            <input type="image" name="imageField" id="imageField" src="images/goods_img_02.jpg"></p>
+        </div></form>
+      </div>
+      <div class="clear"></div>
+    </Div>
+    <!------------------------卡式窗口------------------------>
+    <div class="goods_cassette">
+      <div id="tabs">
+        <div class="tabsNav">
+          <ul>
+            <li><span><a href="#tabs-1">商品详情</a></span></li>
+            <li><a href="#tabs-2">支付信息</a></li>
+            <li><a href="#tabs-3">配送信息</a></li>
+            <li><a href="#tabs-4">售后服务</a></li>
+          </ul>
+          <div class="clear"></div>
+        </div>
+        <div id="tabs-1" class="H-box-cp H-box-img">
+          <div class="goods_main">
+            <ul>
+              #foreach( $item in $good.extraattrvalues )
+              #if( $item.extraattrr.display=='yes' )
+              <li>$!{item.extraattrr.name}: $!{item.value}</li>
+              #end
+              #end
+            </ul>
+            <div class="clear"></div>
+          </div>
+          <p>$!{good.detail}</p>
+        </div>
+        <div id="tabs-2" class="H-box-cp">
+          <p>beautyfamily提供网上支付<strong>（第三方支付平台）</strong>、<strong>银行汇款（转帐）</strong>支付方式。 </p>
+          <p><strong>第三方支付平台： </strong></p>
+          <p><strong>支付宝：</strong><br />
+            支付宝是国内领先的独立第三方支付平台，由阿里巴巴集团创办。支付宝为中国电子商务提供“简单、安全、快速”的在线支付解决方案。目前国内工商银行、农业银行、建设银行、招商银行、上海浦发银行等各大商业银行以及中国邮政、VISA国际组织等各大机构均和支付宝建立了深入的战略合作，不断根据客户需求推出创新产品，成为金融机构在电子支付领域最为信任的合作伙伴。</p>
+          <p><strong>快钱：</strong><br />
+            快钱是国内领先的独立第三方支付企业，旨在为各类企业及个人提供安全、便捷和保密的综合电子支付服务。目前，快钱是支付产品最丰富、覆盖人群最广泛的电子支付企业，截至2008年7月31日，快钱已拥有2600万注册用户和逾15万商业合作伙伴 ，并荣获中国信息安全产品测评认证中心颁发的“支付清算系统安全技术保障级一级”认证证书和国际PCI安全认证。</p>
+          <p><strong>银行汇款：</strong></p>
+          <p>银行汇款时当前最有效、快捷的支付方式，安全，实时到帐。对于快速处理您的订单非常有利。<br />
+            1、 只需持本人身份证到最近的银行去办理异地(或同城)汇款业务(汇款本人可持现金办理无卡存款，也可同行卡转账汇款)。<br />
+            2、 如果拥有银行账号并且开通了网上汇款功能，就可以直接进行网上操作。</p>
+          <p>&nbsp;</p>
+          <p></p>
+        </div>
+        <div id="tabs-3" class="H-box-cp">
+          <p style="padding-bottom:10px;"><strong>配送范围：中国境内</strong></p>
+          <p>配送时间：一般是工作日（各快递公司派送时间不同，请咨询相关的快递公司）</p>
+          <p>配送费用：为了更好让消费者享受到网上购物的优惠，本商城的派送费用采取商城跟消费者共同<br />
+            承担的方式，即：顾客出一部分+商城出一部分=总派送费用(满199免运费)。</p>
+          <p style="padding-bottom:10px;"><strong>快递费用 </strong></p>
+          <p>圆通 快递费用：13元</p>
+          <p>EMS 快递费用：20元</p>
+          <p>宅急送 快递费用：13元</p>
+          <p>顺丰（仅支持货到付款） 快递费用：13元<br />
+          </p>
+          <p style="padding-bottom:10px;"><strong>配送答疑 </strong></p>
+          <p>1. 我的商品送到哪里了？怎么查询？ </p>
+          <p>回复：EMS举例:您可以直接拨打 EMS 快递客服电话 11185 进行查询，也可以直接登录 EMS 快递网站进行查询，只要输入您的运单号即可，查询方式请 [ 点击此查看 ] </p>
+          <p>2. 商品到邮局了怎么还没投递？ </p>
+          <p>回复：您的商品在送达后快递员会直接投递，若您填写的地区无人签收，则会在包裹状态内显示 “ 未妥投 ” ，并且包裹会放在邮局，等待再次投递， 另外也并非完全是快递员投递失败，有可能是当日快递员需要投递货物过多，无法在当天全部投递完毕，您可耐心等待 1 ～ 2 天即可。 </p>
+          <p>3. 如果投递失败了这么办？我该继续等待吗？ </p>
+          <p>回复：邮政的快递员会根据情况多次投递，若一直无人签收，则商品会被留在邮局，并且给您指定的地址发去包裹提领单，在您收到时需要自行去 邮局领取，长时没有人领取则将退回。 </p>
+          <p>4. 我能不能自定投递时间？ </p>
+          <p>回复：非常抱歉目前 EMS 快递还不支持自定投递时间，快递员是根据实际情况来进行投递的，希望您能理解。 </p>
+          <p>5. 包裹单查询网址索引 ( 或 快递查询 ) </p>
+          <p>EMS : http://www.ems.com.cn/ </p>
+          <p>圆通快递 : http://www.yto.net.cn/ </p>
+          <p>宅急送：http://www.zjs.com.cn/</p>
+          <p>顺丰：http://www.sf-express.com/ </p>
+          <p>6. 关于送货时间 </p>
+          <p>货物如未在您选定送货方式规定的最长送货时间内送达，您可以选择以下方式处理。 </p>
+          <p>您可以进入淘秀网帐户中心，选择 “ 订单管理 ” ，根据您的订单号码查询到自己的运单号；然后直接进入相应快递公司网站，输入运单号，在线查询配送状况； </p>
+          <p>您可以进入相应快递公司网站，查询您所在地的快递公司分部联系电话，拨打查询。 </p>
+          <p>您可以联系我们的在线客服QQ: 1154713321 1301067100 售后：978414170 告知订单号，我们将为您及时处理； </p>
+          <p>您可以拨打服务电话 4008-878-668 通知我们，我们将为您及时处理； </p>
+          <p>7. 关于验货与拒收 </p>
+          <p>选择 “ 货到付款 ” 的客户在收到货物时，请您务必依据商品外包装信息认真检查所收货物与您订购的型号、数量是否一致。如有不符或外包装有损坏，您可选择拒收。物流目前不能为您提供当场的功能检测，因为测试需要一段等待时间，可能会耽误其他客人的商品配送，请您谅解。您在付款后发现有任何质量问题，可随时在线或电话与淘秀客服取得联系，淘秀将严格按照国家三包政策来维护客户利益。 </p>
+          <p>选择邮政配送方式的客户在收到产品后可在邮局工作人员的面前拆包，如产品损坏，可直接在签收单上注明：内件损坏，本人拒收字样，由邮局再返回淘秀，淘秀和邮局协商赔偿事宜。 </p>
+          <p>如签收后未当面开封，产品出现问题，淘秀很难和邮局协商赔偿，为了客户的利益，希望客户能够执行并理解。 </p>
+          <p>选择其他方式的客户在收到货物时，请您认真检查外包装。如有明显损坏迹象，您可以拒收该货品，并及时通知我们。我们会处理并承担由此而产生的运输费用，请客户不必担心。如您签收有明显损坏迹象的外包装后再投诉货物有误或有损坏，恕我们不能受理。 </p>
+          <p>8. 关于保价 </p>
+          <p>您选择中国邮政国内快递包裹或国内普通包裹寄件进行保价时，保价邮件丢失或全部损毁，按保价金额赔偿；发生部分损毁或短少时，按实际损失的价值予以赔偿，但赔偿金额不超过保价金额。未保价邮件发生损毁、丢失、短少时，按实际损失赔偿，但最高赔偿金额不超过所付邮费的三倍。快包、普包的保价费为货款的 1% 。 </p>
+          <p>您选择圆通快递，若未选择保价服务，货品如出现丢失或损坏，圆通最高赔偿额为 1500 元。所以当您的购买金额超过 1500 元时，建议您选择圆通快递的保价服务。保价后若商品发生遗失或者损毁，圆通将按照保价金额赔偿。圆通快递的保价费为保价金额的 1% 。 </p>
+          <p>您选择中国邮政国内特快专递（ EMS ）进行保价时，保价邮件如发生丢失、损毁，按实际损失价值赔偿，但最高不超过保价额；未保价邮件如发生丢失、损毁会短少，按邮政部门规定的标准赔偿。 EMS 的保价费为货款的 1% 。 <br />
+          </p>
+        </div>
+        <div id="tabs-4" class="H-box-cp">
+          <p><strong>商品退换货流程：</strong></p>
+          <p>1、跟工作人员取得联系说明原因，客服电话：4008-878-668 <br />
+            2、经工作人员同意寄回后，填写退换货单，请写明订单号、商品名称及型号、商品代码和退换原因 （相关信息请在“我的订单”或“我的帐户”中查询）。（注意包裹发回时请不要使用申通快递或者平邮，如果发送平邮的话，自取费用由顾客承担） <br />
+            3、将商品随同其附带品、保修卡、三包凭证、发票、发货单一并邮寄到退换货地址：<br />
+            A、线上电子商务：深圳市宝安区龙华镇石砚工业区丽天鞋业（百丽）电子商务仓 <br />
+            B、线下广州仓地址：广东省广州市西湖路81号之一百丽商贸中心九楼客服部管丽思 电话020-61273953<br />
+            C、线下华南仓地址：深圳市福田区八卦三路541栋5楼东，黄细红收，电话是0755-25971036<br />
+            如不清楚请联系在线客服咨询具体寄回地址。</p>
+          <p>4、在网站提交退换信息：“退货（换货）：订单号”；邮件内容中写明邮寄号、商品名称及型号、商品代码和退换原因。 <br />
+            5、我们收到商品后，经专业人员检测，如符合退货标准，我们将在7天内为您办理退换；如不符合退货标准将以邮寄方式退还给您。 6、退款说明：我们将通过银行或者支付宝等方式退还。 <br />
+            7、退换货产生的费用需要本网站支付的部分以站内现金积分的形式返还到用户注册帐户内。</p>
+          <p>退换货政策： </p>
+          <p>本站商品除“三包”范围内或新品瑕疵外，凡所购鞋款一经使用，恕不退换。此外，由于个人喜好问题或下错订单等非三包范围内原因不予退换。（刚收到的新鞋、 包、服饰你可以按照我们的试穿、用要求进行试穿、用，如果确实不合适，在没有损坏且不影响第二次销售的前提下可以更换同款同色的商品） 如您所订购的商品出现缺货、瑕疵、发货地点错误或“三包”范围内损伤，请与客服联络。 <br />
+            1. “三包”保障：凡本站所购商品均享受与各品牌门店所购商品同等的“三包”服务，详情请查阅 鞋、包、服饰类商品“三包”规定。 <br />
+            2. 商品尺码不合：若收到的商品尺码无误，但不合脚(尺码过大过小)，可换相同商品，但邮费需自行承担，故请在选购时慎重确定尺码。 <br />
+            3. 实物拍摄：本站商品照片均为实物拍摄，由于灯光和自然环境的影响会产生一定色差，因此所有商品颜色均以实物为准，此项不可作为退换货理由。 <br />
+            4. 价格变动：本站商品之价格会随季节变化调整，此项不作为退换货理由。 <br />
+            5. 其它：因顾客本人的喜好（气味，色泽，面料做工，舒适度）等主观原因，均不可作为退换 理由，敬请见谅。</p>
+          <p>关于退换商品产生的邮费： </p>
+          <p>1. 如商品因瑕疵，发错货，发错鞋码及“三包”范围内等情况造成的更换往返邮费均由本站承担。 <br />
+            2. 如收到的鞋款非质量原因需退换，在退换时，邮费将由消费者和我们共同承担（一边一半）。（促销期间另行规定除外，非质量问题退换货前提是商品不影响第二次销售没有穿过。） <br />
+            3. 所付钱款相关事宜请咨询客服。 </p>
+          <p>换货原则： </p>
+          <p>（除“三包”范围内）收到商品七日内，消费者有权因鞋子尺码不合或商品瑕疵问题要求更换，但仅限更换尺码，不更换鞋款。尺码问题限更换次数仅一次。 请注意：退换回的新鞋有以下情形发生恕不退换.<br />
+            1. 鞋底磨损，无法贩卖。 <br />
+            2. 鞋面脏污，无法清洁。 <br />
+            3. 鞋头已经楦过，或已黏上鞋垫。 <br />
+            4. 鞋子附属配件或赠品短缺或已使用。 <br />
+            5. 请确保商品无损且包装完整，若寄送时的原包装遗失，请对商品外盒重新包装，勿直接在商品原厂外盒上粘贴快递单或书写文字，原厂外盒遗失或商品缺件将无法退货或按损毁程度折扣退款金额。 <br />
+            6. 为确保消费者所购皆为新鞋，而非退换款，对短时间出现连续退换货品的情况，本站将设立黑名单，使其无法继续选购本站商品，以确保其它消费者购买之权力，敬请安心选购。</p>
+          <p>线下退鞋建议：</p>
+          <p>第一：鞋有质量问题，要求退货的，特别是皮皱问题，需要拍图片过来，有皮皱问题的话，拍鞋有问题的地方+鞋盒图片；<br />
+            第二：如鞋扣坏掉了，请拍下特写图片，写明鞋的款式过来就行了，不需要将整对鞋寄过来。<br />
+            第三：要退货的话，麻烦写明姓名，电话，订单号，退货原因。</p>
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <!------------------------卡式窗口------------------------>
+    <!------------------------成交记录开始------------------------>
+    <div class="goods_detailed">
+      <h5>成交记录($!{good.trans}件)</h5>
+      <p>当前价格：<span class="myRed" style="font:24px/30px Tahoma, Arial, Helvetica, sans-serif;">$!{good.getPricescope()}</span>元 <a href="#"><img src="images/T1qU4sXiXxXXXXXXXX-114-25.png" width="114" height="25" /></a></p>
+      <p class="orange"><strong>最近成交的：</strong></p>
+      <table width="98%" border="0" cellspacing="0" cellpadding="0" style="margin:10px 0 10px 0;">
+        <tr>
+          <td width="9%" height="30" align="left" bgcolor="#EAEAEA"><strong>买家</strong></td>
+          <td width="19%" height="30" align="left" bgcolor="#EAEAEA"><strong>购买价</strong></td>
+          <td width="36%" height="30" align="left" bgcolor="#EAEAEA"><strong>购买商品</strong></td>
+          <td width="20%" height="30" align="left" bgcolor="#EAEAEA"><strong>购买数量</strong></td>
+          <td width="16%" height="30" align="left" bgcolor="#EAEAEA"><strong>购买时间</strong></td>
+        </tr>
+        #foreach( $item in $good.orderitems )
+        <tr>
+          <td height="30" align="left">$!{item.memberr.account}</td>
+          <td height="30" align="left">$!{item.subtotal}</td>
+          <td height="30" align="left">$!{item.goodd.name}</td>
+          <td height="30" align="left">$!{item.number} (
+            #foreach( $subitem in $item.specc.specvalues )
+            $!{subitem.name}/
+            #end
+            )</td>
+          <td height="30" align="left">$!{item.ctime}</td>
+        </tr>
+        #end
+      </table>
+      <p>共成交$!{good.trans}件 <a href="#"><img src="images/next_pre_02.gif" width="62" height="18"></a></p>
+      <p class="orange" style="text-align: right; font-size:14px;"><a href="#" style="color: #c3a628">查看更多历史记录</a></p>
+    </div>
+    <!------------------------成交记录结束------------------------>
+    <!------------------------商品推荐开始------------------------>
+    <div class="goods_detailed">
+      <h5>商品推荐</h5>
+      <div class="goods_cp">
+        <ul>
+          #foreach( $item in $reGoodsPs.getItems() )
+          <li><a href="#"><img src=".$!{item.getDefaultimage().path}/$!{item.getDefaultimage().name}" width="105" height="143" /></a>
+            <div class="women-box-b">
+              <p><span style="font-size:14px;color: #b91b12;"><strong>￥$!{item.getPricescope()}</strong></span></p>
+              <p style="line-height:14px"><a href="#">$!{item.getSubname(36,"..")}</a></p>
+            </div>
+          </li>
+          #end
+        </ul>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <!------------------------商品推荐结束------------------------>
+    <!------------------------商品推荐开始------------------------>
+    <div class="goods_detailed ">
+      <h5>客户评论</h5> <div class="evaluate_border" style="padding-top:15px;">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr bgcolor="#f3f3f3">
+              <td width="85%">评论 </td>
+              <td width="15%">评论人</td>
+            </tr>
+            #foreach( $item in $good.comments )
+            #if( $item.status=="normal" )
+            <tr>
+              <td><p>$!{item.content}</p>
+                [$!{item.ctime}]</td>
+              <td>#if( $item.memberr )$!{item.memberr.account}#else匿名用户#end</td>
+            </tr>
+            #end
+            #end
+       </table>
+       </div>
+      <form id="commentform" name="commentform" method="post" action="comments_submit.htm">
+    <div class="goods_table_b">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td align="right">用户名：</td>
+              <td>#if( $session.getAttribute('member') )
+                $!{session.getAttribute('member').account}
+                #else
+                匿名用户
+                #end</td>
+            </tr>
+            <tr>
+              <td align="right" valign="top">评论内容：</td>
+              <td><textarea name="content" id="content" cols="60" rows="5" class="goods_table"></textarea></td>
+            </tr>
+            <tr>
+              <td align="right">验证码：</td>
+              <td><input name="validateCode" type="text" class="goods_table" id="validateCode" size="8" maxlength="4">
+                <img id=imgVerify src="./images/validateImage" border="0" /></td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td><input type="button" name="button2" id="button2" value="提交评论" onClick="toSubmit();" class="goods_Button">
+                <input name="gid" type="hidden" id="gid" value="$!{good.id}"></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+    </div>
+    <!------------------------商品推荐结束------------------------>
+  </div>
+  <div class="clear"></div>
+</div>
+<!------------------------底部------------------------>
+<div id="Box-bottom">
+  <div class="Box-bottom-menu">
+    #foreach( $doccate in $map.get("G_A") )
+    <dl>
+      <dt><strong>$!{doccate.name}</strong></dt>
+      #foreach( $document in $doccate.documents )
+      <dd><a href="channel.htm?c=help&amp;t=v&amp;d=$!{document.id}">$!{document.title}</a></dd>
+      #end
+    </dl>
+    #end
+    #include("/WEB-INF/publicer/zh_CN_contacts.vm")
+    <div class="clear"></div>
+  </div>
+  #include("/WEB-INF/publicer/zh_CN_services.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitelinks.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitefooter.vm")
+  <div class="clear"></div>
+</div>
+</body>
+</html>

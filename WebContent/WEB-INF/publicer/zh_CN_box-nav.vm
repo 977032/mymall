@@ -1,0 +1,13 @@
+<div id="Box-nav">
+    <ul>
+      <li><a onfocus="this.blur()" href="index.htm">首页</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=2ffdf86fa01f44d9a5ee997a4cba6426">潮流服饰</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=87e9d2853d7b48f1a7867e3f87f44356">美容护肤</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=702742dcbf4b4467972e6c4ef46d6316">手机数码</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=833fb464077d4a77a2a4553212193f76">珠宝饰品</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=10ff85acdec645349dd6a52e3f0a58c8">食品保健</a></li>
+      <li><a onfocus="this.blur()" href="browse.htm?c=dc1a3f5f11e94de3a82dce52be404483">图书音像</a></li>
+    </ul>
+    <p><a href="http://www.beautyfamily.com" target="_blank"><img src="images/Home-box_07.jpg" alt="http://www.beautyfamily.com" width="187" height="26" border="0" /></a></p>
+    <div class="clear"></div>
+  </div>

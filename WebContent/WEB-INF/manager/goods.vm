@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<title>商品列表</title>
+<script type="text/javascript">
+<!--
+function MM_goToURL() { //v3.0
+  var i, args=MM_goToURL.arguments; 
+  document.MM_returnValue = false;
+  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
+}
+//-->
+</script>
+
+<script type="text/javascript"> 
+<!-- 
+jQuery(document).ready(function() {
+	jQuery('#form1').submit(function()
+	{
+		if(jQuery("[name='checkbox']:checked").length < 1){
+			alert("至少选择一条信息。");
+			return false;
+		} else {
+			return true;
+		}
+	});
+	
+jQuery("#checkall").click(
+    function(){
+		if(this.checked){
+            jQuery("input[name='checkbox']").each(function(){this.checked=true;});
+        }else{
+            jQuery("input[name='checkbox']").each(function(){this.checked=false;});
+        }
+    }
+);
+});
+//--> 
+</script>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商品信息</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="good_input.htm"><span><img src="images/pencil_48.png" alt="icon" /><br />
+      添加新商品 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>搜索</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+        <form id="form2" name="form2" method="post" action="goods.htm?c=$!{category.id}">
+          <table width="100%" border="0" cellspacing="0" cellpadding="5">
+            <tr>
+              <td width="60">商品类别：</td>
+              <td width="50">
+              <select name="select" id="select" onChange="MM_goToURL('parent',this.value);return document.MM_returnValue">
+                <option value="?c=">所有商品</option>
+                #foreach( $item in $catelist )
+                <option value="?c=$!{item.id}" #if($category.id==$item.id)selected="selected"#end>$!{item.nodestr}$!{item.name}</option>
+                #end
+              </select>
+              </td>
+              <td width="50">搜索：</td>
+              <td width="200"><input name="keyword" type="text" id="keyword" value="$!{keyword}"></td>
+              <td width="50"><input type="submit" name="button2" id="button2" value="搜索"></td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+        </form>
+        </div>
+      </div>
+    </div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>商品列表</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="default-tab">
+          <form id="form1" name="form1" method="post" action="good_del.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td><input type="checkbox" name="checkall" id="checkall" title="全选/反选"></td>
+                <td>
+                <a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{page}&amp;od=name&amp;#if($sc=='desc')sc=asc#else&amp;sc=desc#end">
+                #if( $od=='name' && $sc=='desc' )<img src="images/up.jpg" width="11" height="11">#else<img src="images/down.jpg" width="11" height="11">#end名称
+                </a>
+                </td>
+                <td>
+                <a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{page}&amp;od=sn&amp;#if($sc=='desc')sc=asc#else&amp;sc=desc#end">
+                #if( $od=='sn' && $sc=='desc' )<img src="images/up.jpg" width="11" height="11">#else<img src="images/down.jpg" width="11" height="11">#end货号
+                </a>
+                </td>
+                <td>
+                <a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{page}&amp;od=price&amp;#if($sc=='desc')sc=asc#else&amp;sc=desc#end">
+                #if( $od=='price' && $sc=='desc' )<img src="images/up.jpg" width="11" height="11">#else<img src="images/down.jpg" width="11" height="11">#end单价
+                </a>
+                </td>
+                <td>
+                <a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{page}&amp;od=status&amp;#if($sc=='desc')sc=asc#else&amp;sc=desc#end">
+                #if( $od=='status' && $sc=='desc' )<img src="images/up.jpg" width="11" height="11">#else<img src="images/down.jpg" width="11" height="11">#end是否上架
+                </a>
+                </td>
+                <td>
+                  <a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{page}&amp;od=csort&amp;#if($sc=='desc')sc=asc#else&amp;sc=desc#end">
+                  #if( $od=='csort' && $sc=='desc' )<img src="images/up.jpg" width="11" height="11">#else<img src="images/down.jpg" width="11" height="11">#end排序
+                  </a>
+                </td>
+                <td>
+                  <a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{page}&amp;od=inventory&amp;#if($sc=='desc')sc=asc#else&amp;sc=desc#end">
+                  #if( $od=='inventory' && $sc=='desc' )<img src="images/up.jpg" width="11" height="11">#else<img src="images/down.jpg" width="11" height="11">#end库存
+                  </a>
+                </td>
+                <td>
+                  <a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{page}&amp;od=ctime&amp;#if($sc=='desc')sc=asc#else&amp;sc=desc#end">
+                  #if( $od=='ctime' && $sc=='desc' )<img src="images/up.jpg" width="11" height="11">#else<img src="images/down.jpg" width="11" height="11">#end时间
+                  </a>
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              #foreach( $item in $ps.getItems() )
+              <tr>
+                <td><input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}"></td>
+                <td><a href="good_view.htm?gid=$!{item.id}">$!{item.name}</a>#if( $item.hasKeyword('hot') )[热销]#end#if( $item.hasKeyword('new') )[新品]#end#if( $item.hasKeyword('btq') )[精品]#end</td>
+                <td>$!{item.sn}</td>
+                <td>$!{item.price}</td>
+                <td>#if( $item.status=='normal' )上架#elseif( $item.status=='recommend' )推荐#else下架#end</td>
+                <td>$!{item.csort}</td>
+                <td>$!{item.inventory}</td>
+                <td>$!{item.ctime}</td>
+                <td><a href="good_edit.htm?gid=$!{item.id}">修改</a></td>
+                <td><a href="specs.htm?gid=$!{item.id}">规格</a></td>
+                <td><a href="good_view.htm?gid=$!{item.id}">相册</a></td>
+              </tr>
+              #end
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="action" id="action" value=" 删 除 "></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+          <div class="pagination">
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=1&amp;od=$!{od}&amp;sc=$!{sc}" title="首页">首页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPreviousTenPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="前10页">前10页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPreviousPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="上一页">上一页</a>
+#foreach( $infoitem in $ps.getPages() )
+<a class="number" title="第$!{infoitem}页" href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$!{infoitem}&amp;od=$!{od}&amp;sc=$!{sc}">&nbsp;$!{infoitem}&nbsp;</a>
+#end
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getNextPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="下一页">下一页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getNextTenPage()&amp;od=$!{od}&amp;sc=$!{sc}" title="后10页">后10页</a>
+<a href="?c=$!{c}&amp;keyword=$!{keyword}&amp;page=$ps.getPageCount()&amp;od=$!{od}&amp;sc=$!{sc}" title="最后页">最后页</a>
+<span>&nbsp;共&nbsp;
+                $!{ps.getTotalCount()}
+                &nbsp;条信息，
+                $!{ps.pageCount}
+                页</span>
+</div>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

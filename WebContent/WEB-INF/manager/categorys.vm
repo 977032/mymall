@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+
+<script type="text/javascript"> 
+<!-- 
+jQuery(document).ready(function() {
+jQuery("#checkall").click(
+    function(){
+		if(this.checked){
+            jQuery("input[name='checkbox']").each(function(){this.checked=true;});
+        }else{
+            jQuery("input[name='checkbox']").each(function(){this.checked=false;});
+        }
+    }
+);
+});
+//--> 
+</script>
+
+<script type="text/javascript">
+var isExtendsValidate = true;
+function extendsValidate(){
+	//checkbox 验证，必须选择一个checkbox
+	if(jQuery("[name='checkbox']:checked").length < 1){
+		alert("至少选择一条信息。");
+		return false;
+	}
+}
+</script>
+<title>商品类别</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商品类别</p>
+    <ul class="shortcut-buttons-set">
+      #if( $pcategory.category )<li><a class="shortcut-button" href="categorys.htm?pc=$!{pcategory.category.id}"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回 </span></a></li>#end
+      <li><a class="shortcut-button" href="category_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建主类别 </span></a></li>
+      #if( $pcategory )<li><a class="shortcut-button" href="category_input.htm?pc=$!{pcategory.id}"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建子类 </span></a></li>#end
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>商品类别：$!{pcategory.name}</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="category_del.action">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td><input type="checkbox" name="checkall" id="checkall" title="全选/反选"></td>
+                <td>语言</td>
+                <td>类别名称</td>
+                <td>图片标识</td>
+                <td>排序</td>
+                <td>&nbsp;</td>
+              </tr>
+              #foreach( $item in $list )
+              <tr>
+                <td><input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}" /></td>
+                <td>$!{item.localee.name}</td>
+                <td><a href="categorys.htm?pc=$!{item.id}">$!{item.name}</a></td>
+                <td><img src="..$!{item.vimage.path}/$!{item.vimage.name}" width="70" height="30"></td>
+                <td>$!{item.csort}</td>
+                <td><a href="category_edit.htm?c=$!{item.id}">编辑</a></td>
+              </tr>
+              #end
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="删除" /></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

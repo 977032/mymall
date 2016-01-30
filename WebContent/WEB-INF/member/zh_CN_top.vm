@@ -1,0 +1,13 @@
+<div id="top">
+     <div id="top_head">
+	     <div id="logo"><a href="../"><img src="images/Home-box_03.jpg" alt="beautyfamily" width="244" height="32" border="0" /></a></div>
+		 <div id="top_right">
+		     <ul>
+				<li class="line"></li>
+				<li><a href="logout.htm">退出</a></li>
+                <li class="line"></li>
+				<li><a href="security.htm">$!{session.getAttribute("member").account}</a></li>
+			 </ul>
+	   </div>
+	 </div>
+</div>

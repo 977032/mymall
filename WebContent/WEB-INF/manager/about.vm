@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<title>后台管理</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <h2>Welcome beautyfamily</h2>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>后台管理</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1"></div>
+      </div>
+    </div>
+    <div class="content-box column-left">
+      <div class="content-box-header">
+        <h3>操作帮助[<a href="http://www.beautyfamily.com/docs/current/" target="_blank">帮助文档</a>]</h3>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab">
+          <h4>操作顺序</h4>
+          <p>1、品牌管理：录入品牌信息。<br>
+            2、商品规格：定义商品套餐、规格，等和价格有关的规格项。<br>
+            3、商品类型：定义各种商品类型的各种扩展属性[和价格无关的属性]，关联品牌，关联规格。<br>
+            4、商品类别：商品分类组织。<br>
+            5、商品管理：录入并管理商品信息，上传商品图片等。<br>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="content-box column-right">
+      <div class="content-box-header">
+        <h3>最新消息</h3>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab">
+          <h4>beautyfamily 1.6.1发布</h4>
+          <p>这个版本是一个稳定的可部署生产环境的版本，主要特性有：支持支付宝接口，管理员权限自定义控制，自定义频道管理。</p>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

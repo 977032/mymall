@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<script type="text/javascript">
+var isExtendsValidate = true;
+function extendsValidate(){
+	//密码匹配验证
+	if( jQuery('#password').val() == jQuery('#cpassword').val() ){	//匹配成功
+		jQuery('#cpassword').validate_callback(null,"sucess");	//此次是官方提供的，用来消除以前错误的提示
+	}else{//匹配失败
+		jQuery('#cpassword').validate_callback("密码不匹配","failed");	//此处是官方提供的API，效果则是当匹配不成功，pwd2表单 显示红色标注，并且TIP显示为“密码不匹配”
+		return false;
+	}
+}
+
+</script>
+<title>编辑会员账号</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/members.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 会员和组 - 会员账户 - 编辑账户</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="members.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回会员列表 </span></a></li>
+      <li><a class="shortcut-button" href="member_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建会员账号 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>编辑会员账号</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="member_update.htm">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td colspan="4">#if( $member.imagee )<img src="$!{member.imagee.path}/$!{member.imagee.name}" width="100" height="100">#end</td>
+              </tr>
+              <tr>
+                <td align="right">登录账号：</td>
+                <td colspan="3">$!{member.account}
+                <input name="member.id" type="hidden" id="member.id" value="$!{member.id}"></td>
+              </tr>
+              <tr>
+                <td align="right">姓名：</td>
+                <td><input name="member.name" type="text" id="member.name" value="$!{member.name}" size="30" maxlength="255" reg="^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{2,255}$" tip="中文，英文或下划线，最少两个字符，最多255个字符"></td>
+                <td align="right">电子邮箱：</td>
+                <td><input name="member.email" type="text" id="member.email" value="$!{member.email}" size="30" maxlength="255" reg="^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+" tip="Email地址，如：dev@<a href="http://www.beautyfamily.com" target="_blank"></td>
+              </tr>
+              <tr>
+                <td align="right">新密码：</td>
+                <td><input name="member.cpassword" type="text" id="password" size="30" maxlength="128"></td>
+                <td align="right">确认密码：</td>
+                <td><input name="cpassword" type="text" id="cpassword" size="30" maxlength="128"></td>
+              </tr>
+              <tr>
+                <td align="right">状态：</td>
+                <td>
+                <select name="member.status" id="member.status">
+                  <option value="normal" #if( $member.status=="normal" )#end>正常</option>
+                  <option value="notactived" #if( $member.status=="notactived" )selected="selected"#end>未激活</option>
+                </select>
+                </td>
+                <td align="right">等级/组别：</td>
+                <td>
+                  <select name="member.groupp.id" id="member.groupp.id">
+                    <option value="">请选择会员等级/组别</option>
+			  		#foreach( $item in $groupslist )
+                    <option value="$!{item.id}" #if( $item.id==$member.group )selected="selected"#end>$!{item.name}</option>
+                    #end
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td align="right">昵称：</td>
+                <td><input name="member.nickname" type="text" id="member.nickname" value="$!{member.nickname}"></td>
+                <td align="right">身份证号码：</td>
+                <td><input name="member.idcard" type="text" id="member.idcard" value="$!{member.idcard}"></td>
+              </tr>
+              <tr>
+                <td align="right">商城银行账户：</td>
+                <td>$!{member.bankk.account}</td>
+                <td align="right">资金余额：</td>
+                <td>$!{member.bankk.balance}</td>
+              </tr>
+              <tr>
+                <td align="right">商城积分账户：</td>
+                <td>$!{member.pointt.account}</td>
+                <td align="right">积分余额：</td>
+                <td>$!{member.pointt.balance}</td>
+              </tr>
+              <tr>
+                <td align="right">电话：</td>
+                <td><input name="member.telephone" type="text" id="member.telephone" value="$!{member.telephone}"></td>
+                <td align="right">手机：</td>
+                <td><input name="member.mobile" type="text" id="member.mobile" value="$!{member.mobile}"></td>
+              </tr>
+              <tr>
+                <td align="right">QQ：</td>
+                <td><input name="member.qq" type="text" id="member.qq" value="$!{member.qq}"></td>
+                <td align="right">微信：</td>
+                <td><input name="member.wechat" type="text" id="member.wechat" value="$!{member.wechat}"></td>
+              </tr>
+              <tr>
+                <td align="right">最后登录时间：</td>
+                <td>$!{member.lastlogin}</td>
+                <td align="right">登录次数：</td>
+                <td>$!{member.logincount}</td>
+              </tr>
+              <tr>
+                <td align="right">注册时间：</td>
+                <td colspan="3">$!{member.ctime}</td>
+              </tr>
+              <tr>
+                <td align="right">&nbsp;</td>
+                <td><input type="submit" name="button" id="button" value="确认修改"></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

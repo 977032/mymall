@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.SpecMapper">
+	<cache />
+	<sql id="sql_searchSpecBySpec">
+	  select * from tb_spec where 1 = 1 
+      <if test="spec.good != null">  
+          and good = #{spec.good}  
+      </if>
+    </sql>
+	
+	<select id="findAll" resultType="Spec">
+		SELECT
+			*
+		FROM
+			TB_SPEC
+	</select>
+	
+	<select id="findById" resultType="Spec">
+		SELECT
+			*
+		FROM
+			TB_SPEC
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getSpecValues" resultType="SpecValue">
+		select
+			t.* from tb_specvalue as t inner join tb_spec_specvalue as tt
+		on
+		    tt.specvalue = t.id and 
+			tt.spec = #{id, jdbcType=VARCHAR}
+		order by t.name
+	</select>
+	
+	<select id="findBySpec" resultType="Spec">
+	   <include refid="sql_searchSpecBySpec"></include>
+	   order by ctime desc 
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+    </select>
+    
+    <select id="getCountBySpec" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchSpecBySpec"></include> 
+      ) rs
+    </select>
+	
+	<insert id="save" parameterType="Spec" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_SPEC
+		(
+			ID,
+			GOOD,
+			GOODCODE,
+			INVENTORY,
+			PRICE,
+			CPRICE,
+			WEIGHT,
+			CTIME,
+			UTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{good,    jdbcType=VARCHAR},
+			#{goodcode,    jdbcType=VARCHAR},
+			#{inventory,    jdbcType=INTEGER},
+			#{price,    jdbcType=DECIMAL},
+			#{cprice,    jdbcType=DECIMAL},
+			#{weight,    jdbcType=DECIMAL},
+			sysdate(),
+			sysdate()
+		)
+	</insert>
+	
+	<insert id="insertSpecValues" parameterType="java.util.List">
+		insert into tb_spec_specvalue (spec,specvalue) values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{id},#{item.id})
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterType="Spec">
+		update
+			TB_SPEC
+		set
+		    GOOD = #{good, jdbcType=VARCHAR},
+		    GOODCODE = #{goodcode, jdbcType=VARCHAR},
+		    INVENTORY = #{inventory, jdbcType=INTEGER},
+		    PRICE = #{price, jdbcType=DECIMAL},
+		    CPRICE = #{cprice, jdbcType=DECIMAL},
+		    WEIGHT = #{weight, jdbcType=DECIMAL},
+		    UTIME = sysdate()
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_SPEC
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteSpecValues">
+		delete from
+		    tb_spec_specvalue
+		where
+			spec = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

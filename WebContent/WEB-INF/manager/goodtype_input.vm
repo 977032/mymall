@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript" src="scripts/jquery.bgiframe.min.js"></script>
+<title>创建商品类型</title>
+</head>
+<body>
+<div id="body-wrapper">
+  <input id="myURL" type="hidden" value="/goodtypes.htm"/>
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <p>后台管理 - 商品类型 - 创建类型</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="goodtypes.htm"><span><img alt="icon" src="images/menu_return.png"><br />
+        返回类型列表 </span></a></li>
+      <li><a class="shortcut-button" href="goodtype_input.htm"><span><img alt="icon" src="images/pencil_48.png" /><br />
+      新建商品类型 </span></a></li>
+    </ul>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>创建商品类型</h3>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+          <form id="form1" name="form1" method="post" action="goodtype_create.action">
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td align="right">类型名称：</td>
+                <td><input name="goodtype.name" type="text" id="goodtype.name" size="36" maxlength="255" reg="^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{2,255}$" tip="中文，英文或下划线，最少两个字符，最多255个字符"></td>
+              </tr>
+              <tr>
+                <td align="right">类型别名：</td>
+                <td><input name="goodtype.alias" type="text" id="goodtype.alias" size="36" maxlength="255" reg="^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{2,255}$" tip="中文，英文或下划线，最少两个字符，最多255个字符"></td>
+              </tr>
+            </table>
+            <br />
+            <table width="100%" border="0" cellspacing="0" cellpadding="5">
+              <tr>
+                <td>关联品牌</td>
+              </tr>
+              <tr>
+                <td>
+                  #foreach( $item in $list )
+                  <input name="checkbox" type="checkbox" id="checkbox" value="$!{item.id}">
+                  $!{item.name}
+                  #end
+                </td>
+              </tr>
+              <tr>
+                <td>关联规格项</td>
+              </tr>
+              <tr>
+                <td>
+                  #foreach( $item in $silist )
+                  <input name="sicheckbox" type="checkbox" id="sicheckbox" value="$!{item.id}">
+                  $!{item.name}[$!{item.remark}]
+                  #end
+                </td>
+              </tr>
+              <tr>
+                <td>关联扩展属性</td>
+              </tr>
+              <tr>
+                <td>
+                  #foreach( $item in $ealist )
+                  <input name="eacheckbox" type="checkbox" id="eacheckbox" value="$!{item.id}">
+                  $!{item.name}[$!{item.alias}]
+                  #end
+                </td>
+              </tr>
+              <tr>
+                <td><input type="submit" name="button" id="button" value="保存"></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.BankMapper">
+	<cache />
+	<select id="findAll" resultType="Bank">
+		SELECT
+			*
+		FROM
+			TB_BANK
+	</select>
+	
+	<select id="findById" resultType="Bank">
+		SELECT
+			*
+		FROM
+			TB_BANK
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="save" parameterType="Bank" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_BANK
+		(
+			ID,
+			ACCOUNT,
+			STATUS,
+			BALANCE,
+			REMARKS,
+			CTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{account,    jdbcType=VARCHAR},
+			#{status,    jdbcType=VARCHAR},
+			#{balance,       jdbcType=DECIMAL},
+			#{remarks,       jdbcType=VARCHAR},
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="Bank">
+		update
+			TB_BANK
+		set
+		    ACCOUNT = #{account, jdbcType=VARCHAR},
+			STATUS= #{status, jdbcType=VARCHAR},
+			BALANCE = #{sort, jdbcType=DECIMAL},
+			REMARKS = #{remarks, jdbcType=VARCHAR}
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_BANK
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

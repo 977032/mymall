@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.PaySettingMapper">
+	<cache />
+	<select id="findAll" resultType="PaySetting">
+		SELECT
+			*
+		FROM
+			TB_PAYSETTING
+		ORDER BY PROPERTY ASC
+	</select>
+	
+	<select id="findById" resultType="PaySetting">
+		SELECT
+			*
+		FROM
+			TB_PAYSETTING
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+		ORDER BY PROPERTY ASC
+	</select>
+	
+	<select id="findAllRoot" resultType="PaySetting">
+		SELECT
+			*
+		FROM
+			TB_PAYSETTING
+		WHERE
+			PMTYPE = #{pmtype, jdbcType=VARCHAR}
+		ORDER BY PROPERTY ASC
+	</select>
+	
+	<select id="findByPaySetting" parameterType="PaySetting" resultType="PaySetting">
+		SELECT
+			*
+		FROM
+			TB_PAYSETTING
+		WHERE 1=1
+		<if test="name != null">  
+          and name = #{name}  
+        </if>
+        <if test="property != null">  
+          and property = #{property}  
+        </if>
+        <if test="paymode == 'null'">  
+          and paymode is null  
+        </if>
+		<if test="paymode != 'null' and paymode != null">  
+          and paymode = #{paymode}  
+        </if>
+        <if test="pmtype != null">  
+          and pmtype = #{pmtype}  
+        </if>
+        order by #{orderby}
+	</select>
+	
+	<select id="findByProperty" resultType="PaySetting">
+		SELECT
+			*
+		FROM
+			TB_PAYSETTING
+		WHERE 1=1
+		<if test="property != null">  
+          and property = #{property}  
+        </if>
+		ORDER BY PROPERTY ASC
+	</select>
+	
+	<insert id="save" parameterType="PaySetting" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_PAYSETTING
+		(
+			ID,
+			NAME,
+			PROPERTY,
+			VALUE,
+			PMTYPE,
+			PAYMODE
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{property,    jdbcType=VARCHAR},
+			#{value,    jdbcType=VARCHAR},
+			#{pmtype,    jdbcType=VARCHAR},
+			#{paymode,    jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update">
+		update
+			TB_PAYSETTING
+		set
+		    NAME = #{name, jdbcType=VARCHAR},
+		    PROPERTY = #{property, jdbcType=VARCHAR},
+		    VALUE = #{value, jdbcType=VARCHAR},
+		    PMTYPE = #{pmtype, jdbcType=VARCHAR},
+		    PAYMODE = #{paymode, jdbcType=VARCHAR}
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_PAYSETTING
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

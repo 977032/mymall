@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网店后台管理系统</title>
+<link href="css/css.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+#parse("/WEB-INF/member/zh_CN_top.vm")
+<div id="blankline"></div>
+#include("/WEB-INF/member/zh_CN_nav.vm")
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="202" height="500" align="left" valign="top">
+    <div id="lefttitle">管理中心</div>
+	<div id="leftline"></div>
+	
+    <div style="padding-top:8px;"></div>
+	#include("/WEB-INF/member/zh_CN_menu.vm")
+	</td>
+    <td width="1" bgcolor="#dbdbdb">
+	</td>
+    <td align="left" valign="top" style="padding-left:15px;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="42" align="left" valign="middle" bgcolor="#f4f4f4" class="title" style="padding-left:15px;">管理中心&nbsp;--&nbsp;<span class="title1">我的管理中心</span></td>
+      </tr>
+      <tr>
+        <td height="1" bgcolor="#e5e5e5">
+		</td>
+      </tr>
+    </table>
+      <div style="padding-top:10px;"></div>
+   
+      <table width="787" border="0" cellpadding="0" cellspacing="1" bgcolor="#dcdcdc" >
+         <form id="form2" name="form2" method="post" action=""><tr >
+           <td width="41" height="34" align="center" valign="middle" background="images/order_top_bg.jpg" bgcolor="#FFFFFF" class="bold" >&nbsp;</td>
+           </tr>
+        </form>
+      </table>
+    
+    <div style="padding-top:10px;"></div>
+    <table width="787" height="80" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="right" valign="top">&nbsp;</td>
+        </tr>
+    </table>
+    
+    <table width="787" border="0" cellpadding="0" cellspacing="0" bgcolor="#cdcdcd">
+      <tr>
+        <td width="1">
+		</td>
+      </tr>
+    </table>
+    #include("/WEB-INF/member/zh_CN_footer.vm")
+	</td>
+  </tr>
+</table>
+</body>
+</html>

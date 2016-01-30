@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>beautyfamily-在线商城</title>
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/global.css" rel="stylesheet" type="text/css" />
+<link href="styles/inside.css" rel="stylesheet" type="text/css" />
+<link href="styles/Shopping.css" rel="stylesheet" type="text/css" />
+<style type="text/css"> 
+  .cursor_pointer { 
+    cursor:pointer; 
+  } 
+</style>
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript">
+/* jun : plus subtract input 2010-10-21*/
+	function psi(obj)   
+	{   
+		if(obj.name=="psi_plus")
+		{
+			document.getElementById(obj.getAttribute("forid")).value++;
+		}
+		if(obj.name=="psi_subtract")
+		{
+			if (document.getElementById(obj.getAttribute("forid")).value > 1)
+			document.getElementById(obj.getAttribute("forid")).value--;
+		}
+	}  
+/* END : plus subtract input 2010-10-21*/
+jQuery(document).ready(function(){
+	var count = 0;
+	try {
+		count = $session.getAttribute("order").orderitems.size();
+	} catch (err) {
+	}
+	
+	jQuery("#chkout").hover(function(){
+		jQuery(this).addClass("cursor_pointer");
+	}, function(){
+		jQuery(this).removeClass("cursor_pointer");
+	}).click(function(){
+		if(count <= 0){
+			alert("购物车是空的。");
+		} else {
+			window.location.href="my_order.htm";
+		}
+	});
+});
+</script>
+</head>
+<body>
+<div id="Box-top">
+  #include("/WEB-INF/publicer/zh_CN_box-top-nav.vm")
+  #parse("/WEB-INF/publicer/zh_CN_box-top-logo.vm")
+  <!------------------------nav------------------------>
+  #include("/WEB-INF/publicer/zh_CN_box-nav.vm")
+  <div id="Box-menu-left">
+    <div class="Box-sort white">
+       <span>热门分类：</span><a href="#">手机</a>
+       <span class="orange">特别关注：</span><a href="#">小米手机</a>|<a href="#">会员积分换购</a>
+    </div>
+    <div class="Box-search">
+      <form action="browse.htm" method="post" id="search">
+        <label>
+          <input name="keyword" type="text" id="keyword" value="$!{keyword}">
+        </label>
+        <label>
+          <select name="c" id="c">
+            <option value="">所有分类</option>
+            #foreach( $item in $caterootlist )
+            <option value="$!{item.id}" #if( $category.id==$item.id )selected="selected"#end>$!{item.name}</option>
+            #end
+          </select>
+        </label>
+        <input name="button" type="submit" id="button" value="搜索" class="button" />
+        <label>热门关键词:<a href="browse.htm?c=&&keyword=手机">手机</a></label>
+      </form>
+    </div>
+  </div>
+  #parse("/WEB-INF/publicer/zh_CN_mycart.vm")
+  <div class="clear"></div>
+</div>
+<div class="Box-banner"><img src="images/Home-box_15.jpg" width="980" height="60" /></div>
+<!------------------------内容------------------------>
+
+
+
+<div class="gouwu">
+  <div class="gouwu1"> <span style=" float:left">您的位置： 首页 &gt; 我的管理中心 &gt; 我的购物车</span> <span style="float:right;">购物车帮您一次性完成批量购买与付款，下单更便捷，付款更简单！如何使用购物车 </span> </div>
+  <div class="clear"></div>
+  <div class="zhishi" style="margin-top:10px;"> <span class="xiaoguo1" style="float:left;">1. 查看购物车</span> <span class="xiaoguo2" style="float:left;">2. 确认订单信息</span> <span class="xiaoguo3" style="float:left;">3. 付款</span> <span class="xiaoguo4" style="float:left;">4. 确认收货</span> <span class="xiaoguo5" style="float:left;">5. 评价</span> </div>
+  <div class="clear"></div>
+  <div class="quanxuan">
+    <table width="100%" border="0">
+      <tr>
+        <td width="48%" align="center" valign="middle">商品</td>
+        <td width="10%" align="center">折扣</td>
+        <td width="12%" align="center">单价(元)</td>
+        <td width="14%" align="center">数量</td>
+        <td width="11%" align="center">小计(元)</td>
+        <td width="5%" align="center">操作</td>
+      </tr>
+    </table>
+  </div>
+  <div class="clear"></div>
+  <div class="yixuan tb_lightblue">
+    <table width="100%" cellspacing="0" border="0">
+		<tr>
+			<th>商品</th>
+			<th width="10%">折扣</th>
+			<th width="12%">单价(元)</th>
+			<th width="18%">数量</th>
+			<th width="11%">小计(元)</th>
+			<th></th>
+		</tr>
+      #set( $number=0 )
+      #set( $amount=0 )
+      #foreach( $item in $session.getAttribute("order").orderitems )
+      <tr>
+        <td height="67" align="left" valign="middle" style=" padding-left:10px;"><span style="margin-left:10px;">
+        <a href="good.htm?gid=$!{item.goodd.id}" target="_blank">$!{item.goodd.name}</a>
+        #foreach( $subitem in $item.specc.specvalues )
+        [$!{subitem.specitemm.name}:$!{subitem.name}]
+        #end
+        </span></td>
+        <td align="center">$!{item.discount}</td>
+        <td align="center">$!{item.unitprice}</td>
+        <td align="center">
+        <form id="form1" name="form1" method="post" action="cart_update_amount.action">
+		<span class=psi>
+			<dl class="amount">
+			<dd>
+			<a name="psi_subtract" href="javascript:void(0);" onclick="javascript:psi(this);" class="psi_subtract" forid="$!{item.id}">-</a>
+			<input name="orderitem.number" type="text" id="$!{item.id}" value="$!{item.number}" class="psi_input" size="11" />
+			<input name="orderitem.id" type="hidden" id="orderitem.id" value="$!{item.id}">
+			<a name="psi_plus" href="javascript:void(0);" onclick="javascript:psi(this);" class="psi_plus" forid="$!{item.id}">+</a>
+			</dd>
+			<dd class="nor"><input type="submit" name="button2" id="button2" value="更新"/></dd>
+			</dl>
+		</span>
+        </form>
+        </td>
+        <td align="center" >$!{item.subtotal}</td>
+        <td align="center" >
+        <form id="form2" name="form2" method="post" action="cart_del_item.action">
+        <input type="submit" name="button" id="button" value="删除">
+        <input name="orderitem.id" type="hidden" id="orderitem.id" value="$!{item.id}">
+        </form>
+        </td>
+      </tr>
+      #set( $number=$number+1 )
+      #set( $amount=$amount+$item.subtotal )
+      #end
+    </table>
+  </div>
+  <div class="clear"></div>
+  <div class="ze">
+    <p style="float:right;">商品总价(不含运费)：<strong style="color:#fa7b2d; font-size:18px;">$!{amount}</strong>元 </p>
+  </div>
+  <div class="clear"></div>
+  <div class="box"> <span class="box1"><a href="cart_clear.htm">清空购物车</a></span> <span style="float:right; margin-left:10px;">
+  <a href="my_order.htm">
+  <img src="images/shan_05.jpg" name="chkout" width="99" height="26" id="chkout" /></a>
+  </span> <span class="box2"><a href="index.htm">再逛逛</a></span> </div>
+</div>
+
+
+<!------------------------底部------------------------>
+<div id="Box-bottom">
+  <div class="Box-bottom-menu">
+    #foreach( $doccate in $map.get("G_A") )
+    <dl>
+      <dt><strong>$!{doccate.name}</strong></dt>
+      #foreach( $document in $doccate.documents )
+      <dd><a href="channel.htm?c=help&amp;t=v&amp;d=$!{document.id}">$!{document.title}</a></dd>
+      #end
+    </dl>
+    #end
+    #include("/WEB-INF/publicer/zh_CN_contacts.vm")
+    <div class="clear"></div>
+  </div>
+  #include("/WEB-INF/publicer/zh_CN_services.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitelinks.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitefooter.vm")
+  <div class="clear"></div>
+</div>
+</body>
+</html>

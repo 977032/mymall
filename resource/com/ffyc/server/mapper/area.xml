@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.AreaMapper">
+	<cache />
+	<sql id="sql_searchAreaByArea">
+	  select * from tb_area where 1 = 1 
+      <if test="area.name != null">  
+          and name = #{area.name}  
+      </if>
+      <if test="area.logistic != null">  
+          and logistic = #{area.logistic}  
+      </if>
+      <if test="area.status != null">  
+          and status = #{area.status}  
+      </if>
+	</sql>
+	
+	<select id="findAll" resultType="Area">
+		SELECT
+			*
+		FROM
+			TB_AREA
+	</select>
+	
+	<select id="findById" resultType="Area">
+		SELECT
+			*
+		FROM
+			TB_AREA
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByArea"  resultType="Area">
+	   <include refid="sql_searchAreaByArea"></include>
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+    </select>
+    
+    <select id="getCountByArea" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchAreaByArea"></include> 
+      ) rs
+    </select> 
+    
+    <select id="getDistricts" resultType="District">
+		select
+			t.* from tb_district as t inner join tb_area_district as tt
+		on
+		    tt.district = t.id and 
+			tt.area = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="save" parameterType="Area" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO TB_AREA
+		(
+			ID,
+			NAME,
+			INTRO,
+			WFIRST,
+			WFCOST,
+			WAPPEND,
+			WACOST,
+			COD,
+			LOGISTIC,
+			PREMIUMRATE,
+			STATUS
+		)
+		VALUES
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{name,    jdbcType=VARCHAR},
+			#{intro,    jdbcType=VARCHAR},
+			#{wfirst,    jdbcType=INTEGER},
+			#{wfcost,       jdbcType=DECIMAL},
+			#{wappend,       jdbcType=INTEGER},
+			#{wacost,      jdbcType=DECIMAL},
+			#{cod,      jdbcType=VARCHAR},
+			#{logistic,      jdbcType=VARCHAR},
+			#{premiumrate,      jdbcType=DECIMAL},
+			#{status,      jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="insertDistricts" parameterType="java.util.List">
+	    insert into tb_area_district (area,district)  values
+		<foreach collection="list" item="item" index="index" >
+			(#{id},#{item.id})
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterType="Area">
+		UPDATE
+			TB_AREA
+		SET
+		    NAME = #{name, jdbcType=VARCHAR},
+			INTRO = #{intro, jdbcType=VARCHAR},
+			WFIRST = #{wfirst, jdbcType=INTEGER},
+			WFCOST = #{wfcost, jdbcType=DECIMAL},
+			WAPPEND = #{wappend, jdbcType=INTEGER},
+			WACOST = #{wacost, jdbcType=DECIMAL},
+			
+			COD = #{cod, jdbcType=VARCHAR},
+			LOGISTIC = #{logistic, jdbcType=VARCHAR},
+			PREMIUMRATE = #{premiumrate, jdbcType=VARCHAR},
+			STATUS = #{status, jdbcType=VARCHAR}
+	   WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM 
+			TB_AREA
+		WHERE
+			id = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteDistricts">
+		delete from 
+			tb_area_district
+		where
+			area = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

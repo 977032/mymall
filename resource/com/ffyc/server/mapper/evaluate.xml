@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffyc.server.mapper.EvaluateMapper">
+	<cache />
+	
+	<sql id="sql_searchEvaluateByEvaluate">
+	  select * from tb_evaluate where 1 = 1 
+      <if test="evaluate.member != null">  
+          and member =#{evaluate.member} 
+      </if>
+      <if test="evaluate.order != null">  
+          and `order` =#{evaluate.order} 
+      </if>
+	</sql>
+	
+	<select id="findAll" resultType="Evaluate">
+		SELECT
+			*
+		FROM
+			TB_EVALUATE
+	</select>
+	
+	<select id="findById" resultType="Evaluate">
+		SELECT
+			*
+		FROM
+			TB_EVALUATE
+		WHERE
+			ID = #{id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findByEvaluate" resultType="Evaluate">
+	   <include refid="sql_searchEvaluateByEvaluate"></include>
+	   order by ctime desc 
+	   <if test="startIndex != null"> 
+	      limit #{startIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER} 
+	   </if>
+    </select>
+    
+    <select id="getCountByEvaluate" resultType="Integer">  
+      select count(1) from (
+      <include refid="sql_searchEvaluateByEvaluate"></include> 
+      ) rs
+    </select> 
+	
+	<insert id="save" parameterType="Evaluate" useGeneratedKeys="true" keyProperty="id">
+		insert into TB_EVALUATE
+		(
+			ID,
+			ETYPE,
+			POSITIVE,
+			NEUTRAL,
+			NEGATIVE,
+			`ORDER`,
+			MEMBER,
+			CTIME
+		)
+		values
+		(
+			#{id,    jdbcType=VARCHAR},
+			#{etype,    jdbcType=VARCHAR},
+			#{positive,    jdbcType=INTEGER},
+			#{neutral,       jdbcType=INTEGER},
+			#{negative,       jdbcType=INTEGER},
+			#{order,       jdbcType=VARCHAR},
+			#{member,       jdbcType=VARCHAR},
+			sysdate()
+		)
+	</insert>
+	
+	<update id="update" parameterType="Evaluate">
+		update
+			TB_EVALUATE
+		set
+		    ETYPE = #{etype, jdbcType=VARCHAR},
+			POSITIVE= #{positive, jdbcType=INTEGER},
+			NEUTRAL = #{neutral, jdbcType=INTEGER},
+			NEGATIVE = #{negative, jdbcType=INTEGER},
+			`ORDER` = #{order, jdbcType=VARCHAR},
+			MEMBER = #{member, jdbcType=VARCHAR}
+	    where
+			`ID` = #{id, jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delete">
+		delete from 
+			TB_EVALUATE
+		where
+			`id` = #{id, jdbcType=VARCHAR}
+	</delete>
+	
+</mapper>

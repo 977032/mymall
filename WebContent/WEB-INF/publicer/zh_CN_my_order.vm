@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>确认购物信息</title>
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/global.css" rel="stylesheet" type="text/css" />
+<link href="styles/inside.css" rel="stylesheet" type="text/css" />
+<link href="styles/Shopping.css" rel="stylesheet" type="text/css" />
+<link href="styles/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-ui-1.8.5.custom.min.js"></script>
+<script type="text/javascript" src="scripts/jquery.filloptions.js"></script>
+<script type="text/javascript" src="scripts/easy_validator.pack.js"></script>
+<script type="text/javascript">
+function getDistrict(_id){
+	jQuery("#district1").FillOptions("getdistrict.htm?id="+_id,{datatype:"json",textfield:"name",valuefiled:"id"});
+}
+
+jQuery(document).ready( function(){
+	jQuery.ajaxSetup ({
+    	cache: false //关闭AJAX相应的缓存
+	});
+	
+	jQuery("#addaddress").click(function(){
+		var form = jQuery("#formaddst");
+		var dlg = jQuery("#dialog").dialog({
+			bgiframe : true,
+			modal : true,
+			overlay: { opacity: 0.5, background: "#CCCCCC" },
+			title:"增加收货地址" ,
+			width:630,
+			height:330,
+			buttons : {
+				'保 存' : function() {
+					jQuery.ajax({
+						url: form.attr('action'),
+						data: form.serialize(),
+						type: (form.attr('method')),
+						dataType: "json",
+						success:function(data){
+							if (data.result == "success") {
+								alert("操作成功!");
+								window.location.reload();
+							} else {
+								alert("操作失败，信息填写不完整!");
+							}
+						},
+						error:function(data){
+							alert("操作失败!");
+						}
+					});
+				},
+				'重 置' : function() {
+					form.each( function() {
+						this.reset();
+					});
+				},
+				'关 闭' : function() {
+					jQuery(this).dialog('close');
+				}
+        	}
+		});
+		jQuery("#dialog").parent().appendTo("#dialog_target");
+	 });
+	 
+	 jQuery("[name='str']").click(function(){
+		/*jQuery.ajax({
+			url: "member/area_ajax.htm",
+			data: {str:jQuery(this).attr("value")},
+			type: "GET",
+			dataType: "json",
+			success:function(data){
+				alert(data);
+				/*if (data.result == "success") {
+					alert("操作成功!");
+				} else {
+					alert("操作失败，信息填写不完整!");
+				}
+			},
+			error:function(data){
+				alert("操作失败!"+data);
+			}
+		});*/
+		jQuery("#areas").load("member/area_ajax.htm?str="+jQuery(this).attr("value"));
+	 });
+});
+
+var count = 0;
+try {
+	count = $session.getAttribute("order").orderitems.size();
+} catch (err) {
+}
+
+var isExtendsValidate = true;
+function extendsValidate(){
+  if(count <= 0){
+	alert("购物车是空的。");
+	return false;
+  }
+
+  if(jQuery("[name='str']:checked").length < 1){
+	  alert("请选择一个收货地址。");
+	  return false;
+  }
+  
+  if(jQuery("[name='pm']:checked").length < 1){
+	alert("请选择一个支付方式。");
+	return false;
+  }
+}
+
+function tourl()
+{
+	window.location.href= "member/list_bought_items.htm";
+}
+</script>
+</head>
+<body>
+<div id="Box-top">
+  #include("/WEB-INF/publicer/zh_CN_box-top-nav.vm")
+  #parse("/WEB-INF/publicer/zh_CN_box-top-logo.vm")
+  <!------------------------nav------------------------>
+  #include("/WEB-INF/publicer/zh_CN_box-nav.vm")
+  #parse("/WEB-INF/publicer/zh_CN_box-menu-left.vm")
+  #parse("/WEB-INF/publicer/zh_CN_mycart.vm")
+  <div class="clear"></div>
+</div>
+<div class="Box-banner"><img src="images/Home-box_15.jpg" width="980" height="60" /></div>
+<!------------------------内容------------------------>
+
+
+
+<div class="gouwu">
+  <div class="gouwu1"> <span style=" float:left">您的位置： 首页 &gt; 我的管理中心 &gt; 我的购物车</span> <span style="float:right;">购物车帮您一次性完成批量购买与付款，下单更便捷，付款更简单！如何使用购物车 </span> </div>
+  <div class="clear"></div>
+  <div class="zhishi" style="margin-top:10px;"> <span class="xiaoguo2" style="float:left;">1. 查看购物车</span> <span class="xiaoguo1" style="float:left;">2. 确认订单信息</span> <span class="xiaoguo3" style="float:left;">3. 付款</span> <span class="xiaoguo4" style="float:left;">4. 确认收货</span> <span class="xiaoguo5" style="float:left;">5. 评价</span> </div>
+  <div class="clear"></div>
+  
+  <div>
+      <form action="checkout.htm" method="post" name="form1" target="_blank" id="form1">
+      <div class="btn1">
+        <h2><span style="font-size:14px;font-weight:bold;border-left:5px solid #a10000;padding-left:5px;">确认收货地址：<input type="button" name="addaddress" id="addaddress" value="增加收货地址"></span></h2>
+        <ul class="norul li_dashed">
+          #foreach( $item in $member.addresses )
+          <li>
+            <input type="radio" name="str" id="str" value="$!{item.id}">
+            $!{item.districtt.district.name} $!{item.districtt.name} $!{item.address} 姓名：$!{item.name} 邮编：$!{item.postcode} 电话：$!{item.telephone} 手机：$!{item.mobile}
+          </li>
+          #end
+          <li>
+            <div id="areas"></div>
+          </li>
+		  <li></li>
+          <li>
+            <h2><span style="font-size:14px;font-weight:bold;border-left:5px solid #a10000;padding-left:5px; color:#a10000;">支付方式:</span></h2>
+          </li>
+
+		  #foreach( $item in $paymodeList )
+		  <li>
+			<input type="radio" name="pm" id="radio" value="$!{item.id}" />
+			<span>$!{item.name}</span>
+			<span><img src="./$!{item.vimage.path}/$!{item.vimage.name}" alt="$!{item.name}，$!{item.intro}"></span>
+		  </li>
+		  #end
+		</ul>
+		<br/>
+		<div class="btn_pay"><input type="submit" name="button2" id="button2" value="确认购买(去付款)" /></div>
+
+      </div>
+      </form>
+  </div>
+  
+  <div class="clear"></div>
+  <br />
+  <div class="yixuan tb_lightblue">
+    <table width="100%" cellspacing="0">
+	  <tr>
+		<th width="48%">商品</th>
+		<th width="10%">折扣</th>
+		<th width="12%">单价(元)</th>
+		<th width="14%">数量</th>
+		<th width="11%">小计(元)</th>
+	  </tr>
+      #set( $number=0 )
+      #set( $amount=0 )
+      #foreach( $item in $session.getAttribute("order").orderitems )
+      <tr>
+        <td align="left" valign="middle" bgcolor="#e2f2ff" style=" padding-left:10px;"><span style="margin-left:10px;">
+        <a href="good.htm?gid=$!{item.goodd.id}" target="_blank">$!{item.goodd.name}</a>
+        #foreach( $subitem in $item.specc.specvalues )
+        [$!{subitem.specitemm.name}:$!{subitem.name}]
+        #end
+        </span></td>
+        <td align="center" bgcolor="#e2f2ff">$!{item.discount}</td>
+        <td align="center" bgcolor="#e2f2ff">$!{item.unitprice}</td>
+        <td align="center" bgcolor="#e2f2ff">$!{item.number}</td>
+        <td align="center" bgcolor="#e2f2ff">$!{item.subtotal}</td>
+      </tr>
+      #set( $number=$number+1 )
+      #set( $amount=$amount+$item.subtotal )
+      #end
+    </table>
+  </div>
+  <div class="clear"></div>
+  <div class="ze">
+    <p style="float:right;">商品总价(不含运费)：<strong style="color:#fa7b2d; font-size:18px;">$!{amount}</strong>元 </p>
+  </div>
+</div>
+
+
+<!------------------------底部------------------------>
+<div id="Box-bottom">
+  <div class="Box-bottom-menu">
+    #foreach( $doccate in $map.get("G_A") )
+    <dl>
+      <dt><strong>$!{doccate.name}</strong></dt>
+      #foreach( $document in $doccate.documents )
+      <dd><a href="channel.htm?c=help&amp;t=v&amp;d=$!{document.id}">$!{document.title}</a></dd>
+      #end
+    </dl>
+    #end
+    #include("/WEB-INF/publicer/zh_CN_contacts.vm")
+    <div class="clear"></div>
+  </div>
+  #include("/WEB-INF/publicer/zh_CN_services.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitelinks.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitefooter.vm")
+  <div class="clear"></div>
+</div>
+<div id="dialog" style="display:none">
+  <form id="formaddst" name="formaddst" method="post" action="member/address_create_ajax.htm">
+    <table width="500" border="0" cellspacing="0" cellpadding="5" class="table">
+      <tr>
+        <td align="right">收货地区：</td>
+        <td>
+          <select name="select" id="select" onchange="getDistrict(this.value)">
+            <option value="">请选择省份/地区</option>
+            #foreach( $item in $districtroot )
+            <option value="$!{item.id}">$!{item.name}</option>
+            #end
+          </select>
+          <select name="address.districtt.id" id="district1">
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td align="right">详细地址：</td>
+        <td><input name="address.address" type="text" id="address.address" size="50" maxlength="255" /></td>
+      </tr>
+      <tr>
+        <td align="right">邮编：</td>
+        <td><input name="address.postcode" type="text" id="address.postcode" size="10" maxlength="6" /></td>
+      </tr>
+      <tr>
+        <td align="right">收货人姓名：</td>
+        <td><input name="address.name" type="text" id="address.name" size="20" maxlength="100" /></td>
+      </tr>
+      <tr>
+        <td align="right">联系电话：</td>
+        <td><input name="address.telephone" type="text" id="address.telephone" size="30" maxlength="200" /></td>
+      </tr>
+      <tr>
+        <td align="right">手机：</td>
+        <td><input name="address.mobile" type="text" id="address.mobile" size="30" maxlength="200" /></td>
+      </tr>
+    </table>
+  </form>
+</div>
+<div id="dialog_target"></div>
+</body>
+</html>

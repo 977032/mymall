@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link type="text/css" href="styles/style.css" rel="stylesheet" />
+<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="scripts/simpla.jquery.configuration.js"></script>
+<script type="text/javascript" src="js/highcharts.js"></script>
+<script type="text/javascript" src="js/modules/exporting.js"></script>
+<script type="text/javascript">
+var chart;
+			$(document).ready(function() {
+				chart = new Highcharts.Chart({
+					chart: {
+						renderTo: 'container',
+						margin: [80, 200, 60, 100],
+						zoomType: 'xy'
+					},
+					title: {
+						text: '年度销售分析报表',
+						style: {
+							margin: '10px 0 0 0' // center it
+						}
+					},
+					subtitle: {
+						text: '注：仅为演示数据',
+						style: {
+							margin: '10px 0 0 0' // center it
+						}
+					},
+					xAxis: [{
+						categories: ['一月', '二月', '三月', '四月', '五月', '六月', 
+							'七月', '八月', '九月', '十月', '十一月', '十二月']
+					}],
+					yAxis: [{ // Primary yAxis
+						labels: {
+							formatter: function() {
+								return this.value +'个';
+							},
+							style: {
+								color: '#89A54E'
+							}
+						},
+						title: {
+							text: '订单量（个）',
+							style: {
+								color: '#89A54E'
+							},
+							margin: 50
+						},
+						opposite: true
+						
+					}, { // Secondary yAxis
+						title: {
+							text: '销售额（元）',
+							margin: 70,
+							style: {
+								color: '#4572A7'
+							}
+						},
+						labels: {
+							formatter: function() {
+								return '&yen; ' + this.value;
+							},
+							style: {
+								color: '#4572A7'
+							}
+						}
+						
+					}, { // Tertiary yAxis
+						title: {
+							text: '访问量',
+							margin: 90,
+							style: {
+								color: '#AA4643'
+							}
+						},
+						labels: {
+							formatter: function() {
+								return this.value +' 人次';
+							},
+							style: {
+								color: '#AA4643'
+							}
+						},
+						opposite: true,
+						offset: 80
+					}],
+					tooltip: {
+						formatter: function() {
+							var unit = {
+								'销售额': '&yen;',
+								'订单量': '个',
+								'访问量': '人次'
+							}[this.series.name];
+							
+							return ''+
+								this.x +': '+ this.y +' '+ unit;
+						}
+					},
+					legend: {
+						layout: 'vertical',
+						style: {
+							left: '120px',
+							bottom: 'auto',
+							right: 'auto',
+							top: '90px'
+						},
+						backgroundColor: '#FFFFFF'
+					},
+					series: [{
+						name: '销售额',
+						color: '#4572A7',
+						type: 'column',
+						yAxis: 1,
+						data: [5860.0, 39600.0, 63500.0, 112900.0, 185700.0, 268700.0, 334200.0, 457300.0, 489500.0, 515400.0, 536800.0, 562520.0]		
+					
+					}, {
+						name: '访问量',
+						type: 'spline',
+						color: '#AA4643',
+						yAxis: 2,
+						data: [101, 720, 1102, 2230, 3682, 5306, 5970, 8102, 8857, 9325, 10230, 13430]
+					
+					}, {
+						name: '订单量',
+						color: '#89A54E',
+						type: 'spline',
+						data: [3, 20, 32, 57, 93, 135, 167, 229, 245, 258, 269, 282]
+					}]
+				});
+				
+				
+			});
+</script>
+<title>后台管理</title>
+</head>
+<body>
+<div id="body-wrapper">
+  #parse("/WEB-INF/manager/menu.vm")
+  <div id="main-content">
+    <h2>beautyfamily</h2>
+    <div class="clear"></div>
+    <div class="content-box">
+      <div class="content-box-header">
+        <h3>后台管理</h3>
+        <ul class="content-box-tabs">
+          <li><a class="default-tab" href="#tab1">报表</a></li>
+          <li><a href="#tab2">帮助</a></li>
+          <li><a href="#tab3">最新消息</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab1">
+       	  <div id="container" style="width: 800px; height: 400px; margin: 0 auto"></div>
+        </div>
+        <div class="tab-content" id="tab2">
+          <h4>操作顺序</h4>
+          <p>1、品牌管理：录入品牌信息。<br>
+            2、商品规格：定义商品套餐、规格，等和价格有关的规格项。<br>
+            3、商品类型：定义各种商品类型的各种扩展属性[和价格无关的属性]，关联品牌，关联规格。<br>
+            4、商品类别：商品分类组织。<br>
+            5、商品管理：录入并管理商品信息，上传商品图片等。<br>
+          </p>
+        </div>
+        <div class="tab-content" id="tab3">
+          <h4>beautyfamily 1.6.1发布</h4>
+          <p>这个版本是一个稳定的可部署生产环境的版本，主要特性有：支持支付宝接口，管理员权限自定义控制，自定义频道管理。</p>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    #include("/WEB-INF/manager/footer.vm")
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>确认购物信息</title>
+<link href="styles/global-reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/global.css" rel="stylesheet" type="text/css" />
+<link href="styles/inside.css" rel="stylesheet" type="text/css" />
+<link href="styles/Shopping.css" rel="stylesheet" type="text/css" />
+<link href="styles/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" />
+<link href="styles/validate.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="Box-top">
+  #include("/WEB-INF/publicer/zh_CN_box-top-nav.vm")
+  #parse("/WEB-INF/publicer/zh_CN_box-top-logo.vm")
+  <!------------------------nav------------------------>
+  #include("/WEB-INF/publicer/zh_CN_box-nav.vm")
+  #parse("/WEB-INF/publicer/zh_CN_box-menu-left.vm")
+  #parse("/WEB-INF/publicer/zh_CN_mycart.vm")
+  <div class="clear"></div>
+</div>
+<div class="Box-banner"><img src="images/Home-box_15.jpg" width="980" height="60" /></div>
+<!------------------------内容------------------------>
+
+
+
+<div class="gouwu">
+  <div class="gouwu1"> <span style=" float:left">您的位置： 首页 &gt; 我的管理中心 &gt; 我的购物车</span> <span style="float:right;">购物车帮您一次性完成批量购买与付款，下单更便捷，付款更简单！如何使用购物车 </span> </div>
+  <div class="clear"></div>
+  <div class="zhishi" style="margin-top:10px;"> <span class="xiaoguo2" style="float:left;">1. 查看购物车</span> <span class="xiaoguo2" style="float:left;">2. 确认订单信息</span> <span class="xiaoguo1" style="float:left;">3. 付款</span> <span class="xiaoguo4" style="float:left;">4. 确认收货</span> <span class="xiaoguo5" style="float:left;">5. 评价</span> </div>
+	<img  src="images/success.jpg"/>
+	<p align="center"><a href="member/list_bought_items.htm">返回我的管理中心</a></p>
+  </div>
+  
+  <div class="clear"></div>
+</div>
+
+
+<!------------------------底部------------------------>
+<div id="Box-bottom">
+  <div class="Box-bottom-menu">
+    #include("/WEB-INF/publicer/zh_CN_contacts.vm")
+    <div class="clear"></div>
+  </div>
+  #include("/WEB-INF/publicer/zh_CN_services.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitelinks.vm")
+  #include("/WEB-INF/publicer/zh_CN_sitefooter.vm")
+  <div class="clear"></div>
+</div>
+<div id="dialog_target"></div>
+</body>
+</html>
